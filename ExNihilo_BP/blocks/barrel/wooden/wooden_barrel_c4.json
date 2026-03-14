@@ -1,0 +1,192 @@
+{
+	"format_version": "1.18.0",
+	"minecraft:block": {
+		"description": {
+			"identifier": "sf:wooden_barrel_c4",
+			"properties": {
+				"sf:frame": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+			}
+		},
+		"components": {
+			"minecraft:geometry": "geometry.addon_barrel_4",
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "wooden_barrel",
+					"render_method": "alpha_test"
+				},
+				"inside": {
+					"texture": "leaves_0",
+					"render_method": "alpha_test"
+				}
+			},
+			"minecraft:block_light_filter": 2,
+			"minecraft:destroy_time": 2.0,
+			"minecraft:aim_collision": {
+				"origin": [-7.0, 0.0, -7.0],
+				"size": [14,16,14]
+			},
+			"minecraft:block_collision": {
+				"origin": [-7.0, 0.0, -7.0],
+				"size": [14,16,14]
+			},
+			"minecraft:on_interact": { 
+				"event": "tap",
+				"target": "self"
+			},
+			"minecraft:ticking": {
+				"looping": false,
+				"on_tick": {
+					"event": "composting"
+				},
+				"range": [8, 8]
+			},
+			"minecraft:on_player_destroyed": {
+				"event": "destroy"
+			},
+			"minecraft:loot": "loot_tables/barrel/wooden_barrel.json"
+		},
+		"events": {
+			"destroy": {
+				"sequence": [
+					{
+						"condition": "q.block_property('sf:frame') == 7",
+						"spawn_loot": {
+							"table": "loot_tables/barrel/dirt.json"
+						}
+					}
+				]
+			},
+			"composting": {
+				"sequence": [
+					{
+						"condition": "q.block_property('sf:frame') < 7",
+						"set_block_property": {
+							"sf:frame": "q.block_property('sf:frame') + 1"
+						}
+					}
+				]
+			},
+			"tap": {
+				"sequence": [
+					{
+						"condition": "q.block_property('sf:frame') == 7",
+						"run_command": {
+							"command": [
+								"structure load dirt ~~1~",
+								"setblock ~~~ sf:wooden_barrel"
+							],
+							"target" : "self"
+						}
+					}
+				]
+			}
+		},
+		"permutations": [
+			{
+				"condition": "q.block_property('sf:frame') == 1",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_1",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 2",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_2",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 3",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_3",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 4",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_4",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 5",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_5",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 6",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "leaves_6",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{
+				"condition": "q.block_property('sf:frame') == 7",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "wooden_barrel",
+							"render_method": "alpha_test"
+						},
+						"inside": {
+							"texture": "dirt",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			}
+		]
+	 }
+ }

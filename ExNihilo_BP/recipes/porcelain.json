@@ -1,0 +1,28 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:porcelain"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"CB"
+		],
+		"key": {
+			"C": {
+				"item": "minecraft:clay_ball"
+			},
+			"B": {
+				"item": "minecraft:bone_meal"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:porcelain",
+				"count": 1
+			}
+		]
+	}
+}

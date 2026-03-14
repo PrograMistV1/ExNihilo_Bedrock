@@ -1,0 +1,300 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "sf:barrel",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "scripts": {
+				"animate": [
+					"is_in_water"
+				]
+			},
+			"animations": {
+				"is_in_water": "controller.animation.barrel"
+			}
+        },
+        "component_groups": {
+            "spawned": {
+                "minecraft:inside_block_notifier": {
+                    "block_list": [
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_0"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_1"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_2"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_3"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_4"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_c1"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_c2"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_c3"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_c4"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "minecraft:air"
+                            },
+                            "entered_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_0"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_1"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_2"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_3"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_4"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_c1"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_c2"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_c3"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_c4"
+                            },
+                            "exited_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:stone_barrel_witch_water"
+                            },
+                            "entered_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        },
+                        {
+                            "block": {
+                                "name": "sf:wooden_barrel_witch_water"
+                            },
+                            "entered_block_event": {
+                                "event": "despawn_event",
+                                "target": "self"
+                            }
+                        }
+                    ]
+                }
+            },
+            "despawn": {
+                "minecraft:instant_despawn":{
+                }
+            }
+        },
+        "components": {
+            "minecraft:breathable": {
+                "total_supply": 3,
+                "breathe_blocks": [
+                    "sf:wooden_barrel",
+                    "sf:wooden_barrel_0",
+                    "sf:wooden_barrel_1",
+                    "sf:wooden_barrel_2",
+                    "sf:wooden_barrel_3",
+                    "sf:wooden_barrel_4",
+                    "sf:wooden_barrel_c1",
+                    "sf:wooden_barrel_c2",
+                    "sf:wooden_barrel_c3",
+                    "sf:wooden_barrel_c4",
+                    "sf:wooden_barrel_witch_water",
+                    "sf:stone_barrel",
+                    "sf:stone_barrel_0",
+                    "sf:stone_barrel_1",
+                    "sf:stone_barrel_2",
+                    "sf:stone_barrel_3",
+                    "sf:stone_barrel_4",
+                    "sf:stone_barrel_c1",
+                    "sf:stone_barrel_c2",
+                    "sf:stone_barrel_c3",
+                    "sf:stone_barrel_c4",
+                    "sf:stone_barrel_witch_water",
+                    "sf:stone_barrel_lava"
+                ],
+                "breathes_air": false,
+                "breathes_water": false,
+                "generates_bubbles": false
+            },
+            "minecraft:collision_box": {
+                "height": 1,
+                "width": 0
+            },
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 0.0,
+                        "height": 0.0,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            }
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "add": {
+                    "component_groups": [
+                        "spawned"
+                    ]
+                }
+            },
+            "despawn_event": {
+                "add": {
+                    "component_groups": [
+                        "despawn"
+                    ]
+                }
+            }
+        }
+    }
+}

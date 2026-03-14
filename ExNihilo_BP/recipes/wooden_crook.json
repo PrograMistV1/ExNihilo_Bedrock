@@ -1,0 +1,27 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:wooden_crook"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"SS",
+			"S",
+			"S"
+		],
+		"key": {
+			"S": {
+				"item": "minecraft:stick"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:wooden_crook",
+				"count": 1
+			}
+		]
+	}
+}

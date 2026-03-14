@@ -1,0 +1,99 @@
+{
+    "format_version": "1.18.0",
+    "minecraft:block": {
+        "description": {
+            "identifier": "sf:crucible",
+			"properties": {
+				"sf:use": [ 0, 1, 2, 3, 4 ]
+			}
+        },
+        "components": {
+            "minecraft:material_instances": {
+				"*": {
+					"texture": "crucible",
+					"render_method": "alpha_test"
+				}
+			},
+            "minecraft:geometry": "geometry.crucible",
+			"minecraft:on_interact": { 
+                "event": "tap",
+                "target": "self"
+			},
+			"minecraft:destroy_time": 3.0,
+			"minecraft:block_light_filter": 2,
+			"minecraft:creative_category": {
+				"category": "nature"
+			},
+			"minecraft:display_name": "Crucible"
+        },
+		"events":{
+			"tap": {
+				"sequence": [
+					{
+						"condition": "q.block_property('sf:use') < 4 && (query.get_equipped_item_name == 'cobblestone' || query.get_equipped_item_name == 'gravel')",
+						"decrement_stack": {},
+						"set_block_property": {
+							"sf:use": "q.block_property('sf:use') + 1"
+						}
+					}
+				]
+			},
+			"entity": {
+				"sequence": [
+					{
+						"condition": "q.block_property('sf:use') == 4",
+						"run_command": {
+							"command": "summon sf:crucible ~~-0.5~",
+							"target" : "self"
+						}
+					}
+				]
+			}
+		},
+		"permutations": [
+			{	
+				"condition": "q.block_property('sf:use') > 0",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "crucible_cobblestone",
+							"render_method": "alpha_test"
+						}
+					}
+				}
+			},
+			{	
+				"condition": "q.block_property('sf:use') == 1",
+				"components": {
+					"minecraft:geometry": "geometry.crucible_1"
+				}
+			},
+			{	
+				"condition": "q.block_property('sf:use') == 2",
+				"components": {
+					"minecraft:geometry": "geometry.crucible_2"
+				}
+			},
+			{	
+				"condition": "q.block_property('sf:use') == 3",
+				"components": {
+					"minecraft:geometry": "geometry.crucible_3"
+				}
+			},
+			{	
+				"condition": "q.block_property('sf:use') == 4",
+				"components": {
+					"minecraft:geometry": "geometry.crucible_4",
+					"tag:crucible_full": {},
+					"minecraft:ticking": {
+						"looping": false,
+						"on_tick": {
+							"event": "entity"
+						},
+						"range": [0, 0]
+					}
+				}
+			}
+		]
+	}
+}

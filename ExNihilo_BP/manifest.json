@@ -1,0 +1,24 @@
+{
+	"format_version": 2,
+	"header": {
+		"description": "pack.description",
+		"name": "ExNihilo_BP_1.8.2",
+		"uuid": "5e17af0d-f8fb-4103-82f7-508d7f6adaff",
+		"version": [1, 8, 2],
+		"min_engine_version": [ 1, 19, 0 ]
+	},
+	"modules": [
+		{
+			"description": "ExNihilo_Bedrock by PrograMistV1",
+			"type": "data",
+			"uuid": "81b463ec-c56d-4942-8af7-5684268aba6f",
+			"version": [1, 8, 2]
+		}
+	],
+	"dependencies": [
+        {
+            "uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
+            "version": [1, 8, 2]
+        }
+    ]
+}

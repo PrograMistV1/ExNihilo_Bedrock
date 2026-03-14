@@ -1,0 +1,17 @@
+{
+	"format_version": "1.17.41",
+	
+	"minecraft:recipe_furnace": {
+		"description": {
+			"identifier": "sf:crucible"
+		},
+		"tags": ["furnace", "blast_furnace"],
+		
+		"input": "sf:unfired_crucible",
+		"output": {
+			"item": "sf:crucible",
+			
+			"count": 1
+		}
+	}
+}

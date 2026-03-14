@@ -1,0 +1,29 @@
+{
+    "format_version": "1.10.0",
+    "animation_controllers": {
+        "controller.animation.leaves": {
+            "initial_state": "default",
+            "states": {
+                "default": {
+                    "transitions": [
+                        {
+                            "leaves": "(1.0)"
+                        }
+                    ]
+                },
+                "leaves": {
+                    "transitions": [
+                        {
+                            "default": "(1.0)"
+                        }
+                    ],
+                    "on_entry": [
+                        "/execute @s ~~~ detect ~~~ leaves -1 function leaves",
+                        "/execute @s ~~~ detect ~~~ leaves2 -1 function leaves",
+                        "/execute @s ~~~ event entity @s despawn_event"
+                    ]
+                }
+            }
+        }
+    }
+}

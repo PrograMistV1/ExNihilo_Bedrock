@@ -1,0 +1,30 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:doll_e"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"PEP",
+			" P ",
+			"P P"
+		],
+		"key": {
+			"P": {
+				"item": "sf:porcelain"
+			},
+			"E": {
+				"item": "minecraft:emerald"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:doll",
+				"count": 6
+			}
+		]
+	}
+}

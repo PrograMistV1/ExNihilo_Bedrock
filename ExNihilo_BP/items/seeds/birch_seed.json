@@ -1,0 +1,39 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:item": {
+		"description": {
+			"identifier": "sf:birch_seed",
+			"category": "nature"
+		},
+		"components": {
+			"minecraft:icon": {
+				"texture": "birch_seed"
+			},
+			"minecraft:creative_category": {
+				"parent": "itemGroup.name.seed"
+			},
+			"minecraft:max_stack_size": 64,
+			"minecraft:display_name": {
+				"value": "Birch seed"
+			},
+			"minecraft:block_placer":{
+				"block": "sf:birch_sapling",
+				"use_on" : ["grass", "dirt", "podzol"]
+			},
+			"minecraft:render_offsets": {
+				"main_hand": {
+					"first_person": {
+						"position": [-0.5, -3, -4],
+						"rotation": [75, 45, 45],
+						"scale": [0.2, 0.2, 0.2]
+					},
+					"third_person": {
+						"position": [-1.7, 0.4, 0.8],
+						"rotation": [75, 45, 45],
+						"scale": [0.05, 0.05, 0.05]
+					}
+				}
+			}
+		}
+	}
+}

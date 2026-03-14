@@ -1,0 +1,26 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:copper_ore"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"OO",
+			"OO"
+		],
+		"key": {
+			"O": {
+				"item": "sf:copper_orechunk"
+			}
+		},
+		"result": [
+			{
+				"item": "minecraft:copper_ore",
+				"count": 1
+			}
+		]
+	}
+}

@@ -1,0 +1,49 @@
+{
+    "format_version": "1.16.0",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "sf:leaves",
+            "is_spawnable": false,
+            "is_summonable": true,
+            "is_experimental": false,
+            "scripts": {
+				"animate": [
+					"is_in_leaves"
+				]
+			},
+			"animations": {
+				"is_in_leaves": "controller.animation.leaves"
+			}
+        },
+        "component_groups": {
+            "despawn": {
+                "minecraft:instant_despawn":{
+                }
+            }
+        },
+        "components": {
+            "minecraft:collision_box": {
+                "height": 1,
+                "width": 0
+            },
+            "minecraft:custom_hit_test":{
+                "hitboxes": [
+                    {
+                        "width": 0.0,
+                        "height": 0.0,
+                        "pivot": [ 0, 0, 0 ]
+                    }
+                ]
+            }
+        },
+        "events": {
+            "despawn_event": {
+                "add": {
+                    "component_groups": [
+                        "despawn"
+                    ]
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+	"format_version": 1,
+	"header": {
+		"description": "pack.description",
+		"name": "ExNihilo_RP_1.8.2",
+		"uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
+		"version": [1, 8, 2]
+	},
+	"modules": [
+		{
+			"description": "ExNihilo_Bedrock by PrograMistV1",
+			"type": "resources",
+			"uuid": "b57e843f-c3cb-44d7-ab60-8b960f03ca25",
+			"version": [1, 8, 2]
+		}
+	]
+}

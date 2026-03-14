@@ -1,0 +1,24 @@
+{
+    "format_version": "1.18.0",
+    "minecraft:block": {
+        "description": {
+            "identifier": "sf:sieve_loot_dust"
+        },
+        "components": {
+            "minecraft:block_light_filter": 0,
+            "minecraft:on_placed": {
+                "event": "loot"
+            }
+        },
+		"events": {
+			"loot": {
+				"spawn_loot": {
+                    "table": "loot_tables/sieve/sieve_loot_dust.json"
+                },
+                "set_block": {
+                    "block_type": "sf:sieve"
+                }
+			}
+		}
+    }
+}

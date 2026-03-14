@@ -1,0 +1,39 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:blaze_doll"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"PNP",
+			"GDG",
+			"PRP"
+		],
+		"key": {
+			"N": {
+				"item": "minecraft:nether_wart"
+			},
+			"P": {
+				"item": "minecraft:blaze_powder"
+			},
+			"G": {
+				"item": "minecraft:glowstone_dust"
+			},
+			"R": {
+				"item": "minecraft:redstone"
+			},
+			"D": {
+				"item": "sf:doll"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:blaze_doll",
+				"count": 1
+			}
+		]
+	}
+}

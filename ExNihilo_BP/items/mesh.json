@@ -1,0 +1,18 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:item": {
+		"description": {
+			"identifier": "sf:mesh",
+			"category": "nature"
+		},
+		"components": {
+			"minecraft:icon": {
+				"texture": "mesh"
+			},
+			"minecraft:max_stack_size": 64,
+			"minecraft:display_name": {
+				"value": "Mesh"
+			}
+		}
+	}
+}

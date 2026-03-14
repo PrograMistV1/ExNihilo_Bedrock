@@ -1,0 +1,17 @@
+[
+  {
+    "flipbook_texture": "textures/blocks/barrel/water",
+    "atlas_tile": "water",
+    "ticks_per_frame": 1
+  },
+  {
+    "flipbook_texture": "textures/blocks/barrel/lava",
+    "atlas_tile": "lava",
+    "ticks_per_frame": 3
+  },
+  {
+    "flipbook_texture": "textures/blocks/barrel/witch_water",
+    "atlas_tile": "witch_water",
+    "ticks_per_frame": 2
+  }
+]

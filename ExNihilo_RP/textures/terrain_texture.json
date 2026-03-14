@@ -1,0 +1,137 @@
+{
+	"resource_pack_name": "vanilla",
+	"texture_name": "atlas.terrain",
+	"padding": 8,
+	"num_mip_levels": 4,
+	"texture_data": {
+		"spruce_sapling": {
+			"textures": "textures/blocks/spruce_sapling"
+		},
+		"acacia_sapling": {
+			"textures": "textures/blocks/sapling_acacia"
+		},
+		"birch_sapling": {
+			"textures": "textures/blocks/birch_sapling"
+		},
+		"exotic_sapling": {
+			"textures": "textures/blocks/exotic_sapling"
+		},
+		"dark_oak_sapling": {
+			"textures": "textures/blocks/dark_oak_sapling"
+		},
+		"sieve_0": {
+			"textures": "textures/blocks/sieve/sieve_0"
+		},
+		"sieve_1": {
+			"textures": "textures/blocks/sieve/sieve_1"
+		},
+		"sieve_2": {
+			"textures": "textures/blocks/sieve/sieve_2"
+		},
+		"sieve_3": {
+			"textures": "textures/blocks/sieve/sieve_3"
+		},
+		"sieve_4": {
+			"textures": "textures/blocks/sieve/sieve_4"
+		},
+		"sieve_5": {
+			"textures": "textures/blocks/sieve/sieve_5"
+		},
+		"dust": {
+			"textures": "textures/blocks/dust"
+		},
+		"wooden_barrel": {
+			"textures": "textures/blocks/barrel/wooden_barrel"
+		},
+		"stone_barrel": {
+			"textures": "textures/blocks/barrel/stone_barrel"
+		},
+		"water": {
+			"textures": "textures/blocks/barrel/water"
+		},
+		"witch_water": {
+			"textures": "textures/blocks/barrel/witch_water"
+		},
+		"leaves_0": {
+			"textures": "textures/blocks/barrel/leaves_0"
+		},
+		"leaves_1": {
+			"textures": "textures/blocks/barrel/leaves_1"
+		},
+		"leaves_2": {
+			"textures": "textures/blocks/barrel/leaves_2"
+		},
+		"leaves_3": {
+			"textures": "textures/blocks/barrel/leaves_3"
+		},
+		"leaves_4": {
+			"textures": "textures/blocks/barrel/leaves_4"
+		},
+		"leaves_5": {
+			"textures": "textures/blocks/barrel/leaves_5"
+		},
+		"leaves_6": {
+			"textures": "textures/blocks/barrel/leaves_6"
+		},
+		"crucible": {
+			"textures": "textures/blocks/crucible"
+		},
+		"unfired_crucible": {
+			"textures": "textures/blocks/unfired_crucible"
+		},
+		"crucible_cobblestone": {
+			"textures": "textures/blocks/crucible_cobblestone"
+		},
+		"crucible_lava": {
+			"textures": "textures/blocks/crucible_lava"
+		},
+		"iron_sand": {
+			"textures": "textures/blocks/iron_sand"
+		},
+		"gold_sand": {
+			"textures": "textures/blocks/gold_sand"
+		},
+		"copper_sand": {
+			"textures": "textures/blocks/copper_sand"
+		},
+		"iron_dust_block": {
+			"textures": "textures/blocks/iron_dust"
+		},
+		"gold_dust_block": {
+			"textures": "textures/blocks/gold_dust"
+		},
+		"copper_dust_block": {
+			"textures": "textures/blocks/copper_dust"
+		},
+		"infected_acacia_leaves": {
+			"textures": "textures/blocks/leaves/infected_acacia_leaves"
+		},
+		"infected_birch_leaves": {
+			"textures": "textures/blocks/leaves/infected_birch_leaves"
+		},
+		"infected_jungle_leaves": {
+			"textures": "textures/blocks/leaves/infected_jungle_leaves"
+		},
+		"infected_oak_leaves": {
+			"textures": "textures/blocks/leaves/infected_oak_leaves"
+		},
+		"infected_spruce_leaves": {
+			"textures": "textures/blocks/leaves/infected_spruce_leaves"
+		},
+		"infecting_acacia_leaves": {
+			"textures": "textures/blocks/leaves/infecting_acacia_leaves"
+		},
+		"infecting_birch_leaves": {
+			"textures": "textures/blocks/leaves/infecting_birch_leaves"
+		},
+		"infecting_jungle_leaves": {
+			"textures": "textures/blocks/leaves/infecting_jungle_leaves"
+		},
+		"infecting_oak_leaves": {
+			"textures": "textures/blocks/leaves/infecting_oak_leaves"
+		},
+		"infecting_spruce_leaves": {
+			"textures": "textures/blocks/leaves/infecting_spruce_leaves"
+		}
+	}
+}

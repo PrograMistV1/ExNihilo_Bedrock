@@ -1,0 +1,26 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:copper_dust"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"DD",
+			"DD"
+		],
+		"key": {
+			"D": {
+				"item": "sf:copper_dust"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:copper_dust_block",
+				"count": 1
+			}
+		]
+	}
+}

@@ -1,0 +1,148 @@
+{
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:bone_meal",
+                    "weight": 20,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 70
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:redstone",
+                    "weight": 13,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 80
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:gunpowder",
+                    "weight": 7,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 84
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:glowstone_dust",
+                    "weight": 6,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 85
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:blaze_powder",
+                    "weight": 5,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 86
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:blaze_powder",
+                    "weight": 5,
+                    "functions": [
+                        {
+                          "function": "set_count",
+                          "count": {
+                            "min": 1,
+                            "max": 3
+                          }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:air",
+                    "weight": 86
+                }
+            ]
+        }
+    ]
+}

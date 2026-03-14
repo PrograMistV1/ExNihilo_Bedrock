@@ -1,0 +1,26 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "sf:gold_sand"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"pattern": [
+			"OO",
+			"OO"
+		],
+		"key": {
+			"O": {
+				"item": "sf:gold_orepiece"
+			}
+		},
+		"result": [
+			{
+				"item": "sf:gold_sand",
+				"count": 1
+			}
+		]
+	}
+}

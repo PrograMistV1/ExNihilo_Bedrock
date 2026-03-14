@@ -1,0 +1,20 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "sf:copper_dust",
+			"materials": {
+				"default": "entity_change_color"
+			},
+			"textures": {
+				"default": "textures/blocks/copper_dust"
+			},
+			"geometry": {
+				"default": "geometry.block"
+			},
+			"render_controllers": [
+				"controller.render.blocks"
+			]
+		}
+	}
+}
