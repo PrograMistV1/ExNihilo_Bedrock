@@ -1,12 +1,38 @@
 import {
+    BlockComponentBlockBreakEvent,
+    BlockComponentOnPlaceEvent,
+    BlockComponentPlayerInteractEvent,
     BlockCustomComponent,
-    BlockComponentStepOnEvent,
-    CustomComponentParameters,
-    world
+    EntityInventoryComponent
 } from "@minecraft/server";
+import {COMPOSTABLE_ITEMS} from "../data/compostable_items";
+import {getTileEntity} from "../Utils";
 
 export class BarrelComponent implements BlockCustomComponent {
-    onStepOn(e: BlockComponentStepOnEvent, p: CustomComponentParameters): void {
-        world.sendMessage("Hello World");
+
+    onPlace(e: BlockComponentOnPlaceEvent): void {
+        e.block.dimension.spawnEntity("exnihilo:barrel_tile", e.block.location);
+    }
+
+    onBreak(e: BlockComponentBlockBreakEvent): void {
+        const block = e.block;
+
+        getTileEntity(block, "exnihilo:barrel_tile")?.remove();
+    }
+
+    onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
+        const player = e.player;
+        const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;
+
+        const container = inventory.container;
+        if (!container) return;
+
+        const item = container.getItem(player.selectedSlotIndex);
+        if (!item) return;
+
+        const value = COMPOSTABLE_ITEMS[item.typeId];
+        if (value !== undefined) {
+            player.sendMessage(`Compost +${value}`);
+        }
     }
 }
