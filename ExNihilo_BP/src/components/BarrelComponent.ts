@@ -6,6 +6,7 @@ import {
     BlockCustomComponent,
     Entity,
     EntityInventoryComponent,
+    ItemStack,
     Player
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
@@ -27,11 +28,12 @@ export class BarrelComponent implements BlockCustomComponent {
     }
 
     onPlayerInteract(e: BlockComponentPlayerInteractEvent) {
-        checkCompostable(e.block, e.player);
+        handleCompostable(e.block, e.player);
+        handleLiquid(e.block, e.player);
     }
 }
 
-function checkCompostable(block: Block, player: Player): void {
+function handleCompostable(block: Block, player: Player): void {
     const tile = getTileEntity(block, "exnihilo:barrel_tile");
     const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;
     const container = inventory?.container;
@@ -50,6 +52,47 @@ function checkCompostable(block: Block, player: Player): void {
         container.setItem(player.selectedSlotIndex, null);
     }
     changeFilling(block, fillAmount, "compost");
+}
+
+function handleLiquid(block: Block, player: Player): void {
+    const tile = getTileEntity(block, "exnihilo:barrel_tile");
+    const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;
+    const container = inventory?.container;
+    const item = container?.getItem(player.selectedSlotIndex);
+
+    if (!tile || !container || !item) return;
+    const filling = tile.getDynamicProperty("filling") as number;
+    const type = tile.getDynamicProperty("type") as string;
+    if (item.typeId === "minecraft:water_bucket") {
+        if (type === "empty" || type === "water") {
+            changeFilling(block, 100, "water");
+            container.setItem(player.selectedSlotIndex, new ItemStack("minecraft:bucket", 1));
+            block.dimension.playSound("bucket.empty_water", block.location);
+            return;
+        }
+    }
+    if (item.typeId === "minecraft:lava_bucket") {
+        if (type === "empty" || type === "lava") {
+            changeFilling(block, 100, "lava");
+            container.setItem(player.selectedSlotIndex, new ItemStack("minecraft:bucket", 1));
+            block.dimension.playSound("bucket.empty_lava", block.location);
+            return;
+        }
+    }
+    if (item.typeId === "minecraft:bucket") {
+        if (type === "water" && filling == 100) {
+            changeFilling(block, -100, "empty");
+            container.setItem(player.selectedSlotIndex, new ItemStack("minecraft:water_bucket", 1));
+            block.dimension.playSound("bucket.fill_water", block.location);
+            return;
+        }
+        if (type === "lava" && filling == 100) {
+            changeFilling(block, -100, "empty");
+            container.setItem(player.selectedSlotIndex, new ItemStack("minecraft:lava_bucket", 1));
+            block.dimension.playSound("bucket.fill_lava", block.location);
+            return;
+        }
+    }
 }
 
 function changeFilling(block: Block, amount: number, type: string): void {

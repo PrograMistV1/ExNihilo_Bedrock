@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "@minecraft/server": "^2.5.0"
+    "@minecraft/server": "^2.5.0",
+    "@minecraft/vanilla-data": "^1.26.2"
   },
   "name": "exnihilo_bp",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
