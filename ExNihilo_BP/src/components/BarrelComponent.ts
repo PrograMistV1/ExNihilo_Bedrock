@@ -10,7 +10,9 @@ import {
     EntityDamageCause,
     EntityOnFireComponent,
     ItemStack,
-    Player
+    Player,
+    WeatherType,
+    world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {COMPOSTABLE_ITEMS} from "../data/compostable_items";
@@ -38,6 +40,8 @@ const COMPOSTING_TIME_TICKS = 514; //1 barrel update tick occurs every 7 game ti
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
+
+let isRainingGlobal = false;
 
 export class BarrelComponent implements BlockCustomComponent {
 
@@ -67,22 +71,28 @@ export class BarrelComponent implements BlockCustomComponent {
         if (!tile) return;
 
         const state = getBarrelState(tile);
-        if (state.type === EMPTY_TYPE || state.filling === 0) return;
-
-        const filling = state.filling;
+        const isHighest = e.block.dimension.getBlockAbove(e.block.location, {
+            includeLiquidBlocks: true,
+            includePassableBlocks: true,
+            maxDistance: 16
+        });
+        if ((state.type === EMPTY_TYPE || state.type === WATER_TYPE) && state.filling < MAX_FILLING && isHighest && isRainingGlobal) {
+            //todo: Rain is not found in all biomes, and only in the overworld.
+            changeFilling(e.block, 0.33334, WATER_TYPE); //1 minute 45 seconds to fill barrel
+        }
+        if (state.type === WATER_TYPE && state.filling >= LEVEL_STEP) {
+            for (const entity of getContainedEntities(tile)) {
+                tryExtinguishEntity(entity, tile, e.block);
+            }
+            return;
+        }
         if (state.type === LAVA_TYPE) {
             for (const entity of getContainedEntities(tile)) {
                 applyLavaEffects(entity);
             }
             return;
         }
-        if (state.type === WATER_TYPE && filling >= LEVEL_STEP) {
-            for (const entity of getContainedEntities(tile)) {
-                tryExtinguishEntity(entity, tile, e.block);
-            }
-            return;
-        }
-        if (state.type === COMPOST_TYPE && filling === MAX_FILLING) {
+        if (state.type === COMPOST_TYPE && state.filling === MAX_FILLING) {
             if (getTimer(tile) >= COMPOSTING_TIME_TICKS) {
                 changeFilling(e.block, MAX_FILLING, DIRT_TYPE);
                 resetTimer(tile);
@@ -93,6 +103,12 @@ export class BarrelComponent implements BlockCustomComponent {
         }
     }
 }
+
+world.afterEvents.weatherChange.subscribe(event => {
+    if (event.dimension != "overworld") return;
+
+    isRainingGlobal = event.newWeather != WeatherType.Clear;
+});
 
 function handleCompostable(block: Block, player: Player): void {
     const tile = getBarrelTile(block);
