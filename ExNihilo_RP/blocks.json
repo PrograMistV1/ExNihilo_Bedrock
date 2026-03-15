@@ -1,189 +1,42 @@
 {
-	"spruce_sapling": {
-		"sound": "grass"
-	},
-	"acacia_sapling": {
-		"sound": "grass"
-	},
-	"birch_sapling": {
-		"sound": "grass"
-	},
-	"exotic_sapling": {
-		"sound": "grass"
-	},
-	"dark_oak_sapling": {
-		"sound": "grass"
-	},
-	"sieve_0": {
+	"format_version": "1.21.40",
+	"acacia_barrel": {
 		"sound": "wood"
 	},
-	"sieve_1": {
+	"bamboo_barrel": {
+		"sound": "bamboo"
+	},
+	"birch_barrel": {
 		"sound": "wood"
 	},
-	"sieve_2": {
+	"cherry_barrel": {
 		"sound": "wood"
 	},
-	"sieve_3": {
+	"crimson_barrel": {
+		"sound": "nether_wood"
+	},
+	"dark_oak_barrel": {
 		"sound": "wood"
 	},
-	"sieve_4": {
+	"jungle_barrel": {
 		"sound": "wood"
 	},
-	"sieve_5": {
+	"mangrove_barrel": {
 		"sound": "wood"
 	},
-	"dust": {
-		"textures": "dust",
-		"sound": "sand"
-	},
-	"wooden_barrel": {
+	"oak_barrel": {
 		"sound": "wood"
 	},
-	"wooden_barrel_0": {
+	"pale_oak_barrel": {
 		"sound": "wood"
 	},
-	"wooden_barrel_1": {
-		"sound": "wood"
-	},
-	"wooden_barrel_2": {
-		"sound": "wood"
-	},
-	"wooden_barrel_3": {
-		"sound": "wood"
-	},
-	"wooden_barrel_4": {
-		"sound": "wood"
-	},
-	"wooden_barrel_c1": {
-		"sound": "wood"
-	},
-	"wooden_barrel_c2": {
-		"sound": "wood"
-	},
-	"wooden_barrel_c3": {
-		"sound": "wood"
-	},
-	"wooden_barrel_c4": {
-		"sound": "wood"
-	},
-	"wooden_barrel_witch_water": {
+	"spruce_barrel": {
 		"sound": "wood"
 	},
 	"stone_barrel": {
 		"sound": "stone"
 	},
-	"stone_barrel_0": {
-		"sound": "stone"
-	},
-	"stone_barrel_1": {
-		"sound": "stone"
-	},
-	"stone_barrel_2": {
-		"sound": "stone"
-	},
-	"stone_barrel_3": {
-		"sound": "stone"
-	},
-	"stone_barrel_4": {
-		"sound": "stone"
-	},
-	"stone_barrel_c1": {
-		"sound": "stone"
-	},
-	"stone_barrel_c2": {
-		"sound": "stone"
-	},
-	"stone_barrel_c3": {
-		"sound": "stone"
-	},
-	"stone_barrel_c4": {
-		"sound": "stone"
-	},
-	"stone_barrel_witch_water": {
-		"sound": "stone"
-	},
-	"crucible": {
-		"sound": "stone"
-	},
-	"unfired_crucible": {
-		"sound": "stone"
-	},
-	"crucible_cobblestone": {
-		"sound": "stone"
-	},
-	"crucible_lava": {
-		"sound": "stone"
-	},
-	"iron_sand": {
-		"textures": "iron_sand",
-		"sound": "sand"
-	},
-	"gold_sand": {
-		"textures": "gold_sand",
-		"sound": "sand"
-	},
-	"copper_sand": {
-		"textures": "copper_sand",
-		"sound": "sand"
-	},
-	"iron_dust_block": {
-		"textures": "iron_dust_block",
-		"sound": "sand"
-	},
-	"gold_dust_block": {
-		"textures": "gold_dust_block",
-		"sound": "sand"
-	},
-	"copper_dust_block": {
-		"textures": "copper_dust_block",
-		"sound": "sand"
-	},
-	"infecting_oak_leaves": {
-		"textures": "infecting_oak_leaves",
-		"sound": "grass"
-	},
-	"infected_oak_leaves": {
-		"textures": "infected_oak_leaves",
-		"sound": "grass"
-	},
-	"infecting_spruce_leaves": {
-		"textures": "infecting_spruce_leaves",
-		"sound": "grass"
-	},
-	"infected_spruce_leaves": {
-		"textures": "infected_spruce_leaves",
-		"sound": "grass"
-	},
-	"infecting_birch_leaves": {
-		"textures": "infecting_birch_leaves",
-		"sound": "grass"
-	},
-	"infected_birch_leaves": {
-		"textures": "infected_birch_leaves",
-		"sound": "grass"
-	},
-	"infecting_jungle_leaves": {
-		"textures": "infecting_jungle_leaves",
-		"sound": "grass"
-	},
-	"infected_jungle_leaves": {
-		"textures": "infected_jungle_leaves",
-		"sound": "grass"
-	},
-	"infecting_acacia_leaves": {
-		"textures": "infecting_acacia_leaves",
-		"sound": "grass"
-	},
-	"infected_acacia_leaves": {
-		"textures": "infected_acacia_leaves",
-		"sound": "grass"
-	},
-	"infecting_dark_oak_leaves": {
-		"textures": "infecting_dark_oak_leaves",
-		"sound": "grass"
-	},
-	"infected_dark_oak_leaves": {
-		"textures": "infected_dark_oak_leaves",
-		"sound": "grass"
+	"warped_barrel": {
+		"sound": "nether_wood"
 	}
 }

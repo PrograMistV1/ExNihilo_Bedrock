@@ -1,157 +1,160 @@
 {
-	"resource_pack_name": "ExNihilo",
+	"resource_pack_name": "SkyFactory",
 	"texture_name": "atlas.items",
 	"texture_data": {
 		"mesh": {
-			"textures": [
-				"textures/items/mesh"
-			]
-        },
+			"textures": "textures/items/mesh"
+		},
 		"witch_water_bucket": {
-			"textures": [
-				"textures/items/witch_water_bucket"
-			]
-        },
+			"textures": "textures/items/witch_water_bucket"
+		},
 		"porcelain": {
-			"textures": [
-				"textures/items/porcelain"
-			]
-        },
+			"textures": "textures/items/porcelain"
+		},
 		"wooden_crook": {
-			"textures": [
-				"textures/items/wooden_crook"
-			]
-        },
-		"bone_crook": {
-			"textures": [
-				"textures/items/bone_crook"
-			]
-        },
+			"textures": "textures/items/wooden_crook"
+		},
+		"stone_crook": {
+			"textures": "textures/items/stone_crook"
+		},
+		"copper_crook": {
+			"textures": "textures/items/copper_crook"
+		},
 		"iron_crook": {
-			"textures": [
-				"textures/items/iron_crook"
-			]
-        },
+			"textures": "textures/items/iron_crook"
+		},
+		"golden_crook": {
+			"textures": "textures/items/golden_crook"
+		},
+		"diamond_crook": {
+			"textures": "textures/items/diamond_crook"
+		},
+		"netherite_crook": {
+			"textures": "textures/items/netherite_crook"
+		},
+		"bamboo_crook": {
+			"textures": "textures/items/bamboo_crook"
+		},
+		"cherry_crook": {
+			"textures": "textures/items/cherry_crook"
+		},
+		"andesite_crook": {
+			"textures": "textures/items/andesite_crook"
+		},
+		"basalt_crook": {
+			"textures": "textures/items/basalt_crook"
+		},
+		"blackstone_crook": {
+			"textures": "textures/items/blackstone_crook"
+		},
+		"bone_crook": {
+			"textures": "textures/items/bone_crook"
+		},
+		"calcite_crook": {
+			"textures": "textures/items/calcite_crook"
+		},
+		"deepslate_crook": {
+			"textures": "textures/items/deepslate_crook"
+		},
+		"diorite_crook": {
+			"textures": "textures/items/diorite_crook"
+		},
+		"dripstone_crook": {
+			"textures": "textures/items/dripstone_crook"
+		},
+		"granite_crook": {
+			"textures": "textures/items/granite_crook"
+		},
+		"terracotta_crook": {
+			"textures": "textures/items/terracotta_crook"
+		},
+		"tuff_crook": {
+			"textures": "textures/items/tuff_crook"
+		},
+		"nether_brick_crook": {
+			"textures": "textures/items/nether_brick_crook"
+		},
+		"red_nether_brick_crook": {
+			"textures": "textures/items/red_nether_brick_crook"
+		},
 		"doll": {
-			"textures": [
-				"textures/items/doll"
-			]
-        },
+			"textures": "textures/items/doll"
+		},
 		"ender_doll": {
-			"textures": [
-				"textures/items/ender_doll"
-			]
-        },
+			"textures": "textures/items/ender_doll"
+		},
 		"blaze_doll": {
-			"textures": [
-				"textures/items/blaze_doll"
-			]
-        },
+			"textures": "textures/items/blaze_doll"
+		},
 		"acorn": {
-			"textures": [
-				"textures/items/seeds/acorn"
-			]
-        },
+			"textures": "textures/items/seeds/acorn"
+		},
 		"dark_acorn": {
-			"textures": [
-				"textures/items/seeds/dark_acorn"
-			]
-        },
+			"textures": "textures/items/seeds/dark_acorn"
+		},
 		"acacia_seed": {
-			"textures": [
-				"textures/items/seeds/acacia_seed"
-			]
-        },
+			"textures": "textures/items/seeds/acacia_seed"
+		},
 		"birch_seed": {
-			"textures": [
-				"textures/items/seeds/birch_seed"
-			]
-        },
+			"textures": "textures/items/seeds/birch_seed"
+		},
 		"spruce_seed": {
-			"textures": [
-				"textures/items/seeds/spruce_seed"
-			]
-        },
+			"textures": "textures/items/seeds/spruce_seed"
+		},
 		"cactus_seeds": {
-			"textures": [
-				"textures/items/seeds/cactus_seeds"
-			]
-        },
+			"textures": "textures/items/seeds/cactus_seeds"
+		},
 		"carrot_seeds": {
-			"textures": [
-				"textures/items/seeds/carrot_seeds"
-			]
-        },
+			"textures": "textures/items/seeds/carrot_seeds"
+		},
 		"exotic_seed": {
-			"textures": [
-				"textures/items/seeds/exotic_seed"
-			]
-        },
+			"textures": "textures/items/seeds/exotic_seed"
+		},
 		"grass_seeds": {
-			"textures": [
-				"textures/items/seeds/grass_seeds"
-			]
-        },
+			"textures": "textures/items/seeds/grass_seeds"
+		},
 		"potato_seeds": {
-			"textures": [
-				"textures/items/seeds/potato_seeds"
-			]
-        },
+			"textures": "textures/items/seeds/potato_seeds"
+		},
 		"sugar_cane_seeds": {
-			"textures": [
-				"textures/items/seeds/sugar_cane_seeds"
-			]
-        },
+			"textures": "textures/items/seeds/sugar_cane_seeds"
+		},
 		"spores": {
-			"textures": [
-				"textures/items/seeds/spores"
-			]
-        },
+			"textures": "textures/items/seeds/spores"
+		},
 		"silkworm": {
-			"textures": [
-				"textures/items/silkworm"
-			]
-        },
+			"textures": "textures/items/silkworm"
+		},
 		"cooked_silkworm": {
-			"textures": [
-				"textures/items/cooked_silkworm"
-			]
-        },
+			"textures": "textures/items/cooked_silkworm"
+		},
 		"iron_orechunk": {
-			"textures": [
-				"textures/items/iron_orechunk"
-			]
-        },
+			"textures": "textures/items/iron_orechunk"
+		},
 		"iron_orepiece": {
-			"textures": [
-				"textures/items/iron_orepiece"
-			]
-        },
+			"textures": "textures/items/iron_orepiece"
+		},
 		"gold_orechunk": {
-			"textures": [
-				"textures/items/gold_orechunk"
-			]
-        },
+			"textures": "textures/items/gold_orechunk"
+		},
 		"gold_orepiece": {
-			"textures": [
-				"textures/items/gold_orepiece"
-			]
-        },
+			"textures": "textures/items/gold_orepiece"
+		},
 		"copper_orechunk": {
 			"textures": "textures/items/copper_orechunk"
-        },
+		},
 		"copper_orepiece": {
 			"textures": "textures/items/copper_orepiece"
-        },
+		},
 		"iron_dust": {
 			"textures": "textures/items/iron_dust"
-        },
+		},
 		"gold_dust": {
 			"textures": "textures/items/gold_dust"
-        },
+		},
 		"copper_dust": {
 			"textures": "textures/items/copper_dust"
-        },
+		},
 		"stone_addon": {
 			"textures": "textures/items/stone_addon"
 		},
