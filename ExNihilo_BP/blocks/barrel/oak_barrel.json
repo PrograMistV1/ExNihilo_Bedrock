@@ -44,7 +44,11 @@
 				{"origin": [-7, 0, -6], "size": [1, 16, 13]},
 				{"origin": [6, 0, -7], "size": [1, 16, 13]},
 				{"origin": [-7, 0, -7], "size": [13, 16, 1]}
-			]
+			],
+			"minecraft:tick": {
+				"interval_range": [7, 7],
+				"looping": true
+			}
 		},
 		"permutations": [
 			{
