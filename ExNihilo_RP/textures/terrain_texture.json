@@ -6,6 +6,9 @@
 	"texture_data": {
 		"compost": {
 			"textures": "textures/blocks/compost"
+		},
+		"dust": {
+			"textures": "textures/blocks/dust"
 		}
 	}
 }

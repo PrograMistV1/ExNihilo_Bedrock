@@ -1,4 +1,4 @@
-import {Block, Entity, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
+import {Block, Dimension, Entity, EntityInventoryComponent, ItemStack, Player, Vector3} from "@minecraft/server";
 
 type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
@@ -46,9 +46,19 @@ function consumeSelectedItem(selectedItem: SelectedItemContext): void {
     selectedItem.container.setItem(selectedItem.slot, null);
 }
 
+function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): void {
+    const entity = dimension.spawnItem(drop, location);
+    entity.applyImpulse({
+        x: Math.random() * 0.03,
+        y: 0.03,
+        z: Math.random() * 0.03
+    });
+}
+
 export {
     getTileEntity,
     getSelectedItemContext,
     consumeSelectedItem,
+    dropItem,
     SelectedItemContext
 };

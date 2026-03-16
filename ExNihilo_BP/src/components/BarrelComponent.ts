@@ -2,6 +2,7 @@ import {
     Block,
     BlockComponentBlockBreakEvent,
     BlockComponentOnPlaceEvent,
+    BlockComponentPlayerBreakEvent,
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
@@ -10,6 +11,7 @@ import {
     EntityDamageCause,
     EntityOnFireComponent,
     ItemStack,
+    MolangVariableMap,
     Player,
     system,
     WeatherType,
@@ -17,9 +19,9 @@ import {
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {COMPOSTABLE_ITEMS} from "../data/compostable_items";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../Utils";
+import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../Utils";
 
-type BarrelFillType = "empty" | "compost" | "water" | "lava" | "dirt";
+type BarrelFillType = "empty" | "compost" | "water" | "lava" | "dirt" | "clay";
 type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "water" | "lava">;
 
 const BARREL_TILE_ID = "exnihilo:barrel_tile";
@@ -28,6 +30,7 @@ const COMPOST_TYPE: BarrelFillType = "compost";
 const WATER_TYPE: NonEmptyLiquidBarrelType = "water";
 const LAVA_TYPE: NonEmptyLiquidBarrelType = "lava";
 const DIRT_TYPE: BarrelFillType = "dirt";
+const CLAY_TYPE: BarrelFillType = "clay";
 
 const MAX_FILLING = 100;
 const LEVEL_STEP = 25;
@@ -41,6 +44,14 @@ const COMPOSTING_TIME_TICKS = 514; //1 barrel update tick occurs every 7 game ti
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
+
+const getDrop = (tile: Entity) => {
+    const id = ({
+        [DIRT_TYPE]: "minecraft:dirt",
+        [CLAY_TYPE]: "minecraft:clay"
+    })[getBarrelState(tile).type];
+    return id ? new ItemStack(id, 1) : null;
+};
 
 let isRainingGlobal = false;
 
@@ -65,6 +76,7 @@ export class BarrelComponent implements BlockCustomComponent {
         handleCompostable(e.block, e.player);
         handleLiquid(e.block, e.player);
         handleExtractResult(e.block);
+        handleSpecialInteractions(e.block, e.player);
     }
 
     onTick(e: BlockComponentTickEvent): void {
@@ -102,6 +114,17 @@ export class BarrelComponent implements BlockCustomComponent {
             }
             return;
         }
+    }
+
+    onPlayerBreak(e: BlockComponentPlayerBreakEvent): void {
+        const tile = getBarrelTile(e.block);
+        if (!tile) return;
+
+        const drop = getDrop(tile);
+        if (!drop) return;
+
+        const {x, y, z} = tile.location;
+        dropItem(drop, e.block.dimension, {x, y: y + 0.5, z});
     }
 }
 
@@ -172,23 +195,25 @@ function handleExtractResult(block: Block): void {
     const tile = getBarrelTile(block);
     if (!tile) return;
 
-    const type = getBarrelState(tile).type;
-    let item = null;
-    if (type === DIRT_TYPE) {
-        item = new ItemStack("minecraft:dirt", 1);
-    }
-    if (item) {
-        const dropped = block.dimension.spawnItem(item, {
-            x: tile.location.x,
-            y: tile.location.y + 0.5,
-            z: tile.location.z
-        });
-        dropped.applyImpulse({
-            x: Math.random() * 0.03,
-            y: 0.03,
-            z: Math.random() * 0.03
-        });
-        changeFilling(block, -MAX_FILLING, EMPTY_TYPE);
+    const drop = getDrop(tile);
+    if (!drop) return;
+
+    const {x, y, z} = tile.location;
+    dropItem(drop, block.dimension, {x, y: y + 0.5, z});
+
+    changeFilling(block, -MAX_FILLING, EMPTY_TYPE);
+}
+
+function handleSpecialInteractions(block: Block, player: Player): void {
+    const tile = getBarrelTile(block);
+    const selectedItem = getSelectedItemContext(player);
+    if (!tile || !selectedItem) return;
+
+    const {filling, type} = getBarrelState(tile);
+    if (type === WATER_TYPE && filling === MAX_FILLING && selectedItem.item.typeId === "exnihilo:dust") {
+        consumeSelectedItem(selectedItem);
+        changeFilling(block, MAX_FILLING, CLAY_TYPE);
+        return;
     }
 }
 
@@ -206,10 +231,11 @@ function changeFilling(block: Block, amount: number, type: BarrelFillType): void
         onFillingChanged(block, newFilling, newType);
     }
 
-    const diff = calculateLevel(newFilling) - calculateLevel(oldState.filling);
+    const isLiquid = oldState.type === WATER_TYPE || oldState.type === LAVA_TYPE;
+    const diff = calculateLevel(newFilling) - (isLiquid ? 0 : calculateLevel(oldState.filling));
     if (diff > 0 && newType !== WATER_TYPE && newType !== LAVA_TYPE) {
         for (const entity of getContainedEntities(tile)) {
-            entity.applyImpulse({x: 0, y: ENTITY_LIFT_PER_LEVEL * diff, z: 0});
+            entity.applyImpulse({x: 0, y: ENTITY_LIFT_PER_LEVEL * Math.sqrt(diff), z: 0});
         }
     }
 }
@@ -284,11 +310,13 @@ function tryExtinguishEntity(entity: Entity, tile: Entity, block: Block): void {
     if (entity.getVelocity().y < 0) {
         const pos = tile.location;
         tile.dimension.playSound("random.splash", tile.location);
+        const molang = new MolangVariableMap();
+        molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
         tile.dimension.spawnParticle("minecraft:water_splash_particle", {
             x: pos.x,
             y: pos.y + WATER_SPLASH_OFFSET_Y,
             z: pos.z
-        });
+        }, molang);
     }
 
     const onFire = entity.getComponent(EntityComponentTypes.OnFire) as EntityOnFireComponent;
