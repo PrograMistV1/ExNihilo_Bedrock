@@ -1,0 +1,22 @@
+
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "exnihilo:barrel_tile",
+      "materials": { 
+        "default": "entity_alphablend",
+        "animated": "animated"
+       },
+      "geometry": { "default": "geometry.exnihilo_container" },
+      "textures": { 
+        "default": "textures/misc/missing_texture",
+        "compost": "textures/blocks/compost",
+        "dirt": "textures/blocks/dirt",
+        "clay": "textures/blocks/clay",
+        "water": "textures/blocks/water"
+      },
+      "render_controllers": ["controller.render.exnihilo_container"]
+    }
+  }
+}

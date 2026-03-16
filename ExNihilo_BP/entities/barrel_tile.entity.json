@@ -9,7 +9,6 @@
 		},
 		"components": {
 			"minecraft:cannot_be_attacked": {},
-			"minecraft:is_collidable": {},
 			"minecraft:persistent": {},
 			"minecraft:renders_when_invisible": {},
 			"minecraft:breathable": {
@@ -37,6 +36,21 @@
 					{"duration": "infinite", "effect": "invisibility", "visible": false}
 				]
 			}
+		},
+		"component_groups": {
+			"exnihilo:collidable": {"minecraft:is_collidable": {}},
+			"exnihilo:default": {"minecraft:variant": {"value": 0}},
+			"exnihilo:compost": {"minecraft:variant": {"value": 1}},
+			"exnihilo:dirt": {"minecraft:variant": {"value": 2}},
+			"exnihilo:clay": {"minecraft:variant": {"value": 3}},
+			"exnihilo:water": {"minecraft:variant": {"value": 4}}
+		},
+		"events": {
+			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default", "exnihilo:collidable"]}},
+			"exnihilo:compost": {"add": {"component_groups": ["exnihilo:compost", "exnihilo:collidable"]}},
+			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt", "exnihilo:collidable"]}},
+			"exnihilo:clay": {"add": {"component_groups": ["exnihilo:clay", "exnihilo:collidable"]}},
+			"exnihilo:water": {"add": {"component_groups": ["exnihilo:water"]}, "remove": {"component_groups": ["exnihilo:collidable"]}}
 		}
 	}
 }
