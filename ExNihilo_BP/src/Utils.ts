@@ -15,7 +15,8 @@ function getTileEntity(block: Block, entityId: string): Entity | null {
             y: pos.y + 0.5,
             z: pos.z + 0.5
         },
-        closest: 1
+        closest: 1,
+        maxDistance: 0.5
     });
     if (entities.length === 0) {
         console.warn(`Tile not found for block {${block.dimension.id}, [${pos.x}, ${pos.y}, ${pos.z}]}`);
