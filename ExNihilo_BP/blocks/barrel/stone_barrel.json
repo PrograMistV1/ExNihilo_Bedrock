@@ -6,22 +6,11 @@
 			"menu_category": {
                 "category": "construction", 
                 "is_hidden_in_commands": false 
-            },
-			"states": {
-				"exnihilo:filling": ["empty", "water", "lava", "compost", "dirt"],
-				"exnihilo:level": [0, 1, 2, 3, 4, 5]
-			}
+            }
 		},
 		"components": {
 			"minecraft:geometry": {
-				"identifier": "geometry.barrel",
-				"bone_visibility": {
-					"level_1": "q.block_state('exnihilo:level') == 1",
-					"level_2": "q.block_state('exnihilo:level') == 2",
-					"level_3": "q.block_state('exnihilo:level') == 3",
-					"level_4": "q.block_state('exnihilo:level') == 4",
-					"level_5": "q.block_state('exnihilo:level') == 5"
-				}
+				"identifier": "geometry.barrel"
 			},
 			"minecraft:material_instances": {
 				"*": {

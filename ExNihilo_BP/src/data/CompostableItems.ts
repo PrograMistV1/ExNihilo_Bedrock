@@ -1,4 +1,4 @@
-export const COMPOSTABLE_ITEMS: Record<string, number> = {
+export const CompostableItems: Record<string, number> = {
     "minecraft:apple": 10,
     "minecraft:wheat": 5,
     "minecraft:carrot": 6,

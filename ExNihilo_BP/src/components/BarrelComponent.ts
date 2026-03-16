@@ -18,13 +18,13 @@ import {
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {COMPOSTABLE_ITEMS} from "../data/compostable_items";
+import {CompostableItems} from "../data/CompostableItems";
 import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../Utils";
+import {BARREL_TILE_ID} from "../data/TileList";
 
-type BarrelFillType = "empty" | "compost" | "water" | "lava" | "dirt" | "clay";
+type BarrelFillType = "empty" | "compost" | "water" | "lava" | "dirt" | "clay" | "witch_water";
 type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "water" | "lava">;
 
-const BARREL_TILE_ID = "exnihilo:barrel_tile";
 const EMPTY_TYPE: BarrelFillType = "empty";
 const COMPOST_TYPE: BarrelFillType = "compost";
 const WATER_TYPE: NonEmptyLiquidBarrelType = "water";
@@ -148,7 +148,7 @@ function handleCompostable(block: Block, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
     if (!tile || !selectedItem) return;
 
-    const fillAmount = COMPOSTABLE_ITEMS[selectedItem.item.typeId];
+    const fillAmount = CompostableItems[selectedItem.item.typeId];
     if (fillAmount === undefined) return;
 
     const {filling, type} = getBarrelState(tile);

@@ -6,21 +6,17 @@
 			"menu_category": {
 				"category": "construction",
 				"is_hidden_in_commands": false
-			},
-			"states": {
-				"exnihilo:filling": ["empty", "water", "lava", "compost", "dirt"],
-				"exnihilo:level": [0, 1, 2, 3, 4, 5]
 			}
 		},
 		"components": {
 			"minecraft:geometry": {
 				"identifier": "geometry.barrel",
 				"bone_visibility": {
-					"level_1": "q.block_state('exnihilo:level') == 1",
-					"level_2": "q.block_state('exnihilo:level') == 2",
-					"level_3": "q.block_state('exnihilo:level') == 3",
-					"level_4": "q.block_state('exnihilo:level') == 4",
-					"level_5": "q.block_state('exnihilo:level') == 5"
+					"level_1": false,
+					"level_2": false,
+					"level_3": false,
+					"level_4": false,
+					"level_5": false
 				}
 			},
 			"minecraft:material_instances": {
@@ -48,115 +44,11 @@
 			"minecraft:tick": {
 				"interval_range": [7, 7],
 				"looping": true
+			},
+			"minecraft:movable": {
+				"movement_type": "immovable"
+				// Unfortunately, this is a necessary measure, since barrels largely depend on the entity tile, and pistons can move these entities.
 			}
-		},
-		"permutations": [
-			{
-				"condition": "q.block_state('exnihilo:filling') == 'water'",
-				"components": {
-					"minecraft:material_instances": {
-						"*": {"texture": "oak_planks"},
-						"filling": {
-							"texture": "still_water_grey",
-							"render_method": "blend",
-							"tint_method": "water"
-						}
-					}
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:filling') == 'lava'",
-				"components": {
-					"minecraft:material_instances": {
-						"*": {"texture": "oak_planks"},
-						"filling": {"texture": "still_lava"}
-					},
-					"minecraft:light_emission": 13
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:filling') == 'compost'",
-				"components": {
-					"minecraft:material_instances": {
-						"*": {"texture": "oak_planks"},
-						"filling": {"texture": "compost"}
-					}
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:filling') == 'dirt'",
-				"components": {
-					"minecraft:material_instances": {
-						"*": {"texture": "oak_planks"},
-						"filling": {"texture": "dirt"}
-					}
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:level') == 1 && q.block_state('exnihilo:filling') != 'water' && q.block_state('exnihilo:filling') != 'lava'",
-				"components": {
-					"minecraft:collision_box": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12]},
-						{"origin": [-6, 0, 6], "size": [13, 16, 1]},
-						{"origin": [-7, 0, -6], "size": [1, 16, 13]},
-						{"origin": [6, 0, -7], "size": [1, 16, 13]},
-						{"origin": [-7, 0, -7], "size": [13, 16, 1]},
-						{"origin": [-6, 1, -6], "size": [12, 2.8, 12]}
-					]
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:level') == 2 && q.block_state('exnihilo:filling') != 'water' && q.block_state('exnihilo:filling') != 'lava'",
-				"components": {
-					"minecraft:collision_box": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12]},
-						{"origin": [-6, 0, 6], "size": [13, 16, 1]},
-						{"origin": [-7, 0, -6], "size": [1, 16, 13]},
-						{"origin": [6, 0, -7], "size": [1, 16, 13]},
-						{"origin": [-7, 0, -7], "size": [13, 16, 1]},
-						{"origin": [-6, 1, -6], "size": [12, 5.6, 12]}
-					]
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:level') == 3 && q.block_state('exnihilo:filling') != 'water' && q.block_state('exnihilo:filling') != 'lava'",
-				"components": {
-					"minecraft:collision_box": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12]},
-						{"origin": [-6, 0, 6], "size": [13, 16, 1]},
-						{"origin": [-7, 0, -6], "size": [1, 16, 13]},
-						{"origin": [6, 0, -7], "size": [1, 16, 13]},
-						{"origin": [-7, 0, -7], "size": [13, 16, 1]},
-						{"origin": [-6, 1, -6], "size": [12, 8.4, 12]}
-					]
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:level') == 4 && q.block_state('exnihilo:filling') != 'water' && q.block_state('exnihilo:filling') != 'lava'",
-				"components": {
-					"minecraft:collision_box": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12]},
-						{"origin": [-6, 0, 6], "size": [13, 16, 1]},
-						{"origin": [-7, 0, -6], "size": [1, 16, 13]},
-						{"origin": [6, 0, -7], "size": [1, 16, 13]},
-						{"origin": [-7, 0, -7], "size": [13, 16, 1]},
-						{"origin": [-6, 1, -6], "size": [12, 11.2, 12]}
-					]
-				}
-			},
-			{
-				"condition": "q.block_state('exnihilo:level') == 5 && q.block_state('exnihilo:filling') != 'water' && q.block_state('exnihilo:filling') != 'lava'",
-				"components": {
-					"minecraft:collision_box": [
-						{"origin": [-6, 0, -6], "size": [12, 1, 12]},
-						{"origin": [-6, 0, 6], "size": [13, 16, 1]},
-						{"origin": [-7, 0, -6], "size": [1, 16, 13]},
-						{"origin": [6, 0, -7], "size": [1, 16, 13]},
-						{"origin": [-7, 0, -7], "size": [13, 16, 1]},
-						{"origin": [-6, 1, -6], "size": [12, 14, 12]}
-					]
-				}
-			}
-		]
+		}
 	}
 }
