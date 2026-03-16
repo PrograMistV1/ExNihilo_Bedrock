@@ -11,6 +11,7 @@ import {
     EntityOnFireComponent,
     ItemStack,
     Player,
+    system,
     WeatherType,
     world
 } from "@minecraft/server";
@@ -107,7 +108,16 @@ export class BarrelComponent implements BlockCustomComponent {
 world.afterEvents.weatherChange.subscribe(event => {
     if (event.dimension != "overworld") return;
 
-    isRainingGlobal = event.newWeather != WeatherType.Clear;
+    system.runTimeout(() => {
+        isRainingGlobal = event.newWeather != WeatherType.Clear;
+        world.setDynamicProperty("isRaining", isRainingGlobal);
+    }, 80) //wtf mojang?
+    // Even though the weather has changed, if you rejoin the world within a few seconds,
+    // the weather will revert to the previous state.
+});
+
+world.afterEvents.worldLoad.subscribe(() => {
+    isRainingGlobal = (world.getDynamicProperty("isRaining") as boolean | undefined) ?? false;
 });
 
 function handleCompostable(block: Block, player: Player): void {
