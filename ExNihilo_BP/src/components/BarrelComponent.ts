@@ -274,12 +274,13 @@ function setBarrelState(tile: Entity, state: { filling: number; type: BarrelFill
     tile.setDynamicProperty("type", state.type);
     if (state.type != EMPTY_TYPE) {
         tile.triggerEvent(state.type);
-        if (state.type != WATER_TYPE && state.type != LAVA_TYPE) {
-            tile.triggerEvent("exnihilo:hide");
-            system.runTimeout(() => {
-                tile.triggerEvent("exnihilo:show");
-            }, 3);
-        }
+        tile.triggerEvent("exnihilo:show");
+    }
+    if (state.type != WATER_TYPE && state.type != LAVA_TYPE && state.filling == 0) {
+        tile.triggerEvent("exnihilo:hide");
+        system.runTimeout(() => {
+            tile.triggerEvent("exnihilo:show");
+        }, 20);
     }
 }
 
