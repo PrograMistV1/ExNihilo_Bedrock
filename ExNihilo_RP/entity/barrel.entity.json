@@ -6,7 +6,8 @@
       "identifier": "exnihilo:barrel_tile",
       "materials": { 
         "default": "entity_alphablend",
-        "animated": "animated"
+        "animated": "entity_animated",
+        "animated_blend": "entity_animated_blend"
        },
       "geometry": { "default": "geometry.exnihilo_container" },
       "textures": { 

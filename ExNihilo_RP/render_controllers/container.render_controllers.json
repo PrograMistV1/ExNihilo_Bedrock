@@ -1,20 +1,28 @@
 {
-  "format_version": "1.10.0",
-  "render_controllers": {
-    "controller.render.exnihilo_container": {
-      "arrays": {
-        "textures": {"array.tex_variant": ["texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water"]},
-        "materials": {"array.mat_variant": ["material.default", "material.animated"]}
-      },
-      "geometry": "geometry.default",
-      "materials": [{ "*": "array.mat_variant[q.variant == 4 ? 1 : 0]" }],
-      "textures": ["array.tex_variant[q.variant]"],
-      "is_hurt_color": {},
-      "on_fire_color": {},
-      "uv_anim": {
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.exnihilo_container": {
+			"arrays": {
+				"textures": {
+					"array.tex_variant": [
+						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water"
+					]
+				},
+				"materials": {
+					"array.mat_variant": [
+						"material.default", "material.animated", "material.animated_blend"
+					]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [{"*": "array.mat_variant[q.variant == 4 ? 2 : 0]"}],
+			"textures": ["array.tex_variant[q.variant]"],
+			"is_hurt_color": {},
+			"on_fire_color": {},
+			"uv_anim": {
 				"scale": [1, "1 / 32"],
 				"offset": [0, "Math.mod(Math.floor(query.life_time * 3), 32) / 32"]
 			}
-    }
-  }
+		}
+	}
 }
