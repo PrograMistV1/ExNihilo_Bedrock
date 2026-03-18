@@ -49,7 +49,7 @@
 		"events": {
 			"exnihilo:show": {"add": {"component_groups": ["exnihilo:visible"]}},
 			"exnihilo:hide": {"remove": {"component_groups": ["exnihilo:visible"]}},
-			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default", "exnihilo:collidable"]}},
+			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default"]}, "remove": {"component_groups": ["exnihilo:collidable"]}},
 			"exnihilo:compost": {"add": {"component_groups": ["exnihilo:compost", "exnihilo:collidable"]}},
 			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt", "exnihilo:collidable"]}},
 			"exnihilo:clay": {"add": {"component_groups": ["exnihilo:clay", "exnihilo:collidable"]}},

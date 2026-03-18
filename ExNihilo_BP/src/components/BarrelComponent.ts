@@ -22,7 +22,7 @@ import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, Se
 import {BARREL_TILE_ID} from "../data/TileList";
 
 type BarrelFillType =
-    "empty"
+    "exnihilo:default"
     | "exnihilo:compost"
     | "exnihilo:water"
     | "exnihilo:lava"
@@ -31,7 +31,7 @@ type BarrelFillType =
     | "witch_water";
 type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "exnihilo:water" | "exnihilo:lava">;
 
-const EMPTY_TYPE: BarrelFillType = "empty";
+const EMPTY_TYPE: BarrelFillType = "exnihilo:default";
 const COMPOST_TYPE: BarrelFillType = "exnihilo:compost";
 const WATER_TYPE: NonEmptyLiquidBarrelType = "exnihilo:water";
 const LAVA_TYPE: NonEmptyLiquidBarrelType = "exnihilo:lava";
@@ -270,18 +270,23 @@ function getBarrelState(tile: Entity): { filling: number; type: BarrelFillType }
 }
 
 function setBarrelState(tile: Entity, state: { filling: number; type: BarrelFillType }): void {
+    const oldState = getBarrelState(tile);
+    const isOldLiquid = oldState.type === WATER_TYPE || oldState.type === LAVA_TYPE;
+    const isNewEmpty = state.type === EMPTY_TYPE;
+
+    if (!isOldLiquid && state.filling === 0) {
+        tile.triggerEvent("exnihilo:hide");
+        system.runTimeout(() => tile.triggerEvent("exnihilo:show"), 20);
+    }
+
+    if (!isOldLiquid || !isNewEmpty) {
+        tile.triggerEvent(state.type);
+        if (!isNewEmpty) {
+            tile.triggerEvent("exnihilo:show");
+        }
+    }
     tile.setDynamicProperty("filling", state.filling);
     tile.setDynamicProperty("type", state.type);
-    if (state.type != EMPTY_TYPE) {
-        tile.triggerEvent(state.type);
-        tile.triggerEvent("exnihilo:show");
-    }
-    if (state.type != WATER_TYPE && state.type != LAVA_TYPE && state.filling == 0) {
-        tile.triggerEvent("exnihilo:hide");
-        system.runTimeout(() => {
-            tile.triggerEvent("exnihilo:show");
-        }, 20);
-    }
 }
 
 function resetTimer(tile: Entity): void {
