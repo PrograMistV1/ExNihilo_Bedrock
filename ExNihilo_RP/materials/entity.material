@@ -1,10 +1,21 @@
 {
     "materials":{
         "version":"1.0.0",
-        "animated:entity":{
+        "entity_animated:entity_alphablend":{
             "+defines":[
                 "USE_UV_ANIM"
             ]
+        },
+        "entity_animated_blend:entity_animated": {
+            "+defines": [
+                "USE_EMISSIVE"
+            ],
+            "+states": [
+                "Blending",
+                "DisableDepthWrite"
+            ],
+            "blendSrc": "SourceAlpha",
+            "blendDst": "OneMinusSrcAlpha"
         }
     }
 }
