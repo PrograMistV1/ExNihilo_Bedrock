@@ -17,26 +17,32 @@ import {
     WeatherType,
     world
 } from "@minecraft/server";
-import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {CompostableItems} from "../data/CompostableItems";
 import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../Utils";
 import {BARREL_TILE_ID} from "../data/TileList";
 
-type BarrelFillType = "empty" | "compost" | "water" | "lava" | "dirt" | "clay" | "witch_water";
-type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "water" | "lava">;
+type BarrelFillType =
+    "empty"
+    | "exnihilo:compost"
+    | "exnihilo:water"
+    | "lava"
+    | "exnihilo:dirt"
+    | "exnihilo:clay"
+    | "witch_water";
+type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "exnihilo:water" | "lava">;
 
 const EMPTY_TYPE: BarrelFillType = "empty";
-const COMPOST_TYPE: BarrelFillType = "compost";
-const WATER_TYPE: NonEmptyLiquidBarrelType = "water";
+const COMPOST_TYPE: BarrelFillType = "exnihilo:compost";
+const WATER_TYPE: NonEmptyLiquidBarrelType = "exnihilo:water";
 const LAVA_TYPE: NonEmptyLiquidBarrelType = "lava";
-const DIRT_TYPE: BarrelFillType = "dirt";
-const CLAY_TYPE: BarrelFillType = "clay";
+const DIRT_TYPE: BarrelFillType = "exnihilo:dirt";
+const CLAY_TYPE: BarrelFillType = "exnihilo:clay";
 
 const MAX_FILLING = 100;
 const LEVEL_STEP = 25;
 const BARREL_ENTITY_RADIUS = 0.45;
 const ENTITY_LIFT_PER_LEVEL = 0.22;
-const WATER_SPLASH_OFFSET_Y = 0.4;
+const WATER_SPLASH_OFFSET_Y = 0.1;
 const LAVA_FIRE_SECONDS = 10;
 const LAVA_DAMAGE = 2;
 const COMPOSTING_TIME_TICKS = 514; //1 barrel update tick occurs every 7 game ticks. 514*7≈3600, which equals 3 minutes.
@@ -61,7 +67,7 @@ export class BarrelComponent implements BlockCustomComponent {
         const pos = e.block.location;
         const tile = e.block.dimension.spawnEntity(BARREL_TILE_ID, {
             x: pos.x + 0.5,
-            y: pos.y + 0.5,
+            y: pos.y + 0.05,
             z: pos.z + 0.5
         });
         setBarrelState(tile, {filling: 0, type: EMPTY_TYPE});
@@ -93,9 +99,24 @@ export class BarrelComponent implements BlockCustomComponent {
             //todo: Rain is not found in all biomes, and only in the overworld.
             changeFilling(e.block, 0.33334, WATER_TYPE); //1 minute 45 seconds to fill barrel
         }
-        if (state.type === WATER_TYPE && state.filling >= LEVEL_STEP) {
+        if (state.type === WATER_TYPE) {
             for (const entity of getContainedEntities(tile)) {
-                tryExtinguishEntity(entity, tile, e.block);
+                if (state.filling > 0) {
+                    if (entity.getVelocity().y < 0) {
+                        const pos = tile.location;
+                        tile.dimension.playSound("random.splash", tile.location);
+                        const molang = new MolangVariableMap();
+                        molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
+                        tile.dimension.spawnParticle("minecraft:water_splash_particle", {
+                            x: pos.x,
+                            y: pos.y + WATER_SPLASH_OFFSET_Y,
+                            z: pos.z
+                        }, molang);
+                    }
+                }
+                if (state.filling >= LEVEL_STEP) {
+                    tryExtinguishEntity(entity, e.block);
+                }
             }
             return;
         }
@@ -225,18 +246,15 @@ function changeFilling(block: Block, amount: number, type: BarrelFillType): void
     const newFilling = Math.min(Math.max(oldState.filling + amount, 0), MAX_FILLING);
     const newType = newFilling > 0 ? type : EMPTY_TYPE;
 
-    setBarrelState(tile, {filling: newFilling, type: newType});
-
     if (newFilling !== oldState.filling || newType !== oldState.type) {
-        onFillingChanged(block, newFilling, newType);
-    }
-
-    const isLiquid = oldState.type === WATER_TYPE || oldState.type === LAVA_TYPE;
-    const diff = calculateLevel(newFilling) - (isLiquid ? 0 : calculateLevel(oldState.filling));
-    if (diff > 0 && newType !== WATER_TYPE && newType !== LAVA_TYPE) {
-        for (const entity of getContainedEntities(tile)) {
-            entity.applyImpulse({x: 0, y: ENTITY_LIFT_PER_LEVEL * Math.sqrt(diff), z: 0});
-        }
+        setBarrelState(tile, {filling: newFilling, type: newType});
+        const pos = tile.location;
+        const newPos = {
+            x: pos.x,
+            y: Math.floor(pos.y) + (newFilling == 0 ? 0.05 : 0.0625) + (newFilling / 100) * (0.875),
+            z: pos.z,
+        };
+        tile.teleport(newPos)
     }
 }
 
@@ -254,6 +272,15 @@ function getBarrelState(tile: Entity): { filling: number; type: BarrelFillType }
 function setBarrelState(tile: Entity, state: { filling: number; type: BarrelFillType }): void {
     tile.setDynamicProperty("filling", state.filling);
     tile.setDynamicProperty("type", state.type);
+    if (state.type != EMPTY_TYPE) {
+        tile.triggerEvent(state.type);
+        if(state.type != WATER_TYPE && state.type != LAVA_TYPE) {
+            tile.triggerEvent("exnihilo:hide");
+            system.runTimeout(() => {
+                tile.triggerEvent("exnihilo:show");
+            }, 3);
+        }
+    }
 }
 
 function resetTimer(tile: Entity): void {
@@ -294,9 +321,14 @@ function drainBarrelToBucket(
  * @param tile Barrel tile entity (Entity), not the Block itself.
  */
 function getContainedEntities(tile: Pick<Entity, "dimension" | "location">): Entity[] {
+    const newPos = {
+        x: tile.location.x,
+        y: Math.floor(tile.location.y) + 0.5,
+        z: tile.location.z
+    }
     return tile.dimension.getEntities({
         excludeTypes: [BARREL_TILE_ID],
-        location: tile.location,
+        location: newPos,
         maxDistance: BARREL_ENTITY_RADIUS
     });
 }
@@ -306,35 +338,10 @@ function applyLavaEffects(entity: Entity): void {
     entity.applyDamage(LAVA_DAMAGE, {cause: EntityDamageCause.lava});
 }
 
-function tryExtinguishEntity(entity: Entity, tile: Entity, block: Block): void {
-    if (entity.getVelocity().y < 0) {
-        const pos = tile.location;
-        tile.dimension.playSound("random.splash", tile.location);
-        const molang = new MolangVariableMap();
-        molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
-        tile.dimension.spawnParticle("minecraft:water_splash_particle", {
-            x: pos.x,
-            y: pos.y + WATER_SPLASH_OFFSET_Y,
-            z: pos.z
-        }, molang);
-    }
-
+function tryExtinguishEntity(entity: Entity, block: Block): void {
     const onFire = entity.getComponent(EntityComponentTypes.OnFire) as EntityOnFireComponent;
     if (!onFire || onFire.onFireTicksRemaining <= 0) return;
 
     entity.extinguishFire(true);
     changeFilling(block, -LEVEL_STEP, WATER_TYPE);
-}
-
-function onFillingChanged(block: Block, filling: number, type: BarrelFillType): void {
-    const level = calculateLevel(filling);
-
-    const permutation = block.permutation
-        .withState("exnihilo:level" as keyof BlockStateSuperset, level)
-        .withState("exnihilo:filling" as keyof BlockStateSuperset, type);
-    block.setPermutation(permutation);
-}
-
-function calculateLevel(filling: number): number {
-    return filling > 0 ? 1 + Math.floor(Math.ceil(filling) / LEVEL_STEP) : 0;
 }
