@@ -25,26 +25,25 @@ type BarrelFillType =
     "empty"
     | "exnihilo:compost"
     | "exnihilo:water"
-    | "lava"
+    | "exnihilo:lava"
     | "exnihilo:dirt"
     | "exnihilo:clay"
     | "witch_water";
-type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "exnihilo:water" | "lava">;
+type NonEmptyLiquidBarrelType = Extract<BarrelFillType, "exnihilo:water" | "exnihilo:lava">;
 
 const EMPTY_TYPE: BarrelFillType = "empty";
 const COMPOST_TYPE: BarrelFillType = "exnihilo:compost";
 const WATER_TYPE: NonEmptyLiquidBarrelType = "exnihilo:water";
-const LAVA_TYPE: NonEmptyLiquidBarrelType = "lava";
+const LAVA_TYPE: NonEmptyLiquidBarrelType = "exnihilo:lava";
 const DIRT_TYPE: BarrelFillType = "exnihilo:dirt";
 const CLAY_TYPE: BarrelFillType = "exnihilo:clay";
 
 const MAX_FILLING = 100;
 const LEVEL_STEP = 25;
-const BARREL_ENTITY_RADIUS = 0.45;
-const ENTITY_LIFT_PER_LEVEL = 0.22;
+const BARREL_ENTITY_RADIUS = 0.47;
 const WATER_SPLASH_OFFSET_Y = 0.1;
 const LAVA_FIRE_SECONDS = 10;
-const LAVA_DAMAGE = 2;
+const LAVA_DAMAGE = 4;
 const COMPOSTING_TIME_TICKS = 514; //1 barrel update tick occurs every 7 game ticks. 514*7≈3600, which equals 3 minutes.
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
@@ -72,6 +71,7 @@ export class BarrelComponent implements BlockCustomComponent {
         });
         setBarrelState(tile, {filling: 0, type: EMPTY_TYPE});
         resetTimer(tile);
+        tile.triggerEvent("exnihilo:show");
     }
 
     onBreak(e: BlockComponentBlockBreakEvent): void {
@@ -94,7 +94,7 @@ export class BarrelComponent implements BlockCustomComponent {
             includeLiquidBlocks: true,
             includePassableBlocks: true,
             maxDistance: 16
-        });
+        }) === undefined;
         if ((state.type === EMPTY_TYPE || state.type === WATER_TYPE) && state.filling < MAX_FILLING && isHighest && isRainingGlobal) {
             //todo: Rain is not found in all biomes, and only in the overworld.
             changeFilling(e.block, 0.33334, WATER_TYPE); //1 minute 45 seconds to fill barrel
@@ -274,7 +274,7 @@ function setBarrelState(tile: Entity, state: { filling: number; type: BarrelFill
     tile.setDynamicProperty("type", state.type);
     if (state.type != EMPTY_TYPE) {
         tile.triggerEvent(state.type);
-        if(state.type != WATER_TYPE && state.type != LAVA_TYPE) {
+        if (state.type != WATER_TYPE && state.type != LAVA_TYPE) {
             tile.triggerEvent("exnihilo:hide");
             system.runTimeout(() => {
                 tile.triggerEvent("exnihilo:show");
@@ -323,13 +323,13 @@ function drainBarrelToBucket(
 function getContainedEntities(tile: Pick<Entity, "dimension" | "location">): Entity[] {
     const newPos = {
         x: tile.location.x,
-        y: Math.floor(tile.location.y) + 0.5,
+        y: Math.floor(tile.location.y) + 0.4375,
         z: tile.location.z
-    }
+    };
     return tile.dimension.getEntities({
         excludeTypes: [BARREL_TILE_ID],
         location: newPos,
-        maxDistance: BARREL_ENTITY_RADIUS
+        maxDistance: BARREL_ENTITY_RADIUS,
     });
 }
 
