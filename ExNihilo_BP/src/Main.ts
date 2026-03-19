@@ -1,9 +1,11 @@
 import {system, world} from "@minecraft/server";
 import {BarrelComponent} from "./components/BarrelComponent";
 import {BARREL_TILE_ID} from "./data/TileList";
+import {SieveComponent} from "./components/SieveComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
+    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:sieve', new SieveComponent());
 
     system.runTimeout(() => {
         clearBuggedTiles();
