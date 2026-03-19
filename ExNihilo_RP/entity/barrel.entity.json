@@ -15,7 +15,8 @@
         "compost": "textures/blocks/compost",
         "dirt": "textures/blocks/dirt",
         "clay": "textures/blocks/clay",
-        "water": "textures/blocks/water"
+        "water": "textures/blocks/water",
+        "lava": "textures/blocks/lava_still"
       },
       "render_controllers": ["controller.render.exnihilo_container"]
     }

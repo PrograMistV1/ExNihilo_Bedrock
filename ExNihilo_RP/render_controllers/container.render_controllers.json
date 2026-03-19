@@ -5,7 +5,8 @@
 			"arrays": {
 				"textures": {
 					"array.tex_variant": [
-						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water"
+						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water",
+						"texture.lava"
 					]
 				},
 				"materials": {
@@ -15,7 +16,7 @@
 				}
 			},
 			"geometry": "geometry.default",
-			"materials": [{"*": "array.mat_variant[q.variant == 4 ? 2 : 0]"}],
+			"materials": [{"*": "array.mat_variant[q.variant == 4 ? 2 : (q.variant == 5 ? 1 : 0)]"}],
 			"textures": ["array.tex_variant[q.variant]"],
 			"is_hurt_color": {},
 			"on_fire_color": {},
