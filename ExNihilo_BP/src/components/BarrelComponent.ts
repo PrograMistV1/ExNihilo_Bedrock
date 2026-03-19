@@ -45,6 +45,7 @@ const WATER_SPLASH_OFFSET_Y = 0.1;
 const LAVA_FIRE_SECONDS = 10;
 const LAVA_DAMAGE = 4;
 const COMPOSTING_TIME_TICKS = 514; //1 barrel update tick occurs every 7 game ticks. 514*7≈3600, which equals 3 minutes.
+const RAIN_FILL_PER_TICK = 0.33334; //1 minute 45 seconds to fill barrel
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
@@ -79,62 +80,23 @@ export class BarrelComponent implements BlockCustomComponent {
     }
 
     onPlayerInteract(e: BlockComponentPlayerInteractEvent) {
-        handleCompostable(e.block, e.player);
-        handleLiquid(e.block, e.player);
-        handleExtractResult(e.block);
-        handleSpecialInteractions(e.block, e.player);
+        const tile = getBarrelTile(e.block);
+        if (!tile) return;
+
+        handleCompostable(tile, e.player);
+        handleLiquid(tile, e.player);
+        handleExtractResult(tile);
+        handleSpecialInteractions(tile, e.player);
     }
 
     onTick(e: BlockComponentTickEvent): void {
         const tile = getBarrelTile(e.block);
         if (!tile) return;
 
-        const state = getBarrelState(tile);
-        const isHighest = e.block.dimension.getBlockAbove(e.block.location, {
-            includeLiquidBlocks: true,
-            includePassableBlocks: true,
-            maxDistance: 16
-        }) === undefined;
-        if ((state.type === EMPTY_TYPE || state.type === WATER_TYPE) && state.filling < MAX_FILLING && isHighest && isRainingGlobal) {
-            //todo: Rain is not found in all biomes, and only in the overworld.
-            changeFilling(e.block, 0.33334, WATER_TYPE); //1 minute 45 seconds to fill barrel
-        }
-        if (state.type === WATER_TYPE) {
-            for (const entity of getContainedEntities(tile)) {
-                if (state.filling > 0) {
-                    if (entity.getVelocity().y < 0) {
-                        const pos = tile.location;
-                        tile.dimension.playSound("random.splash", tile.location);
-                        const molang = new MolangVariableMap();
-                        molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
-                        tile.dimension.spawnParticle("minecraft:water_splash_particle", {
-                            x: pos.x,
-                            y: pos.y + WATER_SPLASH_OFFSET_Y,
-                            z: pos.z
-                        }, molang);
-                    }
-                }
-                if (state.filling >= LEVEL_STEP) {
-                    tryExtinguishEntity(entity, e.block);
-                }
-            }
-            return;
-        }
-        if (state.type === LAVA_TYPE) {
-            for (const entity of getContainedEntities(tile)) {
-                applyLavaEffects(entity);
-            }
-            return;
-        }
-        if (state.type === COMPOST_TYPE && state.filling === MAX_FILLING) {
-            if (getTimer(tile) >= COMPOSTING_TIME_TICKS) {
-                changeFilling(e.block, MAX_FILLING, DIRT_TYPE);
-                resetTimer(tile);
-            } else {
-                incrementTimer(tile);
-            }
-            return;
-        }
+        handleRainFill(tile);
+        handleWaterEntities(tile);
+        handleLavaEntities(tile);
+        handleCompost(tile);
     }
 
     onPlayerBreak(e: BlockComponentPlayerBreakEvent): void {
@@ -164,10 +126,68 @@ world.afterEvents.worldLoad.subscribe(() => {
     isRainingGlobal = (world.getDynamicProperty("isRaining") as boolean | undefined) ?? false;
 });
 
-function handleCompostable(block: Block, player: Player): void {
-    const tile = getBarrelTile(block);
+function handleRainFill(tile: Entity): void {
+    const state = getBarrelState(tile);
+    if ((state.type !== WATER_TYPE && state.type !== EMPTY_TYPE) || state.filling >= MAX_FILLING) return;
+
+    const pos = tile.location;
+    const isHighest = tile.dimension.getBlockAbove({x: pos.x, y: Math.ceil(pos.y), z: pos.z}, {
+        includeLiquidBlocks: true,
+        includePassableBlocks: true,
+        maxDistance: 16
+    }) === undefined;
+    if (isHighest && isRainingGlobal) {
+        //todo: Rain is not found in all biomes, and only in the overworld.
+        changeFilling(tile, RAIN_FILL_PER_TICK, WATER_TYPE);
+    }
+}
+
+function handleWaterEntities(tile: Entity): void {
+    const state = getBarrelState(tile);
+    if (state.type !== WATER_TYPE) return;
+
+    const pos = tile.location;
+    for (const entity of getContainedEntities(tile)) {
+        if (state.filling > 0 && entity.getVelocity().y < 0) {
+            tile.dimension.playSound("random.splash", tile.location);
+            const molang = new MolangVariableMap();
+            molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
+            tile.dimension.spawnParticle("minecraft:water_splash_particle", {
+                x: pos.x,
+                y: pos.y + WATER_SPLASH_OFFSET_Y,
+                z: pos.z
+            }, molang);
+        }
+        if (state.filling >= LEVEL_STEP) {
+            tryExtinguishEntity(entity, tile);
+        }
+    }
+}
+
+function handleLavaEntities(tile: Entity): void {
+    const state = getBarrelState(tile);
+    if (state.type !== LAVA_TYPE) return;
+
+    for (const entity of getContainedEntities(tile)) {
+        applyLavaEffects(entity);
+    }
+}
+
+function handleCompost(tile: Entity): void {
+    const state = getBarrelState(tile);
+    if (state.type !== COMPOST_TYPE || state.filling !== MAX_FILLING) return;
+
+    if (getTimer(tile) >= COMPOSTING_TIME_TICKS) {
+        changeFilling(tile, MAX_FILLING, DIRT_TYPE);
+        resetTimer(tile);
+    } else {
+        incrementTimer(tile);
+    }
+}
+
+function handleCompostable(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!tile || !selectedItem) return;
+    if (!selectedItem) return;
 
     const fillAmount = CompostableItems[selectedItem.item.typeId];
     if (fillAmount === undefined) return;
@@ -176,72 +196,67 @@ function handleCompostable(block: Block, player: Player): void {
     if ((type !== EMPTY_TYPE && type !== COMPOST_TYPE) || filling === MAX_FILLING) return;
 
     consumeSelectedItem(selectedItem);
-    changeFilling(block, fillAmount, COMPOST_TYPE);
+    changeFilling(tile, fillAmount, COMPOST_TYPE);
 }
 
-function handleLiquid(block: Block, player: Player): void {
-    const tile = getBarrelTile(block);
+function handleLiquid(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!tile || !selectedItem) return;
+    if (!selectedItem) return;
+
+    const LIQUIDS = {
+        [WATER_TYPE]: {
+            bucket: WATER_BUCKET_ITEM,
+            emptySound: "bucket.empty_water",
+            fillSound: "bucket.fill_water",
+        },
+        [LAVA_TYPE]: {
+            bucket: LAVA_BUCKET_ITEM,
+            emptySound: "bucket.empty_lava",
+            fillSound: "bucket.fill_lava",
+        }
+    } as const;
 
     const {filling, type} = getBarrelState(tile);
+    const itemId = selectedItem.item.typeId;
 
-    if (selectedItem.item.typeId === WATER_BUCKET_ITEM) {
-        if (type === EMPTY_TYPE || type === WATER_TYPE) {
-            fillBarrelFromBucket(block, selectedItem, WATER_TYPE, "bucket.empty_water");
+    for (const liquidType of Object.keys(LIQUIDS) as NonEmptyLiquidBarrelType[]) {
+        const liquid = LIQUIDS[liquidType];
+
+        if (itemId === liquid.bucket && (type === EMPTY_TYPE || type === liquidType)) {
+            fillBarrelFromBucket(tile, selectedItem, liquidType, liquid.emptySound);
+            return;
         }
-        return;
-    }
 
-    if (selectedItem.item.typeId === LAVA_BUCKET_ITEM) {
-        if (type === EMPTY_TYPE || type === LAVA_TYPE) {
-            fillBarrelFromBucket(block, selectedItem, LAVA_TYPE, "bucket.empty_lava");
+        if (itemId === EMPTY_BUCKET_ITEM && filling === MAX_FILLING && type === liquidType) {
+            drainBarrelToBucket(tile, selectedItem, liquid.bucket, liquid.fillSound);
+            return;
         }
-        return;
-    }
-
-    if (selectedItem.item.typeId !== EMPTY_BUCKET_ITEM || filling !== MAX_FILLING) return;
-
-    if (type === WATER_TYPE) {
-        drainBarrelToBucket(block, selectedItem, WATER_BUCKET_ITEM, "bucket.fill_water");
-        return;
-    }
-
-    if (type === LAVA_TYPE) {
-        drainBarrelToBucket(block, selectedItem, LAVA_BUCKET_ITEM, "bucket.fill_lava");
     }
 }
 
-function handleExtractResult(block: Block): void {
-    const tile = getBarrelTile(block);
-    if (!tile) return;
-
+function handleExtractResult(tile: Entity): void {
     const drop = getDrop(tile);
     if (!drop) return;
 
     const {x, y, z} = tile.location;
-    dropItem(drop, block.dimension, {x, y: y + 0.5, z});
+    dropItem(drop, tile.dimension, {x, y: y + 0.5, z});
 
-    changeFilling(block, -MAX_FILLING, EMPTY_TYPE);
+    changeFilling(tile, -MAX_FILLING, EMPTY_TYPE);
 }
 
-function handleSpecialInteractions(block: Block, player: Player): void {
-    const tile = getBarrelTile(block);
+function handleSpecialInteractions(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!tile || !selectedItem) return;
+    if (!selectedItem) return;
 
     const {filling, type} = getBarrelState(tile);
     if (type === WATER_TYPE && filling === MAX_FILLING && selectedItem.item.typeId === "exnihilo:dust") {
         consumeSelectedItem(selectedItem);
-        changeFilling(block, MAX_FILLING, CLAY_TYPE);
+        changeFilling(tile, MAX_FILLING, CLAY_TYPE);
         return;
     }
 }
 
-function changeFilling(block: Block, amount: number, type: BarrelFillType): void {
-    const tile = getBarrelTile(block);
-    if (!tile) return;
-
+function changeFilling(tile: Entity, amount: number, type: BarrelFillType): void {
     const oldState = getBarrelState(tile);
     const newFilling = Math.min(Math.max(oldState.filling + amount, 0), MAX_FILLING);
     const newType = newFilling > 0 ? type : EMPTY_TYPE;
@@ -249,12 +264,11 @@ function changeFilling(block: Block, amount: number, type: BarrelFillType): void
     if (newFilling !== oldState.filling || newType !== oldState.type) {
         setBarrelState(tile, {filling: newFilling, type: newType});
         const pos = tile.location;
-        const newPos = {
+        tile.teleport({
             x: pos.x,
-            y: Math.floor(pos.y) + (newFilling == 0 ? 0.05 : 0.0625) + (newFilling / 100) * (0.875),
+            y: Math.floor(pos.y) + (newFilling == 0 ? 0.05 : 0.0625) + (newFilling / 100) * 0.875,
             z: pos.z,
-        };
-        tile.teleport(newPos)
+        });
     }
 }
 
@@ -302,25 +316,25 @@ function getTimer(tile: Entity): number {
 }
 
 function fillBarrelFromBucket(
-    block: Block,
+    tile: Entity,
     selectedItem: SelectedItemContext,
     type: NonEmptyLiquidBarrelType,
     soundId: string
 ): void {
-    changeFilling(block, MAX_FILLING, type);
+    changeFilling(tile, MAX_FILLING, type);
     selectedItem.container.setItem(selectedItem.slot, new ItemStack(EMPTY_BUCKET_ITEM, 1));
-    block.dimension.playSound(soundId, block.location);
+    tile.dimension.playSound(soundId, tile.location);
 }
 
 function drainBarrelToBucket(
-    block: Block,
+    tile: Entity,
     selectedItem: SelectedItemContext,
     filledBucketItemId: string,
     soundId: string
 ): void {
-    changeFilling(block, -MAX_FILLING, EMPTY_TYPE);
+    changeFilling(tile, -MAX_FILLING, EMPTY_TYPE);
     selectedItem.container.setItem(selectedItem.slot, new ItemStack(filledBucketItemId, 1));
-    block.dimension.playSound(soundId, block.location);
+    tile.dimension.playSound(soundId, tile.location);
 }
 
 /**
@@ -344,10 +358,10 @@ function applyLavaEffects(entity: Entity): void {
     entity.applyDamage(LAVA_DAMAGE, {cause: EntityDamageCause.lava});
 }
 
-function tryExtinguishEntity(entity: Entity, block: Block): void {
+function tryExtinguishEntity(entity: Entity, tile: Entity): void {
     const onFire = entity.getComponent(EntityComponentTypes.OnFire) as EntityOnFireComponent;
     if (!onFire || onFire.onFireTicksRemaining <= 0) return;
 
     entity.extinguishFire(true);
-    changeFilling(block, -LEVEL_STEP, WATER_TYPE);
+    changeFilling(tile, -LEVEL_STEP, WATER_TYPE);
 }
