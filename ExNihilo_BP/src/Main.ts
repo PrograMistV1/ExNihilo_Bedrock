@@ -1,6 +1,6 @@
 import {system, world} from "@minecraft/server";
 import {BarrelComponent} from "./components/BarrelComponent";
-import {BARREL_TILE_ID} from "./data/TileList";
+import {BARREL_TILE_ID, SIEVE_TILE_ID} from "./data/TileList";
 import {SieveComponent} from "./components/SieveComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
@@ -22,6 +22,13 @@ function clearBuggedTiles() {
             const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:barrel");
             if (!comp) {
                 console.log(`Removing bugged barrel tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
+                entity.remove();
+            }
+        });
+        world.getDimension(dimension).getEntities({type: SIEVE_TILE_ID}).forEach(entity => {
+            const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:sieve");
+            if (!comp) {
+                console.log(`Removing bugged sieve tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
                 entity.remove();
             }
         });

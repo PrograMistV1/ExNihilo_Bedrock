@@ -1,0 +1,19 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.exnihilo_sieve": {
+			"arrays": {
+				"textures": {
+					"array.tex_variant": [
+						"texture.default", "texture.dirt"
+					]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [{"*": "material.default"}],
+			"textures": ["array.tex_variant[q.variant]"],
+			"is_hurt_color": {},
+			"on_fire_color": {}
+		}
+	}
+}

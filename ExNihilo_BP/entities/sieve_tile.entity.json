@@ -1,0 +1,65 @@
+{
+	"format_version": "1.21.50",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "exnihilo:sieve_tile",
+			"is_spawnable": false,
+			"is_summonable": true,
+			"is_experimental": false,
+			"properties": {
+				"exnihilo:progress": {
+					"type": "float",
+					"range": [0.0, 1.0],
+					"default": 0.0,
+					"client_sync": true
+				}
+			}
+		},
+		"components": {
+			"minecraft:cannot_be_attacked": {},
+			"minecraft:is_collidable": {},
+			"minecraft:persistent": {},
+			"minecraft:breathable": {
+				"breathes_solids": true,
+				"breathes_water": true,
+				"generates_bubbles": false
+			},
+			"minecraft:physics": {
+				"has_gravity": false,
+				"has_collision": false
+			},
+			"minecraft:pushable": {
+				"is_pushable": false,
+				"is_pushable_by_piston": false
+			},
+			"minecraft:collision_box": {"width": 0.75, "height": 0},
+			"minecraft:health": {"min": 1, "max": 1, "value": 1},
+			"minecraft:custom_hit_test": {
+				"hitboxes": [
+					{"pivot": [0, 100, 0], "width": 0, "height": 0}
+				]
+			},
+			"minecraft:spell_effects": {
+				"add_effects": [
+					{"duration": "infinite", "effect": "invisibility", "visible": false}
+				]
+			}
+		},
+		"component_groups": {
+			"exnihilo:visible": {"minecraft:renders_when_invisible": {}},
+			"exnihilo:default": {"minecraft:variant": {"value": 0}},
+			"exnihilo:dirt": {"minecraft:variant": {"value": 1}}
+		},
+		"events": {
+			"exnihilo:show": {"add": {"component_groups": ["exnihilo:visible"]}},
+			"exnihilo:hide": {"remove": {"component_groups": ["exnihilo:visible"]}},
+			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default"]}},
+			"exnihilo:compost": {"add": {"component_groups": ["exnihilo:compost"]}},
+			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt"]}},
+			"exnihilo:clay": {"add": {"component_groups": ["exnihilo:clay"]}},
+			"exnihilo:water": {"add": {"component_groups": ["exnihilo:water"]}},
+			"exnihilo:lava": {"add": {"component_groups": ["exnihilo:lava"]}},
+			"minecraft:entity_spawned": {"add": {"component_groups": ["exnihilo:hide"]}}
+		}
+	}
+}

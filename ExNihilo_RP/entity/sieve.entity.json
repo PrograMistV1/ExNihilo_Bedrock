@@ -1,0 +1,18 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "exnihilo:sieve_tile",
+			"materials": {"default": "entity_alphablend"},
+			"geometry": {"default": "geometry.sieve_contained_block"},
+			"textures": {
+				"default": "textures/misc/missing_texture",
+				"dirt": "textures/blocks/dirt"
+			},
+			"render_controllers": ["controller.render.exnihilo_sieve"],
+			"scripts": {
+				"scaleY": "1 - q.property('exnihilo:progress')"
+			}
+		}
+	}
+}
