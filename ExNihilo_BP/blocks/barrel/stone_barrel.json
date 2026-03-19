@@ -4,25 +4,36 @@
 		"description": {
 			"identifier": "exnihilo:stone_barrel",
 			"menu_category": {
-                "category": "construction", 
-                "is_hidden_in_commands": false 
-            }
+				"category": "construction",
+				"is_hidden_in_commands": false
+			}
 		},
 		"components": {
-			"minecraft:geometry": {
-				"identifier": "geometry.barrel"
-			},
+			"minecraft:geometry": "geometry.barrel",
 			"minecraft:material_instances": {
-				"*": {
-					"texture": "stone"
-				}
+				"*": {"texture": "stone"}
 			},
 			"minecraft:display_name": "Stone Barrel",
 			"minecraft:light_dampening": 2,
-			"minecraft:destructible_by_mining": {
-				"seconds_to_destroy": 1.5
+			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
+			"tag:minecraft:is_pickaxe_item_destructible": {},
+			"exnihilo:barrel": {},
+			"minecraft:selection_box": {"origin": [-7, 0, -7], "size": [14, 16, 14]},
+			"minecraft:collision_box": [
+				{"origin": [-6, 0, -6], "size": [12, 1, 12]},
+				{"origin": [-6, 0, 6], "size": [13, 16, 1]},
+				{"origin": [-7, 0, -6], "size": [1, 16, 13]},
+				{"origin": [6, 0, -7], "size": [1, 16, 13]},
+				{"origin": [-7, 0, -7], "size": [13, 16, 1]}
+			],
+			"minecraft:tick": {
+				"interval_range": [7, 7],
+				"looping": true
 			},
-			"tag:minecraft:is_pickaxe_item_destructible": {}
+			"minecraft:movable": {
+				"movement_type": "immovable"
+				// Unfortunately, this is a necessary measure, since barrels largely depend on the entity tile, and pistons can move these entities.
+			}
 		}
 	}
 }
