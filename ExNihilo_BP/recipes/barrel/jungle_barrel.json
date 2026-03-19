@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:jungle_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:jungle_planks",
+			"S": "minecraft:jungle_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:jungle_planks"
+			}
+		],
+		"result": "exnihilo:jungle_barrel"
+	}
+}

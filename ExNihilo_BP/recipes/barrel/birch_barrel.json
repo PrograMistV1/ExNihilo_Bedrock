@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:birch_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:birch_planks",
+			"S": "minecraft:birch_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:birch_planks"
+			}
+		],
+		"result": "exnihilo:birch_barrel"
+	}
+}

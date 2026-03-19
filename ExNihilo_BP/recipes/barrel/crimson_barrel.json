@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:crimson_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:crimson_planks",
+			"S": "minecraft:crimson_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:crimson_planks"
+			}
+		],
+		"result": "exnihilo:crimson_barrel"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:pale_oak_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:pale_oak_planks",
+			"S": "minecraft:pale_oak_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:pale_oak_planks"
+			}
+		],
+		"result": "exnihilo:pale_oak_barrel"
+	}
+}

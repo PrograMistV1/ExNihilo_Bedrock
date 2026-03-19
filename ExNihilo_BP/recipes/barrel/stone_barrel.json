@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:stone_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:stone",
+			"S": "minecraft:smooth_stone_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:stone"
+			}
+		],
+		"result": "exnihilo:stone_barrel"
+	}
+}

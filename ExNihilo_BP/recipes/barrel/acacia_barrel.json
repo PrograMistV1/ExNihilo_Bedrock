@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:acacia_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:acacia_planks",
+			"S": "minecraft:acacia_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:acacia_planks"
+			}
+		],
+		"result": "exnihilo:acacia_barrel"
+	}
+}

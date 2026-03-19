@@ -1,0 +1,20 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:spruce_barrel"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "P P", "PSP"],
+		"key": {
+			"P": "minecraft:spruce_planks",
+			"S": "minecraft:spruce_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:spruce_planks"
+			}
+		],
+		"result": "exnihilo:spruce_barrel"
+	}
+}
