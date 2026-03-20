@@ -6,7 +6,7 @@ type SelectedItemContext = {
     slot: number;
 };
 
-function getTileEntity(block: Block, entityId: string): Entity | null {
+function getTileEntity(block: Block, entityId: string): Entity | undefined {
     const pos = block.location;
     const entities = block.dimension.getEntities({
         type: entityId,
@@ -18,10 +18,7 @@ function getTileEntity(block: Block, entityId: string): Entity | null {
         closest: 1,
         maxDistance: 0.5
     });
-    if (entities.length === 0) {
-        console.warn(`Tile not found for block {${block.dimension.id}, [${pos.x}, ${pos.y}, ${pos.z}]}`);
-        return null;
-    }
+    if (entities.length === 0) return undefined;
     return entities[0];
 }
 

@@ -1,7 +1,6 @@
 import {
     Block,
     BlockComponentBlockBreakEvent,
-    BlockComponentOnPlaceEvent,
     BlockComponentPlayerInteractEvent,
     BlockCustomComponent,
     Entity
@@ -10,31 +9,49 @@ import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {getTileEntity} from "../Utils";
 import {SIEVE_TILE_ID} from "../data/TileList";
 
+type MeshType =
+    "null"
+    | "string"
+    | "flint"
+    | "iron"
+    | "diamond"
+    | "emerald"
+    | "netherite";
+
 export class SieveComponent implements BlockCustomComponent {
-    onPlace(e: BlockComponentOnPlaceEvent): void {
-        const block = e.block;
-        const permutation = block.permutation
-            .withState("exnihilo:mesh" as keyof BlockStateSuperset, "emerald");
-        block.setPermutation(permutation);
-
-        const pos = e.block.location;
-        const tile = e.block.dimension.spawnEntity(SIEVE_TILE_ID, {
-            x: pos.x + 0.5,
-            y: pos.y + 0.69,
-            z: pos.z + 0.5
-        });
-    }
-
     onBreak(e: BlockComponentBlockBreakEvent): void {
-        getSieveTile(e.block)?.remove();
+        getInputBlock(e.block)?.remove();
     }
 
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
-        const tile = getSieveTile(e.block);
-        tile.setProperty("exnihilo:progress", Math.random());
+        console.log(isReadyToSieve(e.block));
+        setInputBlock(e.block, "exnihilo:dirt");
     }
 }
 
-function getSieveTile(block: Block): Entity | null {
+function getInputBlock(block: Block): Entity | undefined {
     return getTileEntity(block, SIEVE_TILE_ID);
+}
+
+function setInputBlock(sieve: Block, input: string): void {
+    if (getInputBlock(sieve) !== undefined) return;
+
+    const pos = sieve.location;
+    sieve.dimension.spawnEntity(SIEVE_TILE_ID, {
+        x: pos.x + 0.5,
+        y: pos.y + 0.69,
+        z: pos.z + 0.5
+    }, {spawnEvent: input});
+}
+
+function getMeshType(block: Block): MeshType {
+    return block.permutation.getState("exnihilo:mesh" as keyof BlockStateSuperset) as MeshType;
+}
+
+function setMeshType(block: Block, mesh: MeshType): void {
+    block.setPermutation(block.permutation.withState("exnihilo:mesh" as keyof BlockStateSuperset, mesh));
+}
+
+function isReadyToSieve(block: Block): boolean {
+    return getMeshType(block) !== "null" && (getInputBlock(block) !== undefined);
 }

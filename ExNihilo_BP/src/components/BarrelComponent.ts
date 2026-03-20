@@ -272,8 +272,10 @@ function changeFilling(tile: Entity, amount: number, type: BarrelFillType): void
     }
 }
 
-function getBarrelTile(block: Block): Entity | null {
-    return getTileEntity(block, BARREL_TILE_ID);
+function getBarrelTile(block: Block): Entity | undefined {
+    const tile = getTileEntity(block, BARREL_TILE_ID);
+    if (!tile) console.warn(`Barrel tile entity not found for block at [${block.location.x}, ${block.location.y}, ${block.location.z}] in dimension ${block.dimension.id}`);
+    return tile;
 }
 
 function getBarrelState(tile: Entity): { filling: number; type: BarrelFillType } {

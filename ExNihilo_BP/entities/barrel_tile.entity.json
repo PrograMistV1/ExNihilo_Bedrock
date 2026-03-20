@@ -23,7 +23,7 @@
 				"is_pushable": false,
 				"is_pushable_by_piston": false
 			},
-			"minecraft:collision_box": {"width": 0.75, "height": 0},
+			"minecraft:collision_box": {"width": 0.75, "height": 0.0},
 			"minecraft:health": {"min": 1, "max": 1, "value": 1},
 			"minecraft:custom_hit_test": {
 				"hitboxes": [
@@ -49,12 +49,19 @@
 		"events": {
 			"exnihilo:show": {"add": {"component_groups": ["exnihilo:visible"]}},
 			"exnihilo:hide": {"remove": {"component_groups": ["exnihilo:visible"]}},
-			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default"]}, "remove": {"component_groups": ["exnihilo:collidable"]}},
+			"exnihilo:default": {
+				"add": {"component_groups": ["exnihilo:default"]},
+				"remove": {"component_groups": ["exnihilo:collidable"]}
+			},
 			"exnihilo:compost": {"add": {"component_groups": ["exnihilo:compost", "exnihilo:collidable"]}},
 			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt", "exnihilo:collidable"]}},
 			"exnihilo:clay": {"add": {"component_groups": ["exnihilo:clay", "exnihilo:collidable"]}},
-			"exnihilo:water": {"add": {"component_groups": ["exnihilo:water"]}, "remove": {"component_groups": ["exnihilo:collidable"]}},
-			"exnihilo:lava": {"add": {"component_groups": ["exnihilo:lava"]}, "remove": {"component_groups": ["exnihilo:collidable"]}}
+			"exnihilo:water": {
+				"add": {"component_groups": ["exnihilo:water"]}, "remove": {"component_groups": ["exnihilo:collidable"]}
+			},
+			"exnihilo:lava": {
+				"add": {"component_groups": ["exnihilo:lava"]}, "remove": {"component_groups": ["exnihilo:collidable"]}
+			}
 		}
 	}
 }
