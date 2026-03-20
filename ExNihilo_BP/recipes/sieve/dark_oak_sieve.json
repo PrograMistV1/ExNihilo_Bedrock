@@ -1,0 +1,21 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:dark_oak_sieve"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "PSP", "I I"],
+		"key": {
+			"P": "minecraft:dark_oak_planks",
+			"S": "minecraft:dark_oak_slab",
+			"I": "minecraft:stick"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:dark_oak_planks"
+			}
+		],
+		"result": "exnihilo:dark_oak_sieve"
+	}
+}

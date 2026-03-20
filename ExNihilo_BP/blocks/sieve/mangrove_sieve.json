@@ -1,0 +1,114 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:block": {
+		"description": {
+			"identifier": "exnihilo:mangrove_sieve",
+			"menu_category": {
+				"category": "construction",
+				"is_hidden_in_commands": false
+			},
+			"states": {
+				"exnihilo:mesh": ["null", "string", "flint", "iron", "diamond", "emerald", "netherite"]
+			}
+		},
+		"components": {
+			"minecraft:geometry": {
+				"identifier": "geometry.sieve",
+				"bone_visibility": {
+					"mesh": "query.block_state('exnihilo:mesh') != 'null'"
+				}
+			},
+			"minecraft:material_instances": {
+				"*": {"texture": "mangrove_planks"}
+			},
+			"minecraft:display_name": "Mangrove Sieve",
+			"minecraft:light_dampening": 2,
+			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
+			"tag:minecraft:is_axe_item_destructible": {},
+			"exnihilo:sieve": {},
+			"minecraft:selection_box": {"origin": [-8, 0, -8], "size": [16, 15, 16]},
+			"minecraft:collision_box": [
+				{"origin": [-6, 10, 6], "size": [13, 5, 1]},
+				{"origin": [-7, 10, -6], "size": [1, 5, 13]},
+				{"origin": [6, 10, -7], "size": [1, 5, 13]},
+				{"origin": [-7, 10, -7], "size": [13, 5, 1]}
+			],
+			"minecraft:movable": {
+				"movement_type": "immovable"
+				// Unfortunately, this is a necessary measure, since barrels largely depend on the entity tile, and pistons can move these entities.
+			}
+		},
+		"permutations": [
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'null'",
+				"components": {
+					"minecraft:material_instances": {"*": {"texture": "mangrove_planks"}}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'string'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"}, "mesh": {"texture": "string_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'flint'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"}, "mesh": {"texture": "flint_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'iron'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {"texture": "iron_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'diamond'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {"texture": "diamond_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'emerald'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {"texture": "emerald_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') == 'netherite'",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {"texture": "netherite_mesh"}
+					}
+				}
+			},
+			{
+				"condition": "query.block_state('exnihilo:mesh') != 'null'",
+				"components": {
+					"minecraft:collision_box": [
+						{"origin": [-6, 10, 6], "size": [13, 5, 1]},
+						{"origin": [-7, 10, -6], "size": [1, 5, 13]},
+						{"origin": [6, 10, -7], "size": [1, 5, 13]},
+						{"origin": [-7, 10, -7], "size": [13, 5, 1]},
+						{"origin": [-6, 11, -6], "size": [12, 0.1, 12]}
+					]
+				}
+			}
+		]
+	}
+}

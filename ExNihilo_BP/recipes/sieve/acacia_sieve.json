@@ -1,0 +1,21 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:acacia_sieve"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "PSP", "I I"],
+		"key": {
+			"P": "minecraft:acacia_planks",
+			"S": "minecraft:acacia_slab",
+			"I": "minecraft:stick"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:acacia_planks"
+			}
+		],
+		"result": "exnihilo:acacia_sieve"
+	}
+}

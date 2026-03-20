@@ -1,0 +1,21 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:bamboo_sieve"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "PSP", "I I"],
+		"key": {
+			"P": "minecraft:bamboo_planks",
+			"S": "minecraft:bamboo_slab",
+			"I": "minecraft:stick"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:bamboo_planks"
+			}
+		],
+		"result": "exnihilo:bamboo_sieve"
+	}
+}

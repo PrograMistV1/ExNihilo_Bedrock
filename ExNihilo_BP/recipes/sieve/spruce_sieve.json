@@ -1,0 +1,21 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:spruce_sieve"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "PSP", "I I"],
+		"key": {
+			"P": "minecraft:spruce_planks",
+			"S": "minecraft:spruce_slab",
+			"I": "minecraft:stick"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:spruce_planks"
+			}
+		],
+		"result": "exnihilo:spruce_sieve"
+	}
+}

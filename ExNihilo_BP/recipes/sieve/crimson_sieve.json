@@ -1,0 +1,21 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:crimson_sieve"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["P P", "PSP", "I I"],
+		"key": {
+			"P": "minecraft:crimson_planks",
+			"S": "minecraft:crimson_slab",
+			"I": "minecraft:stick"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:crimson_planks"
+			}
+		],
+		"result": "exnihilo:crimson_sieve"
+	}
+}
