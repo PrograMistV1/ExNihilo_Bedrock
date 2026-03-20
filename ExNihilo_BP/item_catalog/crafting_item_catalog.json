@@ -47,6 +47,25 @@
 						]
 					}
 				]
+			},
+			{
+				"category_name": "items",
+				"groups": [
+					{
+						"group_identifier": {
+							"icon": "exnihilo:string_mesh",
+							"name": "exnihilo:meshes"
+						},
+						"items": [
+							"exnihilo:string_mesh",
+							"exnihilo:flint_mesh",
+							"exnihilo:iron_mesh",
+							"exnihilo:diamond_mesh",
+							"exnihilo:emerald_mesh",
+							"exnihilo:netherite_mesh"
+						]
+					}
+				]
 			}
 		]
 	}
