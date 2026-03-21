@@ -187,7 +187,7 @@ function handleCompost(tile: Entity): void {
 
 function handleCompostable(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!selectedItem) return;
+    if (!selectedItem.item) return;
 
     const fillAmount = CompostableItems[selectedItem.item.typeId];
     if (fillAmount === undefined) return;
@@ -201,7 +201,7 @@ function handleCompostable(tile: Entity, player: Player): void {
 
 function handleLiquid(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!selectedItem) return;
+    if (!selectedItem.item) return;
 
     const LIQUIDS = {
         [WATER_TYPE]: {
@@ -246,7 +246,7 @@ function handleExtractResult(tile: Entity): void {
 
 function handleSpecialInteractions(tile: Entity, player: Player): void {
     const selectedItem = getSelectedItemContext(player);
-    if (!selectedItem) return;
+    if (!selectedItem.item) return;
 
     const {filling, type} = getBarrelState(tile);
     if (type === WATER_TYPE && filling === MAX_FILLING && selectedItem.item.typeId === "exnihilo:dust") {

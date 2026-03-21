@@ -2,7 +2,7 @@ import {Block, Dimension, Entity, EntityInventoryComponent, ItemStack, Player, V
 
 type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
-    item: ItemStack;
+    item?: ItemStack;
     slot: number;
 };
 
@@ -29,7 +29,6 @@ function getSelectedItemContext(player: Player): SelectedItemContext | null {
 
     const slot = player.selectedSlotIndex;
     const item = container.getItem(slot);
-    if (!item) return null;
 
     return {container, item, slot};
 }
