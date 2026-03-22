@@ -8,7 +8,8 @@
 			}
 		},
 		"components": {
-			"minecraft:icon": "iron_mesh"
+			"minecraft:icon": "iron_mesh",
+			"minecraft:max_stack_size": 1
 		}
 	}
 }

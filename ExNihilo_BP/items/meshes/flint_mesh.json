@@ -8,7 +8,8 @@
 			}
 		},
 		"components": {
-			"minecraft:icon": "flint_mesh"
+			"minecraft:icon": "flint_mesh",
+			"minecraft:max_stack_size": 1
 		}
 	}
 }

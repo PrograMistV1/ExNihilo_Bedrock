@@ -40,16 +40,14 @@
 		},
 		"permutations": [
 			{
-				"condition": "query.block_state('exnihilo:mesh') == 'null'",
-				"components": {
-					"minecraft:material_instances": {"*": {"texture": "mangrove_planks"}}
-				}
-			},
-			{
 				"condition": "query.block_state('exnihilo:mesh') == 'string'",
 				"components": {
 					"minecraft:material_instances": {
-						"*": {"texture": "mangrove_planks"}, "mesh": {"texture": "string_mesh"}
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {
+							"texture": "string_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},
@@ -57,7 +55,11 @@
 				"condition": "query.block_state('exnihilo:mesh') == 'flint'",
 				"components": {
 					"minecraft:material_instances": {
-						"*": {"texture": "mangrove_planks"}, "mesh": {"texture": "flint_mesh"}
+						"*": {"texture": "mangrove_planks"},
+						"mesh": {
+							"texture": "flint_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},
@@ -66,7 +68,10 @@
 				"components": {
 					"minecraft:material_instances": {
 						"*": {"texture": "mangrove_planks"},
-						"mesh": {"texture": "iron_mesh"}
+						"mesh": {
+							"texture": "iron_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},
@@ -75,7 +80,10 @@
 				"components": {
 					"minecraft:material_instances": {
 						"*": {"texture": "mangrove_planks"},
-						"mesh": {"texture": "diamond_mesh"}
+						"mesh": {
+							"texture": "diamond_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},
@@ -84,7 +92,10 @@
 				"components": {
 					"minecraft:material_instances": {
 						"*": {"texture": "mangrove_planks"},
-						"mesh": {"texture": "emerald_mesh"}
+						"mesh": {
+							"texture": "emerald_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},
@@ -93,7 +104,10 @@
 				"components": {
 					"minecraft:material_instances": {
 						"*": {"texture": "mangrove_planks"},
-						"mesh": {"texture": "netherite_mesh"}
+						"mesh": {
+							"texture": "netherite_mesh",
+							"isotropic": true
+						}
 					}
 				}
 			},

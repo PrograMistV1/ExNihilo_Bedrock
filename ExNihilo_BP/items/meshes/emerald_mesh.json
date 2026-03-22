@@ -8,7 +8,8 @@
 			}
 		},
 		"components": {
-			"minecraft:icon": "emerald_mesh"
+			"minecraft:icon": "emerald_mesh",
+			"minecraft:max_stack_size": 1
 		}
 	}
 }
