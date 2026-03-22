@@ -33,14 +33,15 @@ function getSelectedItemContext(player: Player): SelectedItemContext | null {
     return {container, item, slot};
 }
 
-function consumeSelectedItem(selectedItem: SelectedItemContext): void {
-    if (selectedItem.item.amount > 1) {
-        selectedItem.item.amount--;
+function consumeSelectedItem(selectedItem: SelectedItemContext, amount: number = 1): number {
+    const newAmount = selectedItem.item.amount - amount;
+    if (newAmount > 0) {
+        selectedItem.item.amount = newAmount;
         selectedItem.container.setItem(selectedItem.slot, selectedItem.item);
-        return;
+        return newAmount;
     }
-
     selectedItem.container.setItem(selectedItem.slot, null);
+    return 0;
 }
 
 function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): void {
