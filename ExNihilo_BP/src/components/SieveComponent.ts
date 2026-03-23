@@ -4,7 +4,6 @@ import {
     BlockComponentPlayerInteractEvent,
     BlockCustomComponent,
     ButtonState,
-    Entity,
     InputButton,
     ItemStack,
     ItemUseAfterEvent,
@@ -19,13 +18,15 @@ import {
     MESH_TYPE_BY_ITEM,
     MeshType,
     SIEVE_CONSTANTS,
-    SIFTABLE_BLOCK_STATES
+    SIFTABLE_BLOCK_STATES,
+    VARIANT_STATE_MAP
 } from "../data/SieveData";
 import {SIEVE_TILE_ID} from "../data/TileList";
+import {rollDrops} from "../data/loot/SieveLoot";
 
 export class SieveComponent implements BlockCustomComponent {
     onBreak(e: BlockComponentBlockBreakEvent): void {
-        getInputBlock(e.block)?.remove();
+        removeInputBlock(e.block);
     }
 
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
@@ -36,21 +37,23 @@ export class SieveComponent implements BlockCustomComponent {
 }
 
 function handleProgress(block: Block): void {
-    forEachSieveNeighbor(block, true, (targetBlock) => {
-        if (!isReadyToSieve(targetBlock)) return;
+    for (const targetBlock of getSieveNeighbors(block)) {
+        if (!isReadyToSieve(targetBlock)) continue;
 
-        const input = getInputBlock(targetBlock);
-        if (!input) return;
-
-        const progress = (input.getProperty("exnihilo:progress") as number) + (1 / SIEVE_CONSTANTS.maxSieveClicks);
+        const progress = getProgress(targetBlock) + (1 / SIEVE_CONSTANTS.maxSieveClicks);
         if (progress >= SIEVE_CONSTANTS.completeProgress) {
-            input.remove();
-            // todo drop
-            return;
+            rollDrops(getMeshType(targetBlock), getInputBlock(targetBlock)).forEach(drop => {
+                targetBlock.dimension.spawnItem(drop, {
+                    x: targetBlock.location.x + 0.5,
+                    y: targetBlock.location.y + 1,
+                    z: targetBlock.location.z + 0.5
+                });
+            });
+            removeInputBlock(targetBlock);
+            continue;
         }
-
-        input.setProperty("exnihilo:progress", progress);
-    });
+        setProgress(targetBlock, progress);
+    }
 }
 
 function handleInput(player: Player, block: Block): void {
@@ -60,17 +63,12 @@ function handleInput(player: Player, block: Block): void {
     const state = blockToState(selectedItem.item.typeId);
     if (!state) return;
 
-    if (getMeshType(block) === "null" || getInputBlock(block)) return;
-
-    setInputBlock(block, state);
-    if (consumeSelectedItem(selectedItem) === 0) return;
-
-    forEachSieveNeighbor(block, false, (targetBlock) => {
-        if (getMeshType(targetBlock) === "null" || isReadyToSieve(targetBlock)) return;
+    for (const targetBlock of getSieveNeighbors(block)) {
+        if (getMeshType(targetBlock) === "null" || getInputBlock(targetBlock)) continue;
 
         setInputBlock(targetBlock, state);
-        if (consumeSelectedItem(selectedItem) === 0) return "stop";
-    });
+        if (consumeSelectedItem(selectedItem) === 0) break;
+    }
 }
 
 function handleMesh(player: Player, block: Block): void {
@@ -108,27 +106,64 @@ world.afterEvents.itemUse.subscribe((event: ItemUseAfterEvent) => {
     player.setDynamicProperty("last_sieve_interact", system.currentTick);
 });
 
-function forEachSieveNeighbor(block: Block, includeCenter: boolean, visitor: (neighbor: Block) => void | "stop"): void {
+function* getSieveNeighbors(block: Block): Generator<Block> {
     const radius = SIEVE_CONSTANTS.neighborRadius;
     const origin = block.location;
+    //center offset
+    let x = 0;
+    let z = 0;
+    //vector (1,0)-right, (-1,0)-left, (0,1)-up, (0,-1)-down
+    let dx = 1;
+    let dz = 0;
 
-    for (let x = -radius; x <= radius; x++) {
-        for (let z = -radius; z <= radius; z++) {
-            if (!includeCenter && x === 0 && z === 0) continue;
+    let segmentLength = 1;
+    let segmentPassed = 0;
+    let segmentCount = 0;
 
-            const targetBlock = block.dimension.getBlock({x: origin.x + x, y: origin.y, z: origin.z + z});
-            if (!isSieveBlock(targetBlock)) continue;
-            if (visitor(targetBlock) === "stop") return;
+    const maxSteps = (radius * 2 + 1) ** 2;
+
+    for (let i = 0; i < maxSteps; i++) {
+        if (Math.abs(x) <= radius && Math.abs(z) <= radius) {
+            const targetBlock = block.dimension.getBlock({
+                x: origin.x + x,
+                y: origin.y,
+                z: origin.z + z
+            });
+
+            if (isSieveBlock(targetBlock)) {
+                yield targetBlock;
+            }
+        }
+
+        x += dx;
+        z += dz;
+        segmentPassed++;
+
+        if (segmentPassed === segmentLength) {
+            segmentPassed = 0;
+
+            const temp = dx;
+            dx = -dz;
+            dz = temp;
+
+            segmentCount++;
+
+            if (segmentCount % 2 === 0) {
+                segmentLength++;
+            }
         }
     }
 }
 
-function getInputBlock(block: Block): Entity | undefined {
-    return getTileEntity(block, SIEVE_TILE_ID);
+function getInputBlock(sieve: Block): string | undefined {
+    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    if (!tile) return undefined;
+
+    return VARIANT_STATE_MAP[tile.getComponent("minecraft:variant").value];
 }
 
 function setInputBlock(sieve: Block, input: string): void {
-    if (getInputBlock(sieve) !== undefined) return;
+    if (getTileEntity(sieve, SIEVE_TILE_ID) !== undefined) return;
 
     const pos = sieve.location;
     sieve.dimension.spawnEntity(SIEVE_TILE_ID, {
@@ -136,6 +171,24 @@ function setInputBlock(sieve: Block, input: string): void {
         y: pos.y + SIEVE_CONSTANTS.inputEntityHeightOffset,
         z: pos.z + SIEVE_CONSTANTS.inputEntityCenterOffset
     }, {spawnEvent: input});
+}
+
+function removeInputBlock(sieve: Block): void {
+    getTileEntity(sieve, SIEVE_TILE_ID)?.remove();
+}
+
+function getProgress(sieve: Block): number | undefined {
+    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    if (!tile) return undefined;
+
+    return tile.getProperty("exnihilo:progress") as number;
+}
+
+function setProgress(sieve: Block, progress: number): void {
+    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    if (!tile) return;
+
+    tile.setProperty("exnihilo:progress", progress);
 }
 
 function getMeshType(block: Block): MeshType {

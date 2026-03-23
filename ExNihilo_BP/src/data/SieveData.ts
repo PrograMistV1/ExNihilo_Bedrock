@@ -37,3 +37,7 @@ export const MESH_TYPE_BY_ITEM: Record<MeshItemId, Exclude<MeshType, "null">> =
         Object.entries(MESH_ITEM_BY_TYPE).map(([meshType, itemId]) => [itemId, meshType])
     ) as Record<MeshItemId, Exclude<MeshType, "null">>;
 
+export const VARIANT_STATE_MAP = {
+    0: "exnihilo:default",
+    1: "exnihilo:dirt",
+}
