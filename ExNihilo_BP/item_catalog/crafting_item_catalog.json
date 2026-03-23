@@ -66,6 +66,29 @@
 						]
 					}
 				]
+			},
+			{
+				"category_name": "nature",
+				"groups": [
+					{
+						"group_identifier": {
+							"icon": "exnihilo:pebble_stone",
+							"name": "exnihilo:pebbles"
+						},
+						"items": [
+							"exnihilo:pebble_stone",
+							"exnihilo:pebble_andesite",
+							"exnihilo:pebble_diorite",
+							"exnihilo:pebble_granite",
+							"exnihilo:pebble_basalt",
+							"exnihilo:pebble_blackstone",
+							"exnihilo:pebble_calcite",
+							"exnihilo:pebble_deepslate",
+							"exnihilo:pebble_dripstone",
+							"exnihilo:pebble_tuff"
+						]
+					}
+				]
 			}
 		]
 	}

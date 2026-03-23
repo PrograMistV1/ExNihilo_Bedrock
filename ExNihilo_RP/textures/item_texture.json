@@ -7,6 +7,16 @@
 		"iron_mesh": {"textures": "textures/items/iron_mesh"},
 		"diamond_mesh": {"textures": "textures/items/diamond_mesh"},
 		"emerald_mesh": {"textures": "textures/items/emerald_mesh"},
-		"netherite_mesh": {"textures": "textures/items/netherite_mesh"}
+		"netherite_mesh": {"textures": "textures/items/netherite_mesh"},
+		"stone_pebble": {"textures": "textures/items/stone_pebble"},
+		"andesite_pebble": {"textures": "textures/items/andesite_pebble"},
+		"diorite_pebble": {"textures": "textures/items/diorite_pebble"},
+		"granite_pebble": {"textures": "textures/items/granite_pebble"},
+		"basalt_pebble": {"textures": "textures/items/basalt_pebble"},
+		"blackstone_pebble": {"textures": "textures/items/blackstone_pebble"},
+		"calcite_pebble": {"textures": "textures/items/calcite_pebble"},
+		"deepslate_pebble": {"textures": "textures/items/deepslate_pebble"},
+		"dripstone_pebble": {"textures": "textures/items/dripstone_pebble"},
+		"tuff_pebble": {"textures": "textures/items/tuff_pebble"}
 	}
 }
