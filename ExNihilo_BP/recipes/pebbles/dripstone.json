@@ -1,0 +1,19 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:pebble_dripstone"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["PP", "PP"],
+		"key": {
+			"P": "exnihilo:pebble_dripstone"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:pebble_dripstone"
+			}
+		],
+		"result": "minecraft:dripstone_block"
+	}
+}

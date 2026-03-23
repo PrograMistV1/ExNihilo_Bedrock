@@ -1,0 +1,19 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:pebble_stone"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["PP", "PP"],
+		"key": {
+			"P": "exnihilo:pebble_stone"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:pebble_stone"
+			}
+		],
+		"result": "minecraft:cobblestone"
+	}
+}
