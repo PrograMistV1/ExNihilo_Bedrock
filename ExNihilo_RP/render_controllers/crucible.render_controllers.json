@@ -1,0 +1,24 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.exnihilo_crucible": {
+			"arrays": {
+				"textures": {
+					"array.tex_variant": ["texture.default", "texture.gravel", "texture.lava"]
+				},
+				"materials": {
+					"array.mat_variant": ["material.default", "material.animated"]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [{"*": "array.mat_variant[q.variant == 2 ? 1 : 0]"}],
+			"textures": ["array.tex_variant[q.variant]"],
+			"is_hurt_color": {},
+			"on_fire_color": {},
+			"uv_anim": {
+				"scale": [1, "1 / 32"],
+				"offset": [0, "Math.mod(Math.floor(q.life_time * 3), 32) / 32"]
+			}
+		}
+	}
+}

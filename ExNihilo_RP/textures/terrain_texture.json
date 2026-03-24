@@ -4,29 +4,15 @@
 	"padding": 8,
 	"num_mip_levels": 4,
 	"texture_data": {
-		"compost": {
-			"textures": "textures/blocks/compost"
-		},
-		"dust": {
-			"textures": "textures/blocks/dust"
-		},
-		"string_mesh": {
-			"textures": "textures/blocks/wool_colored_white"
-		},
-		"flint_mesh": {
-			"textures": "textures/blocks/wool_colored_gray"
-		},
-		"iron_mesh": {
-			"textures": "textures/blocks/wool_colored_silver"
-		},
-		"diamond_mesh": {
-			"textures": "textures/blocks/diamond_block"
-		},
-		"emerald_mesh": {
-			"textures": "textures/blocks/emerald_block"
-		},
-		"netherite_mesh": {
-			"textures": "textures/blocks/netherite_block"
-		}
+		"compost": {"textures": "textures/blocks/compost"},
+		"dust": {"textures": "textures/blocks/dust"},
+		"string_mesh": {"textures": "textures/blocks/wool_colored_white"},
+		"flint_mesh": {"textures": "textures/blocks/wool_colored_gray"},
+		"iron_mesh": {"textures": "textures/blocks/wool_colored_silver"},
+		"diamond_mesh": {"textures": "textures/blocks/diamond_block"},
+		"emerald_mesh": {"textures": "textures/blocks/emerald_block"},
+		"netherite_mesh": {"textures": "textures/blocks/netherite_block"},
+		"unfired_crucible": {"textures": "textures/blocks/unfired_crucible"},
+		"fired_crucible": {"textures": "textures/blocks/fired_crucible"}
 	}
 }

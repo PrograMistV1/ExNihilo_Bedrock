@@ -1,11 +1,13 @@
 import {system, world} from "@minecraft/server";
 import {BarrelComponent} from "./components/BarrelComponent";
-import {BARREL_TILE_ID, SIEVE_TILE_ID} from "./data/TileList";
+import {BARREL_TILE_ID, CRUCIBLE_TILE_ID, SIEVE_TILE_ID} from "./data/TileList";
 import {SieveComponent} from "./components/SieveComponent";
+import {CrucibleComponent} from "./components/CrucibleComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:sieve', new SieveComponent());
+    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:crucible', new CrucibleComponent());
 
     system.runTimeout(() => {
         clearBuggedTiles();
@@ -29,6 +31,13 @@ function clearBuggedTiles() {
             const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:sieve");
             if (!comp) {
                 console.log(`Removing bugged sieve tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
+                entity.remove();
+            }
+        });
+        world.getDimension(dimension).getEntities({type: CRUCIBLE_TILE_ID}).forEach(entity => {
+            const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:crucible");
+            if (!comp) {
+                console.log(`Removing bugged crucible tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
                 entity.remove();
             }
         });
