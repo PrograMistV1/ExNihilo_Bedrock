@@ -14,3 +14,8 @@ export type CrucibleInput = "exnihilo:default" | "exnihilo:gravel" | "exnihilo:l
 export const InputDefault = "exnihilo:default";
 export const InputGravel = "exnihilo:gravel";
 export const InputLava = "exnihilo:lava";
+
+export const MeltableBlocks: Readonly<Record<string, number>> = {
+    "minecraft:gravel": 10,
+    "minecraft:cobblestone": 10,
+}
