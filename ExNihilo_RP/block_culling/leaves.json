@@ -1,0 +1,49 @@
+{
+	"format_version": "1.21.80",
+	"minecraft:block_culling_rules": {
+		"description": {
+			"identifier": "exnihilo:culling.leaves"
+		},
+		"rules": [
+			{
+				"cull_against_full_and_opaque": true,
+				"direction": "up",
+				"condition": "same_culling_layer",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "up"
+				}
+			},
+			{
+				"cull_against_full_and_opaque": true,
+				"direction": "down",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "down"
+				}
+			},
+			{
+				"cull_against_full_and_opaque": true,
+				"direction": "east",
+				"condition": "same_culling_layer",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "east"
+				}
+			},
+			{
+				"cull_against_full_and_opaque": true,
+				"direction": "north",
+				"condition": "same_culling_layer",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "north"
+				}
+			}
+		]
+	}
+}

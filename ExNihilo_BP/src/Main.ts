@@ -3,11 +3,13 @@ import {BarrelComponent} from "./components/BarrelComponent";
 import {BARREL_TILE_ID, CRUCIBLE_TILE_ID, SIEVE_TILE_ID} from "./data/TileList";
 import {SieveComponent} from "./components/SieveComponent";
 import {CrucibleComponent} from "./components/CrucibleComponent";
+import {InfestedLeaves} from "./components/InfestedLeaves";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:sieve', new SieveComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:crucible', new CrucibleComponent());
+    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:infested_leaves', new InfestedLeaves());
 
     system.runTimeout(() => {
         clearBuggedTiles();

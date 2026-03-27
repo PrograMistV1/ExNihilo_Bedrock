@@ -1,0 +1,50 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:block": {
+		"description": {
+			"identifier": "exnihilo:infested_jungle_leaves",
+			"menu_category": {
+				"category": "nature",
+				"is_hidden_in_commands": false
+			},
+			"states": {
+				"exnihilo:infested": [false, true]
+			}
+		},
+		"components": {
+			"minecraft:geometry": {
+				"identifier": "geometry.full_block",
+				"culling": "exnihilo:culling.leaves",
+				"culling_layer": "minecraft:culling_layer.leaves"
+			},
+			"minecraft:material_instances": {
+				"*": {
+					"texture": "infesting_jungle_leaves",
+					"render_method": "alpha_test_to_opaque",
+					"ambient_occlusion": 0.8
+				}
+			},
+			"minecraft:display_name": "Infested Jungle Leaves",
+			"minecraft:light_dampening": 9,
+			"minecraft:destructible_by_mining": {
+				"seconds_to_destroy": 0.5
+			},
+			"tag:minecraft:is_hoe_item_destructible": {},
+			"exnihilo:infested_leaves": {}
+		},
+		"permutations": [
+			{
+				"condition": "q.block_state('exnihilo:infested')",
+				"components": {
+					"minecraft:material_instances": {
+						"*": {
+							"texture": "infested_jungle_leaves",
+							"render_method": "alpha_test_to_opaque",
+							"ambient_occlusion": 0.8
+						}
+					}
+				}
+			}
+		]
+	}
+}

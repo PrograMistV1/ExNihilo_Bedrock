@@ -5,7 +5,7 @@
 		"name": "ExNihilo_BP",
 		"uuid": "5e17af0d-f8fb-4103-82f7-508d7f6adaff",
 		"version": [2, 0, 0],
-		"min_engine_version": [ 1, 26, 0 ]
+		"min_engine_version": [1, 26, 0]
 	},
 	"modules": [
 		{
@@ -15,20 +15,20 @@
 			"version": [2, 0, 0]
 		},
 		{
-            "uuid": "916a015c-6384-465d-a96b-eff4e2e2cbfd",
-            "version": [1, 0, 0],
-            "type": "script",
-            "entry": "scripts/Main.js"
-        }
+			"uuid": "916a015c-6384-465d-a96b-eff4e2e2cbfd",
+			"version": [1, 0, 0],
+			"type": "script",
+			"entry": "scripts/Main.js"
+		}
 	],
 	"dependencies": [
-        {
-            "uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
-            "version": [2, 0, 0]
-        },
 		{
-            "module_name": "@minecraft/server",
-            "version": "2.5.0"
-        }
-    ]
+			"uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
+			"version": [2, 0, 0]
+		},
+		{
+			"module_name": "@minecraft/server",
+			"version": "2.5.0"
+		}
+	]
 }

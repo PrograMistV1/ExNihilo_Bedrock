@@ -1,42 +1,39 @@
 {
 	"format_version": "1.21.40",
-	"acacia_barrel": {
-		"sound": "wood"
-	},
-	"bamboo_barrel": {
-		"sound": "bamboo"
-	},
-	"birch_barrel": {
-		"sound": "wood"
-	},
-	"cherry_barrel": {
-		"sound": "wood"
-	},
-	"crimson_barrel": {
-		"sound": "nether_wood"
-	},
-	"dark_oak_barrel": {
-		"sound": "wood"
-	},
-	"jungle_barrel": {
-		"sound": "wood"
-	},
-	"mangrove_barrel": {
-		"sound": "wood"
-	},
-	"oak_barrel": {
-		"sound": "wood"
-	},
-	"pale_oak_barrel": {
-		"sound": "wood"
-	},
-	"spruce_barrel": {
-		"sound": "wood"
-	},
-	"stone_barrel": {
-		"sound": "stone"
-	},
-	"warped_barrel": {
-		"sound": "nether_wood"
-	}
+	"acacia_barrel": {"sound": "wood"},
+	"bamboo_barrel": {"sound": "bamboo"},
+	"birch_barrel": {"sound": "wood"},
+	"cherry_barrel": {"sound": "wood"},
+	"crimson_barrel": {"sound": "nether_wood"},
+	"dark_oak_barrel": {"sound": "wood"},
+	"jungle_barrel": {"sound": "wood"},
+	"mangrove_barrel": {"sound": "wood"},
+	"oak_barrel": {"sound": "wood"},
+	"pale_oak_barrel": {"sound": "wood"},
+	"spruce_barrel": {"sound": "wood"},
+	"stone_barrel": {"sound": "stone"},
+	"warped_barrel": {"sound": "nether_wood"},
+	"acacia_sieve": {"sound": "wood"},
+	"bamboo_sieve": {"sound": "bamboo"},
+	"birch_sieve": {"sound": "wood"},
+	"cherry_sieve": {"sound": "wood"},
+	"crimson_sieve": {"sound": "nether_wood"},
+	"dark_oak_sieve": {"sound": "wood"},
+	"jungle_sieve": {"sound": "wood"},
+	"mangrove_sieve": {"sound": "wood"},
+	"oak_sieve": {"sound": "wood"},
+	"pale_oak_sieve": {"sound": "wood"},
+	"spruce_sieve": {"sound": "wood"},
+	"warped_sieve": {"sound": "nether_wood"},
+	"infested_oak_leaves": {"sound": "grass"},
+	"infested_spruce_leaves": {"sound": "grass"},
+	"infested_birch_leaves": {"sound": "grass"},
+	"infested_jungle_leaves": {"sound": "grass"},
+	"infested_acacia_leaves": {"sound": "grass"},
+	"infested_dark_oak_leaves": {"sound": "grass"},
+	"infested_mangrove_leaves": {"sound": "grass"},
+	"infested_cherry_leaves": {"sound": "grass"},
+	"infested_pale_oak_leaves": {"sound": "grass"},
+	"infested_azalea_leaves": {"sound": "grass"},
+	"infested_flowering_azalea_leaves": {"sound": "grass"}
 }
