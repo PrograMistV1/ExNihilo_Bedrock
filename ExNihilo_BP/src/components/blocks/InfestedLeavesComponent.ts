@@ -7,24 +7,11 @@ import {
     Vector3
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
+import {LEAVES_TO_INFESTED_MAP} from "../../data/InfestedLeavesData";
 
-const LEAVES_LIST = {
-    "minecraft:oak_leaves": "exnihilo:infested_oak_leaves",
-    "minecraft:spruce_leaves": "exnihilo:infested_spruce_leaves",
-    "minecraft:birch_leaves": "exnihilo:infested_birch_leaves",
-    "minecraft:jungle_leaves": "exnihilo:infested_jungle_leaves",
-    "minecraft:acacia_leaves": "exnihilo:infested_acacia_leaves",
-    "minecraft:dark_oak_leaves": "exnihilo:infested_dark_oak_leaves",
-    "minecraft:mangrove_leaves": "exnihilo:infested_mangrove_leaves",
-    "minecraft:cherry_leaves": "exnihilo:infested_cherry_leaves",
-    "minecraft:pale_oak_leaves": "exnihilo:infested_pale_oak_leaves",
-    "minecraft:azalea_leaves": "exnihilo:infested_azalea_leaves",
-    "minecraft:flowering_azalea_leaves": "exnihilo:infested_flowering_azalea_leaves",
-};
+export const INFESTED_STATE = "exnihilo:infested" as keyof BlockStateSuperset;
 
-const INFESTED_STATE = "exnihilo:infested" as keyof BlockStateSuperset;
-
-export class InfestedLeaves implements BlockCustomComponent {
+export class InfestedLeavesComponent implements BlockCustomComponent {
     onRandomTick(e: BlockComponentRandomTickEvent): void {
         const {block, dimension} = e;
 
@@ -37,7 +24,7 @@ export class InfestedLeaves implements BlockCustomComponent {
 
     onPlace(e: BlockComponentOnPlaceEvent): void {
         for (const target of getNeighbors(e.dimension, e.block)) {
-            if (LEAVES_LIST[target.typeId]) {
+            if (LEAVES_TO_INFESTED_MAP[target.typeId]) {
                 target.setPermutation(target.permutation.withState('persistent_bit', true));
                 target.setPermutation(target.permutation.withState('update_bit', false));
             }
@@ -68,7 +55,7 @@ function* getNeighbors(dimension: Dimension, block: Block): Generator<Block> {
 
 function spread(dimension: Dimension, block: Block): void {
     for (const target of getNeighbors(dimension, block)) {
-        const newType = LEAVES_LIST[target.typeId];
+        const newType = LEAVES_TO_INFESTED_MAP[target.typeId];
         if (newType) {
             dimension.setBlockType(target, newType);
         }

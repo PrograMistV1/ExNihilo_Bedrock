@@ -27,8 +27,9 @@
 			"minecraft:display_name": "Infested Acacia Leaves",
 			"minecraft:light_dampening": 9,
 			"minecraft:destructible_by_mining": {
-				"seconds_to_destroy": 0.5
+				"seconds_to_destroy": 0.2
 			},
+			"minecraft:loot": "loot_tables/empty.json",
 			"tag:minecraft:is_hoe_item_destructible": {},
 			"exnihilo:infested_leaves": {}
 		},

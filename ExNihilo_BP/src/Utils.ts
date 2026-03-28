@@ -1,12 +1,12 @@
 import {Block, Dimension, Entity, EntityInventoryComponent, ItemStack, Player, Vector3} from "@minecraft/server";
 
-type SelectedItemContext = {
+export type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
     item?: ItemStack;
     slot: number;
 };
 
-function getTileEntity(block: Block, entityId: string): Entity | undefined {
+export function getTileEntity(block: Block, entityId: string): Entity | undefined {
     const pos = block.location;
     const entities = block.dimension.getEntities({
         type: entityId,
@@ -22,7 +22,7 @@ function getTileEntity(block: Block, entityId: string): Entity | undefined {
     return entities[0];
 }
 
-function getSelectedItemContext(player: Player): SelectedItemContext | null {
+export function getSelectedItemContext(player: Player): SelectedItemContext | null {
     const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;
     const container = inventory?.container;
     if (!container) return null;
@@ -33,7 +33,7 @@ function getSelectedItemContext(player: Player): SelectedItemContext | null {
     return {container, item, slot};
 }
 
-function consumeSelectedItem(selectedItem: SelectedItemContext, amount: number = 1): number {
+export function consumeSelectedItem(selectedItem: SelectedItemContext, amount: number = 1): number {
     const newAmount = selectedItem.item.amount - amount;
     if (newAmount > 0) {
         selectedItem.item.amount = newAmount;
@@ -44,7 +44,20 @@ function consumeSelectedItem(selectedItem: SelectedItemContext, amount: number =
     return 0;
 }
 
-function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): void {
+export function damageSelectedItem(selectedItem: SelectedItemContext, player: Player, damage: number = 1): void {
+    const durability = selectedItem.item.getComponent("minecraft:durability");
+    if (!durability) return;
+
+    durability.damage += damage;
+    if (durability.damage >= durability.maxDurability) {
+        selectedItem.container.setItem(selectedItem.slot, null);
+        player.dimension.playSound('random.break', player.location, {volume: 1.0, pitch: 0.9});
+    } else {
+        selectedItem.container.setItem(selectedItem.slot, selectedItem.item);
+    }
+}
+
+export function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): void {
     const entity = dimension.spawnItem(drop, location);
     entity.applyImpulse({
         x: Math.random() * 0.03,
@@ -52,11 +65,3 @@ function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): voi
         z: Math.random() * 0.03
     });
 }
-
-export {
-    getTileEntity,
-    getSelectedItemContext,
-    consumeSelectedItem,
-    dropItem,
-    SelectedItemContext
-};

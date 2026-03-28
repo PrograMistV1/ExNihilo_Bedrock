@@ -17,9 +17,9 @@ import {
     WeatherType,
     world
 } from "@minecraft/server";
-import {CompostableItems} from "../data/CompostableItems";
-import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../Utils";
-import {BARREL_TILE_ID} from "../data/TileList";
+import {CompostableItems} from "../../data/CompostableItems";
+import {consumeSelectedItem, dropItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../../Utils";
+import {BARREL_TILE_ID} from "../../data/TileList";
 
 type BarrelFillType =
     "exnihilo:default"

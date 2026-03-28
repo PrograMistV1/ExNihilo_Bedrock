@@ -8,8 +8,8 @@ import {
     ItemStack,
     Player
 } from "@minecraft/server";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../Utils";
-import {CRUCIBLE_TILE_ID} from "../data/TileList";
+import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
+import {CRUCIBLE_TILE_ID} from "../../data/TileList";
 import {
     CRUCIBLE_CONSTANTS,
     CrucibleInput,
@@ -19,7 +19,7 @@ import {
     InputLava,
     MeltableBlocks,
     VARIANT_STATE_MAP
-} from "../data/CrucibleData";
+} from "../../data/CrucibleData";
 
 export class CrucibleComponent implements BlockCustomComponent {
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {

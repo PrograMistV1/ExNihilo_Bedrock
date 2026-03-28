@@ -17,6 +17,13 @@
 		"calcite_pebble": {"textures": "textures/items/calcite_pebble"},
 		"deepslate_pebble": {"textures": "textures/items/deepslate_pebble"},
 		"dripstone_pebble": {"textures": "textures/items/dripstone_pebble"},
-		"tuff_pebble": {"textures": "textures/items/tuff_pebble"}
+		"tuff_pebble": {"textures": "textures/items/tuff_pebble"},
+		"wooden_crook": {"textures": "textures/items/crooks/wooden_crook"},
+		"stone_crook": {"textures": "textures/items/crooks/stone_crook"},
+		"copper_crook": {"textures": "textures/items/crooks/copper_crook"},
+		"iron_crook": {"textures": "textures/items/crooks/iron_crook"},
+		"golden_crook": {"textures": "textures/items/crooks/golden_crook"},
+		"diamond_crook": {"textures": "textures/items/crooks/diamond_crook"},
+		"netherite_crook": {"textures": "textures/items/crooks/netherite_crook"}
 	}
 }

@@ -12,7 +12,7 @@ import {
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../Utils";
+import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
 import {
     MESH_ITEM_BY_TYPE,
     MESH_TYPE_BY_ITEM,
@@ -20,9 +20,9 @@ import {
     SIEVE_CONSTANTS,
     SIFTABLE_BLOCK_STATES,
     VARIANT_STATE_MAP
-} from "../data/SieveData";
-import {SIEVE_TILE_ID} from "../data/TileList";
-import {rollDrops} from "../data/loot/SieveLoot";
+} from "../../data/SieveData";
+import {SIEVE_TILE_ID} from "../../data/TileList";
+import {rollDrops} from "../../data/loot/SieveLoot";
 
 export class SieveComponent implements BlockCustomComponent {
     onBreak(e: BlockComponentBlockBreakEvent): void {

@@ -108,6 +108,26 @@
 						]
 					}
 				]
+			},
+			{
+				"category_name": "equipment",
+				"groups": [
+					{
+						"group_identifier": {
+							"icon": "exnihilo:wooden_crook",
+							"name": "exnihilo:crooks"
+						},
+						"items": [
+							"exnihilo:wooden_crook",
+							"exnihilo:stone_crook",
+							"exnihilo:copper_crook",
+							"exnihilo:iron_crook",
+							"exnihilo:golden_crook",
+							"exnihilo:diamond_crook",
+							"exnihilo:netherite_crook"
+						]
+					}
+				]
 			}
 		]
 	}
