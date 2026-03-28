@@ -24,6 +24,15 @@
 		"iron_crook": {"textures": "textures/items/crooks/iron_crook"},
 		"golden_crook": {"textures": "textures/items/crooks/golden_crook"},
 		"diamond_crook": {"textures": "textures/items/crooks/diamond_crook"},
-		"netherite_crook": {"textures": "textures/items/crooks/netherite_crook"}
+		"netherite_crook": {"textures": "textures/items/crooks/netherite_crook"},
+		"silkworm": {"textures": "textures/items/silkworm"},
+		"cooked_silkworm": {"textures": "textures/items/cooked_silkworm"},
+		"wooden_hammer": {"textures": "textures/items/hammers/wooden_hammer"},
+		"stone_hammer": {"textures": "textures/items/hammers/stone_hammer"},
+		"copper_hammer": {"textures": "textures/items/hammers/copper_hammer"},
+		"iron_hammer": {"textures": "textures/items/hammers/iron_hammer"},
+		"golden_hammer": {"textures": "textures/items/hammers/golden_hammer"},
+		"diamond_hammer": {"textures": "textures/items/hammers/diamond_hammer"},
+		"netherite_hammer": {"textures": "textures/items/hammers/netherite_hammer"}
 	}
 }

@@ -126,6 +126,21 @@
 							"exnihilo:diamond_crook",
 							"exnihilo:netherite_crook"
 						]
+					},
+					{
+						"group_identifier": {
+							"icon": "exnihilo:wooden_hammer",
+							"name": "exnihilo:hammers"
+						},
+						"items": [
+							"exnihilo:wooden_hammer",
+							"exnihilo:stone_hammer",
+							"exnihilo:copper_hammer",
+							"exnihilo:iron_hammer",
+							"exnihilo:golden_hammer",
+							"exnihilo:diamond_hammer",
+							"exnihilo:netherite_hammer"
+						]
 					}
 				]
 			}

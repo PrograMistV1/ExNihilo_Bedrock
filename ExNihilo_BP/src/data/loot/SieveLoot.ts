@@ -19,7 +19,13 @@ const STRING_MESH_DROPS: Record<string, RollPattern[]> = {
         {result: "exnihilo:pebble_dripstone", chances: [0.5, 0.1]},
         {result: "exnihilo:pebble_tuff", chances: [0.5, 0.1]},
     ],
-    "exnihilo:gravel": []
+    "exnihilo:soul_sand": [
+        {result: "minecraft:nether_wart", chances: [0.1]}
+    ],
+    "exnihilo:dust": [
+        {result: "minecraft:gunpowder", chances: [0.07]},
+        {result: "minecraft:bone_meal", chances: [0.2]}
+    ]
 }
 
 const DROP_BY_MESH: Record<MeshType, Record<string, RollPattern[]>> = {

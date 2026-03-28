@@ -1,0 +1,45 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:stone_hammer",
+			"menu_category": {
+				"category": "equipment"
+			}
+		},
+		"components": {
+			"minecraft:icon": "stone_hammer",
+			"minecraft:max_stack_size": 1,
+			"minecraft:hand_equipped": true,
+			"minecraft:durability": {"max_durability": 132},
+			"minecraft:digger": {
+				"use_efficiency": true,
+				"destroy_speeds": [
+					{
+						"block": {
+							"tags": "q.any_tag('minecraft:is_pickaxe_item_destructible')"
+						},
+						"speed": 4
+					},
+					{
+						"block": "minecraft:gravel",
+						"speed": 4
+					},
+					{
+						"block": "minecraft:sand",
+						"speed": 4
+					}
+				]
+			},
+			"exnihilo:hammer": {},
+			"minecraft:tags": {
+				"tags": [
+					"minecraft:digger",
+					"minecraft:is_pickaxe",
+					"minecraft:is_tool",
+					"minecraft:stone_tier"
+				]
+			}
+		}
+	}
+}
