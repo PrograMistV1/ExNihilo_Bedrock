@@ -27,7 +27,8 @@
 					"minecraft:digger",
 					"minecraft:is_hoe",
 					"minecraft:is_tool",
-					"minecraft:diamond_tier"
+					"minecraft:diamond_tier",
+					"minecraft:transformable_items"
 				]
 			}
 		}

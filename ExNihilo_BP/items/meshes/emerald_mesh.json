@@ -9,7 +9,13 @@
 		},
 		"components": {
 			"minecraft:icon": "emerald_mesh",
-			"minecraft:max_stack_size": 1
+			"minecraft:max_stack_size": 1,
+			"minecraft:durability": {"max_durability": 1}, // ... why the hell don’t smithing recipes work without this?
+			"minecraft:tags": {
+				"tags": [
+					"minecraft:transformable_items"
+				]
+			}
 		}
 	}
 }
