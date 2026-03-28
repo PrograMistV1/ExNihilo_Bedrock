@@ -1,0 +1,23 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:iron_crook"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"NN",
+			" N",
+			" N"
+		],
+		"key": {
+			"N": "minecraft:iron_nugget"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:iron_nugget"
+			}
+		],
+		"result": "exnihilo:iron_crook"
+	}
+}

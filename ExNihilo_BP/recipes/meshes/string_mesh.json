@@ -1,0 +1,19 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:string_mesh"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["SSS", "SSS", "SSS"],
+		"key": {
+			"S": "minecraft:string"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:string"
+			}
+		],
+		"result": "exnihilo:string_mesh"
+	}
+}

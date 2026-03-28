@@ -1,0 +1,23 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:copper_crook"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"NN",
+			" N",
+			" N"
+		],
+		"key": {
+			"N": "minecraft:copper_nugget"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:copper_nugget"
+			}
+		],
+		"result": "exnihilo:copper_crook"
+	}
+}

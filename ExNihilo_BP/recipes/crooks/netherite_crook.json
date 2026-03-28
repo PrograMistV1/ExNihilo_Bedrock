@@ -1,0 +1,13 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_smithing_transform": {
+		"description": {
+			"identifier": "exnihilo:netherite_crook"
+		},
+		"tags": ["smithing_table"],
+		"template": "minecraft:netherite_upgrade_smithing_template",
+		"base": "exnihilo:diamond_crook",
+		"addition": "minecraft:netherite_ingot",
+		"result": "exnihilo:netherite_crook"
+	}
+}

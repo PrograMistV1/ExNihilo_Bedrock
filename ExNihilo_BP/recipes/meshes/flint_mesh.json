@@ -1,0 +1,27 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:flint_mesh"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"F F",
+			"FMF",
+			"F F"
+		],
+		"key": {
+			"F": "minecraft:flint",
+			"M": "exnihilo:string_mesh"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:flint"
+			},
+			{
+				"item": "exnihilo:string_mesh"
+			}
+		],
+		"result": "exnihilo:flint_mesh"
+	}
+}

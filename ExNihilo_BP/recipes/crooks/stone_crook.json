@@ -1,0 +1,23 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:stone_crook"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"CC",
+			" C",
+			" C"
+		],
+		"key": {
+			"C": "minecraft:cobblestone"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:cobblestone"
+			}
+		],
+		"result": "exnihilo:stone_crook"
+	}
+}
