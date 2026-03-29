@@ -7,7 +7,11 @@
 			"geometry": {"default": "geometry.sieve_contained_block"},
 			"textures": {
 				"default": "textures/misc/missing_texture",
-				"dirt": "textures/blocks/dirt"
+				"dirt": "textures/blocks/dirt",
+				"gravel": "textures/blocks/gravel",
+				"sand": "textures/blocks/sand",
+				"soul_sand": "textures/blocks/soul_sand",
+				"dust": "textures/blocks/dust"
 			},
 			"render_controllers": ["controller.render.exnihilo_sieve"],
 			"scripts": {

@@ -46,11 +46,19 @@
 		},
 		"component_groups": {
 			"exnihilo:default": {"minecraft:variant": {"value": 0}},
-			"exnihilo:dirt": {"minecraft:variant": {"value": 1}}
+			"exnihilo:dirt": {"minecraft:variant": {"value": 1}},
+			"exnihilo:gravel": {"minecraft:variant": {"value": 2}},
+			"exnihilo:sand": {"minecraft:variant": {"value": 3}},
+			"exnihilo:soul_sand": {"minecraft:variant": {"value": 4}},
+			"exnihilo:dust": {"minecraft:variant": {"value": 5}}
 		},
 		"events": {
 			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default"]}},
-			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt"]}}
+			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt"]}},
+			"exnihilo:gravel": {"add": {"component_groups": ["exnihilo:gravel"]}},
+			"exnihilo:sand": {"add": {"component_groups": ["exnihilo:sand"]}},
+			"exnihilo:soul_sand": {"add": {"component_groups": ["exnihilo:soul_sand"]}},
+			"exnihilo:dust": {"add": {"component_groups": ["exnihilo:dust"]}}
 		}
 	}
 }

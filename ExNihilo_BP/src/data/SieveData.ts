@@ -19,6 +19,10 @@ export const SIEVE_CONSTANTS = {
 
 export const SIFTABLE_BLOCK_STATES: Readonly<Record<string, string>> = {
     "minecraft:dirt": "exnihilo:dirt",
+    "minecraft:gravel": "exnihilo:gravel",
+    "minecraft:sand": "exnihilo:sand",
+    "minecraft:soul_sand": "exnihilo:soul_sand",
+    "exnihilo:dust": "exnihilo:dust",
 };
 
 export const MESH_ITEM_BY_TYPE = {
@@ -40,4 +44,8 @@ export const MESH_TYPE_BY_ITEM: Record<MeshItemId, Exclude<MeshType, "null">> =
 export const VARIANT_STATE_MAP = {
     0: "exnihilo:default",
     1: "exnihilo:dirt",
+    2: "exnihilo:gravel",
+    3: "exnihilo:sand",
+    4: "exnihilo:soul_sand",
+    5: "exnihilo:dust",
 }

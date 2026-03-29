@@ -5,7 +5,8 @@
 			"arrays": {
 				"textures": {
 					"array.tex_variant": [
-						"texture.default", "texture.dirt"
+						"texture.default", "texture.dirt", "texture.gravel", "texture.sand", "texture.soul_sand",
+						"texture.dust"
 					]
 				}
 			},
