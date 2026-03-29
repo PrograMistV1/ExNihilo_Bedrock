@@ -19,10 +19,18 @@
 			},
 			"minecraft:material_instances": {
 				"*": {
-					"texture": "infesting_acacia_leaves",
+					"texture": "infested_acacia_leaves",
 					"render_method": "alpha_test_to_opaque",
-					"ambient_occlusion": 0.8
-				}
+					"ambient_occlusion": 0.8,
+					"isotropic": false
+				},
+				"down": {
+					"texture": "infested_acacia_leaves",
+					"render_method": "alpha_test_to_opaque",
+					"ambient_occlusion": 0.8,
+					"isotropic": true
+				},
+				"up": "down"
 			},
 			"minecraft:display_name": "Infested Acacia Leaves",
 			"minecraft:light_dampening": 9,
@@ -39,10 +47,18 @@
 				"components": {
 					"minecraft:material_instances": {
 						"*": {
-							"texture": "infested_acacia_leaves",
+							"texture": "fully_infested_acacia_leaves",
 							"render_method": "alpha_test_to_opaque",
-							"ambient_occlusion": 0.8
-						}
+							"ambient_occlusion": 0.8,
+							"isotropic": false
+						},
+						"down": {
+							"texture": "fully_infested_acacia_leaves",
+							"render_method": "alpha_test_to_opaque",
+							"ambient_occlusion": 0.8,
+							"isotropic": true
+						},
+						"up": "down"
 					}
 				}
 			}

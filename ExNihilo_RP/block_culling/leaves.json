@@ -6,9 +6,8 @@
 		},
 		"rules": [
 			{
-				"cull_against_full_and_opaque": true,
-				"direction": "up",
 				"condition": "same_culling_layer",
+				"direction": "up",
 				"geometry_part": {
 					"bone": "root",
 					"cube": 0,
@@ -16,7 +15,24 @@
 				}
 			},
 			{
-				"cull_against_full_and_opaque": true,
+				"condition": "same_culling_layer",
+				"direction": "south",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "south"
+				}
+			},
+			{
+				"condition": "same_culling_layer",
+				"direction": "east",
+				"geometry_part": {
+					"bone": "root",
+					"cube": 0,
+					"face": "east"
+				}
+			},
+			{
 				"direction": "down",
 				"geometry_part": {
 					"bone": "root",
@@ -25,19 +41,15 @@
 				}
 			},
 			{
-				"cull_against_full_and_opaque": true,
-				"direction": "east",
-				"condition": "same_culling_layer",
+				"direction": "west",
 				"geometry_part": {
 					"bone": "root",
 					"cube": 0,
-					"face": "east"
+					"face": "west"
 				}
 			},
 			{
-				"cull_against_full_and_opaque": true,
 				"direction": "north",
-				"condition": "same_culling_layer",
 				"geometry_part": {
 					"bone": "root",
 					"cube": 0,
