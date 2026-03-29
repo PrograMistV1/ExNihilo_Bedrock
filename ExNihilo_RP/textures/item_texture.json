@@ -33,6 +33,7 @@
 		"iron_hammer": {"textures": "textures/items/hammers/iron_hammer"},
 		"golden_hammer": {"textures": "textures/items/hammers/golden_hammer"},
 		"diamond_hammer": {"textures": "textures/items/hammers/diamond_hammer"},
-		"netherite_hammer": {"textures": "textures/items/hammers/netherite_hammer"}
+		"netherite_hammer": {"textures": "textures/items/hammers/netherite_hammer"},
+		"porcelain": {"textures": "textures/items/porcelain"}
 	}
 }

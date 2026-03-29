@@ -1,0 +1,23 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:unfired_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"P P",
+			"P P",
+			"PPP"
+		],
+		"key": {
+			"P": "exnihilo:porcelain"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:porcelain"
+			}
+		],
+		"result": "exnihilo:unfired_crucible"
+	}
+}

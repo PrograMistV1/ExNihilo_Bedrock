@@ -1,0 +1,16 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_furnace": {
+		"description": {
+			"identifier": "exnihilo:fired_crucible"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:unfired_crucible"
+			}
+		],
+		"tags": ["furnace"],
+		"input": "exnihilo:unfired_crucible",
+		"output": "exnihilo:fired_crucible"
+	}
+}
