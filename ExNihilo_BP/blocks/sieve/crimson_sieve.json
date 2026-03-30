@@ -21,7 +21,6 @@
 			"minecraft:material_instances": {
 				"*": {"texture": "crimson_planks"}
 			},
-			"minecraft:display_name": "Crimson Sieve",
 			"minecraft:light_dampening": 2,
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
 			"tag:minecraft:is_axe_item_destructible": {},

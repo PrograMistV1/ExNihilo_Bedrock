@@ -13,7 +13,6 @@
 			"minecraft:material_instances": {
 				"*": {"texture": "spruce_planks"}
 			},
-			"minecraft:display_name": "Spruce Barrel",
 			"minecraft:light_dampening": 2,
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
 			"tag:minecraft:is_axe_item_destructible": {},

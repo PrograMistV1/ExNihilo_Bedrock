@@ -32,7 +32,6 @@
 				},
 				"up": "down"
 			},
-			"minecraft:display_name": "Infested Oak Leaves",
 			"minecraft:light_dampening": 9,
 			"minecraft:destructible_by_mining": {
 				"seconds_to_destroy": 0.2
