@@ -284,7 +284,6 @@ function incrementTimer(block: Block): number {
     const currTime = tile.getDynamicProperty("timer") as number;
     const newTime = currTime + 1;
     tile.setDynamicProperty("timer", newTime);
-    console.log(newTime)
     return newTime;
 }
 
