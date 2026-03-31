@@ -1,4 +1,11 @@
-import {Block, Dimension, Entity, EntityInventoryComponent, ItemStack, Player, Vector3} from "@minecraft/server";
+import {
+    Block,
+    Entity,
+    EntityDamageCause,
+    EntityInventoryComponent,
+    ItemStack,
+    Player,
+} from "@minecraft/server";
 
 export type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
@@ -57,11 +64,7 @@ export function damageSelectedItem(selectedItem: SelectedItemContext, player: Pl
     }
 }
 
-export function dropItem(drop: ItemStack, dimension: Dimension, location: Vector3): void {
-    const entity = dimension.spawnItem(drop, location);
-    entity.applyImpulse({
-        x: Math.random() * 0.03,
-        y: 0.03,
-        z: Math.random() * 0.03
-    });
+export function applyLavaEffects(entity: Entity, seconds: number = 10, damage: number = 4): void {
+    entity.setOnFire(seconds);
+    entity.applyDamage(damage, {cause: EntityDamageCause.lava});
 }

@@ -9,6 +9,7 @@
 		},
 		"components": {
 			"minecraft:cannot_be_attacked": {},
+			"minecraft:renders_when_invisible": {},
 			"minecraft:persistent": {},
 			"minecraft:breathable": {
 				"breathes_solids": true,
@@ -38,7 +39,6 @@
 		},
 		"component_groups": {
 			"exnihilo:collidable": {"minecraft:is_collidable": {}},
-			"exnihilo:visible": {"minecraft:renders_when_invisible": {}},
 			"exnihilo:default": {"minecraft:variant": {"value": 0}},
 			"exnihilo:compost": {"minecraft:variant": {"value": 1}},
 			"exnihilo:dirt": {"minecraft:variant": {"value": 2}},
@@ -47,8 +47,6 @@
 			"exnihilo:lava": {"minecraft:variant": {"value": 5}}
 		},
 		"events": {
-			"exnihilo:show": {"add": {"component_groups": ["exnihilo:visible"]}},
-			"exnihilo:hide": {"remove": {"component_groups": ["exnihilo:visible"]}},
 			"exnihilo:default": {
 				"add": {"component_groups": ["exnihilo:default"]},
 				"remove": {"component_groups": ["exnihilo:collidable"]}
