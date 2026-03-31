@@ -38,6 +38,7 @@ import {
     SelectedItemContext
 } from "../../Utils";
 import {BARREL_TILE_ID} from "../../data/TileList";
+import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
@@ -222,7 +223,6 @@ function handleSpecialInteractions(block: Block, player: Player): void {
     }
 }
 
-
 function getInputBlock(barrel: Block): BarrelInput {
     const tile = getTileEntity(barrel, BARREL_TILE_ID);
     if (!tile) return InputDefault;
@@ -231,21 +231,28 @@ function getInputBlock(barrel: Block): BarrelInput {
 }
 
 function setInputBlock(block: Block, input: BarrelInput): void {
-    let tile = getTileEntity(block, BARREL_TILE_ID);
-    if (tile !== undefined) {
-        if (input === InputDefault) {
-            tile.remove();
-            return;
-        }
-        tile.triggerEvent(input);
-    } else {
-        const tile = block.dimension.spawnEntity(BARREL_TILE_ID, {
-            x: block.x + 0.5,
-            y: block.y + BARREL_CONSTANTS.HEIGHT_OFFSET,
-            z: block.z + 0.5
-        }, {spawnEvent: input});
-        tile.setDynamicProperty("filling", 0);
-        tile.setDynamicProperty("timer", 0);
+    const isLava = input === InputLava;
+    const isDefault = input === InputDefault;
+
+    block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
+
+    const tile = getTileEntity(block, BARREL_TILE_ID);
+    if (tile) {
+        isDefault ? tile.remove() : tile.triggerEvent(input);
+        return;
+    }
+    if (!isDefault) {
+        const newTile = block.dimension.spawnEntity(
+            BARREL_TILE_ID,
+            {
+                x: block.x + 0.5,
+                y: block.y + BARREL_CONSTANTS.HEIGHT_OFFSET,
+                z: block.z + 0.5
+            },
+            {spawnEvent: input}
+        );
+        newTile.setDynamicProperty("filling", 0);
+        newTile.setDynamicProperty("timer", 0);
     }
 }
 

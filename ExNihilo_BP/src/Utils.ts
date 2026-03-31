@@ -1,11 +1,4 @@
-import {
-    Block,
-    Entity,
-    EntityDamageCause,
-    EntityInventoryComponent,
-    ItemStack,
-    Player,
-} from "@minecraft/server";
+import {Block, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
 
 export type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;

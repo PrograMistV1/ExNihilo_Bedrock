@@ -6,6 +6,9 @@
 			"menu_category": {
 				"category": "construction",
 				"is_hidden_in_commands": false
+			},
+			"states": {
+				"exnihilo:emit_light": [false, true]
 			}
 		},
 		"components": {
@@ -33,6 +36,14 @@
 				"movement_type": "immovable"
 				// Unfortunately, this is a necessary measure, since barrels largely depend on the entity tile, and pistons can move these entities.
 			}
-		}
+		},
+		"permutations": [
+			{
+				"condition": "q.block_state('exnihilo:emit_light')",
+				"components": {
+					"minecraft:light_emission": 13
+				}
+			}
+		]
 	}
 }
