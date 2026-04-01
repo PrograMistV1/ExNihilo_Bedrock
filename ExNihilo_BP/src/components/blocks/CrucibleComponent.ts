@@ -4,11 +4,12 @@ import {
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
+    Entity,
     EntityVariantComponent,
     ItemStack,
     Player
 } from "@minecraft/server";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
+import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
 import {CRUCIBLE_TILE_ID} from "../../data/TileList";
 import {
     CRUCIBLE_CONSTANTS,
@@ -33,7 +34,29 @@ export class CrucibleComponent implements BlockCustomComponent {
 
     onTick(e: BlockComponentTickEvent): void {
         handleMeltingTick(e.block);
+        handleLavaEntities(e.block);
     }
+}
+
+function handleLavaEntities(block: Block): void {
+    if (getInputBlock(block) !== InputLava) return;
+
+    for (const entity of getContainedEntities(block)) {
+        applyLavaEffects(entity);
+    }
+}
+
+function getContainedEntities(block: Block): Entity[] {
+    const newPos = {
+        x: block.x + 0.5,
+        y: Math.floor(block.y) + 0.5625,
+        z: block.z + 0.5
+    };
+    return block.dimension.getEntities({
+        excludeTypes: [CRUCIBLE_TILE_ID],
+        location: newPos,
+        maxDistance: 0.4,
+    });
 }
 
 function handleMeltingTick(block: Block): void {
@@ -57,7 +80,7 @@ function handleMeltable(block: Block, player: Player): void {
     if (!selectedItem.item || !canInsertMeltable || fillAmount === 0 || getFilling(block) === 100) return;
 
     setInputBlock(block, InputGravel);
-    setFilling(block, getFilling(block) + 10);
+    setFilling(block, getFilling(block) + fillAmount);
     consumeSelectedItem(selectedItem);
 }
 
