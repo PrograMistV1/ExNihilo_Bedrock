@@ -1,6 +1,7 @@
 import {
     Block,
     BlockComponentBlockBreakEvent,
+    BlockComponentPlayerBreakEvent,
     BlockComponentPlayerInteractEvent,
     BlockCustomComponent,
     ButtonState,
@@ -33,6 +34,19 @@ export class SieveComponent implements BlockCustomComponent {
         handleMesh(e.player, e.block);
         handleProgress(e.block);
         handleInput(e.player, e.block);
+    }
+
+    onPlayerBreak(e: BlockComponentPlayerBreakEvent): void {
+        const mesh = e.brokenBlockPermutation.getState("exnihilo:mesh" as keyof BlockStateSuperset) as MeshType;
+        if (mesh === "null") return;
+
+        e.dimension.spawnItem(new ItemStack(MESH_ITEM_BY_TYPE[mesh]),
+            {
+                x: e.block.x + 0.5,
+                y: e.block.y + 0.5,
+                z: e.block.z + 0.5
+            }
+        );
     }
 }
 
