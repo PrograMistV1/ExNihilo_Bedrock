@@ -99,7 +99,11 @@ function handleMesh(player: Player, block: Block): void {
     const lastInteractTick = (player.getDynamicProperty("last_sieve_interact") as number | undefined) ?? 0;
     if (system.currentTick - lastInteractTick < SIEVE_CONSTANTS.interactCooldownTicks) return;
 
-    if (oldMesh !== "null" && player.inputInfo.getButtonState(InputButton.Sneak) === ButtonState.Pressed && selectedItem.item == null) {
+    if (oldMesh !== "null"
+        && player.inputInfo.getButtonState(InputButton.Sneak) === ButtonState.Pressed
+        && selectedItem.item == null
+        && getInputBlock(block) === undefined
+    ) {
         setMeshType(block, "null");
         selectedItem.container.setItem(selectedItem.slot, meshTypeToItem(oldMesh));
     }
