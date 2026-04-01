@@ -1,6 +1,7 @@
 import {
     Block,
     BlockComponentBlockBreakEvent,
+    BlockComponentPlayerBreakEvent,
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
@@ -21,6 +22,7 @@ import {
     MeltableBlocks,
     VARIANT_STATE_MAP
 } from "../../data/CrucibleData";
+import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
 export class CrucibleComponent implements BlockCustomComponent {
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
@@ -35,6 +37,21 @@ export class CrucibleComponent implements BlockCustomComponent {
     onTick(e: BlockComponentTickEvent): void {
         handleMeltingTick(e.block);
         handleLavaEntities(e.block);
+    }
+
+    onPlayerBreak(e: BlockComponentPlayerBreakEvent): void {
+        const selectedItem = getSelectedItemContext(e.player);
+        if (!selectedItem.item) return;
+
+        if (selectedItem.item.hasTag("minecraft:is_pickaxe")) {
+            e.dimension.spawnItem(new ItemStack(e.brokenBlockPermutation.type.id),
+                {
+                    x: e.block.x + 0.5,
+                    y: e.block.y + 0.5,
+                    z: e.block.z + 0.5
+                }
+            );
+        }
     }
 }
 
@@ -104,21 +121,28 @@ function getInputBlock(crucible: Block): CrucibleInput {
 }
 
 function setInputBlock(block: Block, input: CrucibleInput): void {
-    let tile = getTileEntity(block, CRUCIBLE_TILE_ID);
-    if (tile !== undefined) {
-        if (input === InputDefault) {
-            tile.remove();
-            return;
-        }
-        tile.triggerEvent(input);
-    } else {
-        tile = block.dimension.spawnEntity(CRUCIBLE_TILE_ID, {
-            x: block.x + CRUCIBLE_CONSTANTS.CENTER_OFFSET,
-            y: block.y + CRUCIBLE_CONSTANTS.HEIGHT_OFFSET,
-            z: block.z + CRUCIBLE_CONSTANTS.CENTER_OFFSET
-        }, {spawnEvent: input});
-        tile.setDynamicProperty("filling", 0);
-        tile.setDynamicProperty("timer", 0);
+    const isLava = input === InputLava;
+    const isDefault = input === InputDefault;
+
+    block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
+
+    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
+    if (tile) {
+        isDefault ? tile.remove() : tile.triggerEvent(input);
+        return;
+    }
+    if (!isDefault) {
+        const newTile = block.dimension.spawnEntity(
+            CRUCIBLE_TILE_ID,
+            {
+                x: block.x + CRUCIBLE_CONSTANTS.CENTER_OFFSET,
+                y: block.y + CRUCIBLE_CONSTANTS.HEIGHT_OFFSET,
+                z: block.z + CRUCIBLE_CONSTANTS.CENTER_OFFSET
+            },
+            {spawnEvent: input}
+        );
+        newTile.setDynamicProperty("filling", 0);
+        newTile.setDynamicProperty("timer", 0);
     }
 }
 
