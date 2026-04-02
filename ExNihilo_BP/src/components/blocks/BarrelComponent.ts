@@ -184,7 +184,7 @@ function handleLiquid(block: Block, player: Player): void {
         }
 
         if (itemId === EMPTY_BUCKET_ITEM && filling === 100 && input === liquidType) {
-            drainBarrelToBucket(block, selectedItem, liquid.bucket, liquid.fillSound);
+            drainBarrelToBucket(block, selectedItem, liquid.bucket, liquid.fillSound, player);
             return;
         }
     }
@@ -316,11 +316,22 @@ function drainBarrelToBucket(
     block: Block,
     selectedItem: SelectedItemContext,
     filledBucketItemId: string,
-    soundId: string
+    soundId: string,
+    player: Player
 ): void {
     setFilling(block, 0);
     system.runTimeout(() => setInputBlock(block, InputDefault), 10);
-    selectedItem.container.setItem(selectedItem.slot, new ItemStack(filledBucketItemId, 1));
+    if (selectedItem.item.amount === 1) {
+        selectedItem.container.setItem(selectedItem.slot, new ItemStack(filledBucketItemId, 1));
+    } else {
+        consumeSelectedItem(selectedItem);
+        if (selectedItem.container.emptySlotsCount > 0) {
+            selectedItem.container.addItem(new ItemStack(filledBucketItemId, 1));
+        } else {
+            player.dimension.spawnItem(new ItemStack(filledBucketItemId, 1), player.location);
+            player.dimension.playSound("random.pop", player.location);
+        }
+    }
     block.dimension.playSound(soundId, {x: block.x + 0.5, y: block.y + 0.5, z: block.z + 0.5});
 }
 

@@ -109,7 +109,17 @@ function handleExtractLava(block: Block, player: Player): void {
         || getFilling(block) !== 100) return;
 
     setInputBlock(block, InputDefault);
-    selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
+    if (selectedItem.item.amount === 1) {
+        selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
+    } else {
+        consumeSelectedItem(selectedItem);
+        if (selectedItem.container.emptySlotsCount > 0) {
+            selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
+        } else {
+            player.dimension.spawnItem(new ItemStack("minecraft:lava_bucket", 1), player.location);
+            player.dimension.playSound("random.pop", player.location);
+        }
+    }
     block.dimension.playSound("bucket.fill_lava", block);
 }
 
