@@ -34,6 +34,26 @@
 		"golden_hammer": {"textures": "textures/items/hammers/golden_hammer"},
 		"diamond_hammer": {"textures": "textures/items/hammers/diamond_hammer"},
 		"netherite_hammer": {"textures": "textures/items/hammers/netherite_hammer"},
-		"porcelain": {"textures": "textures/items/porcelain_clay"}
+		"porcelain": {"textures": "textures/items/porcelain_clay"},
+		"acacia_seeds": {"textures": "textures/items/seeds/acacia_seeds"},
+		"bamboo_seeds": {"textures": "textures/items/seeds/bamboo_seeds"},
+		"birch_seeds": {"textures": "textures/items/seeds/birch_seeds"},
+		"cactus_seeds": {"textures": "textures/items/seeds/cactus_seeds"},
+		"carrot_seeds": {"textures": "textures/items/seeds/carrot_seeds"},
+		"crimson_nylium_spores": {"textures": "textures/items/seeds/crimson_nylium_spores"},
+		"dark_oak_seeds": {"textures": "textures/items/seeds/dark_oak_seeds"},
+		"fern_seeds": {"textures": "textures/items/seeds/fern_seeds"},
+		"grass_seeds": {"textures": "textures/items/seeds/grass_seeds"},
+		"jungle_seeds": {"textures": "textures/items/seeds/jungle_seeds"},
+		"kelp_seeds": {"textures": "textures/items/seeds/kelp_seeds"},
+		"large_fern_seeds": {"textures": "textures/items/seeds/large_fern_seeds"},
+		"mycelium_spores": {"textures": "textures/items/seeds/mycelium_spores"},
+		"oak_seeds": {"textures": "textures/items/seeds/oak_seeds"},
+		"pickle_seeds": {"textures": "textures/items/seeds/pickle_seeds"},
+		"potato_seeds": {"textures": "textures/items/seeds/potato_seeds"},
+		"spruce_seeds": {"textures": "textures/items/seeds/spruce_seeds"},
+		"sugarcane_seeds": {"textures": "textures/items/seeds/sugarcane_seeds"},
+		"sweet_berry_seeds": {"textures": "textures/items/seeds/sweet_berry_seeds"},
+		"warped_nylium_spores": {"textures": "textures/items/seeds/warped_nylium_spores"}
 	}
 }
