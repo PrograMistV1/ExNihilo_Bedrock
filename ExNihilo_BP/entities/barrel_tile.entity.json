@@ -35,9 +35,66 @@
 				"add_effects": [
 					{"duration": "infinite", "effect": "invisibility", "visible": false}
 				]
+			},
+			"minecraft:inside_block_notifier": {
+				"block_list": [
+					{
+						"block": {"name": "exnihilo:acacia_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:bamboo_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:birch_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:cherry_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:crimson_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:dark_oak_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:jungle_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:mangrove_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:oak_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:pale_oak_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:spruce_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:stone_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					},
+					{
+						"block": {"name": "exnihilo:warped_barrel"},
+						"exited_block_event": {"event": "exnihilo:remove", "target": "self"}
+					}
+				]
 			}
 		},
 		"component_groups": {
+			"exnihilo:remove": {"minecraft:instant_despawn": {}},
 			"exnihilo:collidable": {"minecraft:is_collidable": {}},
 			"exnihilo:default": {"minecraft:variant": {"value": 0}},
 			"exnihilo:compost": {"minecraft:variant": {"value": 1}},
@@ -61,7 +118,8 @@
 			},
 			"exnihilo:lava": {
 				"add": {"component_groups": ["exnihilo:lava"]}, "remove": {"component_groups": ["exnihilo:collidable"]}
-			}
+			},
+			"exnihilo:remove": {"add": {"component_groups": ["exnihilo:remove"]}}
 		}
 	}
 }

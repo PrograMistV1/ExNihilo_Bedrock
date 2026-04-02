@@ -50,14 +50,11 @@ export const CompostableItems: Record<string, number> = {
 
 export const BARREL_CONSTANTS = {
     MAX_FILLING: 100,
-    LEVEL_STEP: 25,
     BARREL_ENTITY_RADIUS: 0.47,
-    WATER_SPLASH_OFFSET_Y: 0.1,
-    LAVA_FIRE_SECONDS: 10,
-    LAVA_DAMAGE: 4,
     COMPOSTING_TIME_TICKS: 514, //1 barrel update tick occurs every 7 game ticks. 514*7≈3600, which equals 3 minutes.
     RAIN_FILL_PER_TICK: 0.33334, //1 minute 45 seconds to fill barrel,
-    HEIGHT_OFFSET: 0.0625
+    HEIGHT_OFFSET: 0.0625,
+    LAVA_IGNITE_CHANCE_PER_TICK: 0.015
 }
 
 export type BarrelInput =

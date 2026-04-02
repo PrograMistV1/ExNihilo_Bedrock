@@ -5,6 +5,7 @@ import {
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
+    CustomComponentParameters,
     Entity,
     EntityComponentTypes,
     EntityOnFireComponent,
@@ -60,10 +61,10 @@ export class BarrelComponent implements BlockCustomComponent {
         handleSpecialInteractions(e.block, e.player);
     }
 
-    onTick(e: BlockComponentTickEvent): void {
+    onTick(e: BlockComponentTickEvent, p: CustomComponentParameters): void {
         handleRainFill(e.block);
         handleWaterEntities(e.block);
-        handleLavaEntities(e.block);
+        handleLava(e.block, (p.params["flammable"] as boolean) ?? false);
         handleCompost(e.block);
     }
 
@@ -74,6 +75,7 @@ export class BarrelComponent implements BlockCustomComponent {
         e.block.dimension.spawnItem(new ItemStack(drop), {x: e.block.x + 0.5, y: e.block.y + 0.5, z: e.block.z + 0.5});
     }
 }
+
 
 world.afterEvents.weatherChange.subscribe(event => {
     if (event.dimension != "overworld") return;
@@ -121,8 +123,32 @@ function handleWaterEntities(block: Block): void {
     }
 }
 
-function handleLavaEntities(block: Block): void {
+function handleLava(block: Block, flammable: boolean): void {
     if (getInputBlock(block) !== InputLava) return;
+
+    if (flammable && Math.random() <= BARREL_CONSTANTS.LAVA_IGNITE_CHANCE_PER_TICK) {
+        const directions = [
+            {x: 1, y: 0, z: 0},
+            {x: 0, y: 0, z: 1},
+            {x: -1, y: 0, z: 0},
+            {x: 0, y: 0, z: -1}
+        ];
+        let ignited = false;
+        for (const dir of directions) {
+            const target = block.offset(dir);
+            const below = block.offset({x: dir.x, y: -1, z: dir.z});
+
+            if (target.isAir && !below.isAir) {
+                target.setType("minecraft:fire");
+                ignited = true;
+                break;
+            }
+        }
+        if (!ignited) {
+            setInputBlock(block, InputDefault);
+            block.setType("minecraft:air");
+        }
+    }
 
     for (const entity of getContainedEntities(block)) {
         applyLavaEffects(entity);
