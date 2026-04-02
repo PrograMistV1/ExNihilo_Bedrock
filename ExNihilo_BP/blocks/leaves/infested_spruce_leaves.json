@@ -21,13 +21,11 @@
 				"*": {
 					"texture": "infested_spruce_leaves",
 					"render_method": "alpha_test_to_opaque",
-					"ambient_occlusion": 0.8,
 					"isotropic": false
 				},
 				"down": {
 					"texture": "infested_spruce_leaves",
 					"render_method": "alpha_test_to_opaque",
-					"ambient_occlusion": 0.8,
 					"isotropic": true
 				},
 				"up": "down"
@@ -48,13 +46,11 @@
 						"*": {
 							"texture": "fully_infested_spruce_leaves",
 							"render_method": "alpha_test_to_opaque",
-							"ambient_occlusion": 0.8,
 							"isotropic": false
 						},
 						"down": {
 							"texture": "fully_infested_spruce_leaves",
 							"render_method": "alpha_test_to_opaque",
-							"ambient_occlusion": 0.8,
 							"isotropic": true
 						},
 						"up": "down"
