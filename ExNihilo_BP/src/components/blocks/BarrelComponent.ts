@@ -94,7 +94,7 @@ function handleRainFill(block: Block): void {
     const input = getInputBlock(block);
     if ((input !== InputWater && input !== InputDefault) || filling >= 100) return;
 
-    const isHighest = block.dimension.getTopmostBlock(block) === undefined;
+    const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
     if (isHighest && isRainingGlobal) {
         //todo: Rain is not found in all biomes, and only in the overworld.
         if (input === InputDefault) setInputBlock(block, InputWater);
