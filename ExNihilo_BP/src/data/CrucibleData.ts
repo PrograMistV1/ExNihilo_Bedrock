@@ -25,7 +25,7 @@ export const MeltableBlocks: Readonly<Record<string, number>> = {
     "minecraft:calcite": 25,
     "minecraft:deepslate": 25,
     "minecraft:diorite": 25,
-    "minecraft:dripstone": 25,
+    "minecraft:dripstone_block": 25,
     "minecraft:end_stone": 25,
     "minecraft:granite": 25,
     "minecraft:tuff": 25,
