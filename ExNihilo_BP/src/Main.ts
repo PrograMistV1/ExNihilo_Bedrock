@@ -7,6 +7,7 @@ import {InfestedLeavesComponent} from "./components/blocks/InfestedLeavesCompone
 import {CrookComponent} from "./components/items/CrookComponent";
 import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
+import {SeedComponent} from "./components/items/SeedComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
@@ -17,6 +18,7 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:crook', new CrookComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:hammer', new HammerComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:silkworm', new SilkwormComponent());
+    initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:seed', new SeedComponent());
 
     system.runTimeout(() => {
         clearBuggedTiles();
