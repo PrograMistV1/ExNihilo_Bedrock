@@ -31,6 +31,7 @@
 				{"origin": [6, 10, -7], "size": [1, 5, 13]},
 				{"origin": [-7, 10, -7], "size": [13, 5, 1]}
 			],
+			"minecraft:flammable": true,
 			"minecraft:movable": {
 				"movement_type": "immovable"
 				// Unfortunately, this is a necessary measure, since barrels largely depend on the entity tile, and pistons can move these entities.

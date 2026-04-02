@@ -34,6 +34,10 @@
 			"minecraft:destructible_by_mining": {
 				"seconds_to_destroy": 0.2
 			},
+			"minecraft:flammable": {
+				"catch_chance_modifier": 10,
+				"destroy_chance_modifier": 30
+			},
 			"minecraft:loot": "loot_tables/empty.json",
 			"tag:minecraft:is_hoe_item_destructible": {},
 			"exnihilo:infested_leaves": {}
