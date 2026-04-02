@@ -1,0 +1,21 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:cactus_seeds",
+			"menu_category": {
+				"group": "minecraft:itemGroup.name.seed",
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "cactus_seeds",
+			"exnihilo:seed": {
+				"can_be_planted_on": ["minecraft:sand"],
+				"allowed_faces": ["Up"],
+				"block": "minecraft:cactus",
+				"conditions": {"emptyAround": true}
+			}
+		}
+	}
+}

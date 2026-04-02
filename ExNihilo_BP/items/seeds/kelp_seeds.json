@@ -1,0 +1,20 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:kelp_seeds",
+			"menu_category": {
+				"group": "minecraft:itemGroup.name.seed",
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "kelp_seeds",
+			"exnihilo:seed": {
+				"allowed_faces": ["Up"],
+				"block": "minecraft:kelp",
+				"conditions": {"inWater": true}
+			}
+		}
+	}
+}

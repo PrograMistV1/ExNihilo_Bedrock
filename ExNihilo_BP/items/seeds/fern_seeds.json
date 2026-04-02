@@ -1,0 +1,24 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:fern_seeds",
+			"menu_category": {
+				"group": "minecraft:itemGroup.name.seed",
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "fern_seeds",
+			"exnihilo:seed": {
+				"can_be_planted_on": [
+					"minecraft:dirt",
+					"minecraft:grass_block",
+					"minecraft:dirt_with_roots"
+				],
+				"allowed_faces": ["Up"],
+				"block": "minecraft:fern"
+			}
+		}
+	}
+}

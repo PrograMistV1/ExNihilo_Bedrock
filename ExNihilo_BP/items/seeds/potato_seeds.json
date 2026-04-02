@@ -1,0 +1,20 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:potato_seeds",
+			"menu_category": {
+				"group": "minecraft:itemGroup.name.seed",
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "potato_seeds",
+			"exnihilo:seed": {
+				"can_be_planted_on": ["minecraft:farmland"],
+				"allowed_faces": ["Up"],
+				"block": "minecraft:carrots"
+			}
+		}
+	}
+}

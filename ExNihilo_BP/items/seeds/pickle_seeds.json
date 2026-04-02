@@ -1,0 +1,20 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:pickle_seeds",
+			"menu_category": {
+				"group": "minecraft:itemGroup.name.seed",
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "pickle_seeds",
+			"exnihilo:seed": {
+				"allowed_faces": ["Up"],
+				"block": "minecraft:sea_pickle",
+				"conditions": {"inWater": true}
+			}
+		}
+	}
+}
