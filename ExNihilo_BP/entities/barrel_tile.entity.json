@@ -44,7 +44,8 @@
 			"exnihilo:dirt": {"minecraft:variant": {"value": 2}},
 			"exnihilo:clay": {"minecraft:variant": {"value": 3}},
 			"exnihilo:water": {"minecraft:variant": {"value": 4}},
-			"exnihilo:lava": {"minecraft:variant": {"value": 5}}
+			"exnihilo:lava": {"minecraft:variant": {"value": 5}},
+			"exnihilo:netherrack": {"minecraft:variant": {"value": 6}}
 		},
 		"events": {
 			"exnihilo:default": {
@@ -54,6 +55,7 @@
 			"exnihilo:compost": {"add": {"component_groups": ["exnihilo:compost", "exnihilo:collidable"]}},
 			"exnihilo:dirt": {"add": {"component_groups": ["exnihilo:dirt", "exnihilo:collidable"]}},
 			"exnihilo:clay": {"add": {"component_groups": ["exnihilo:clay", "exnihilo:collidable"]}},
+			"exnihilo:netherrack": {"add": {"component_groups": ["exnihilo:netherrack", "exnihilo:collidable"]}},
 			"exnihilo:water": {
 				"add": {"component_groups": ["exnihilo:water"]}, "remove": {"component_groups": ["exnihilo:collidable"]}
 			},
