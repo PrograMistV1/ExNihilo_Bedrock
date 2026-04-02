@@ -67,7 +67,8 @@ export type BarrelInput =
     | "exnihilo:lava"
     | "exnihilo:dirt"
     | "exnihilo:clay"
-    | "witch_water";
+    | "witch_water"
+    | "exnihilo:netherrack";
 export type NonEmptyLiquidBarrelType = Extract<BarrelInput, "exnihilo:water" | "exnihilo:lava">;
 
 export const InputDefault: BarrelInput = "exnihilo:default";
@@ -76,6 +77,7 @@ export const InputWater: NonEmptyLiquidBarrelType = "exnihilo:water";
 export const InputLava: NonEmptyLiquidBarrelType = "exnihilo:lava";
 export const InputDirt: BarrelInput = "exnihilo:dirt";
 export const InputClay: BarrelInput = "exnihilo:clay";
+export const InputNetherrack: BarrelInput = "exnihilo:netherrack";
 
 export const VARIANT_STATE_MAP: Readonly<Record<number, BarrelInput>> = {
     0: "exnihilo:default",
@@ -84,9 +86,11 @@ export const VARIANT_STATE_MAP: Readonly<Record<number, BarrelInput>> = {
     3: "exnihilo:clay",
     4: "exnihilo:water",
     5: "exnihilo:lava",
+    6: "exnihilo:netherrack",
 }
 
 export const DROP_FROM_INPUT_MAP: Readonly<Record<string, string>> = {
     [InputDirt]: "minecraft:dirt",
-    [InputClay]: "minecraft:clay"
+    [InputClay]: "minecraft:clay",
+    [InputNetherrack]: "minecraft:netherrack",
 }

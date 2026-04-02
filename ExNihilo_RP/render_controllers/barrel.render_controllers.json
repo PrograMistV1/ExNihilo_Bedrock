@@ -1,12 +1,12 @@
 {
 	"format_version": "1.10.0",
 	"render_controllers": {
-		"controller.render.exnihilo_container": {
+		"controller.render.exnihilo_barrel": {
 			"arrays": {
 				"textures": {
 					"array.tex_variant": [
 						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water",
-						"texture.lava"
+						"texture.lava", "texture.netherrack"
 					]
 				},
 				"materials": {

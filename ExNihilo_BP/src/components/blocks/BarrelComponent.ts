@@ -26,6 +26,7 @@ import {
     InputDefault,
     InputDirt,
     InputLava,
+    InputNetherrack,
     InputWater,
     NonEmptyLiquidBarrelType,
     VARIANT_STATE_MAP
@@ -219,6 +220,11 @@ function handleSpecialInteractions(block: Block, player: Player): void {
     if (input === InputWater && filling === 100 && selectedItem.item.typeId === "exnihilo:dust") {
         consumeSelectedItem(selectedItem);
         setInputBlock(block, InputClay);
+        return;
+    }
+    if (input === InputLava && filling === 100 && selectedItem.item.typeId === "minecraft:redstone") {
+        consumeSelectedItem(selectedItem);
+        setInputBlock(block, InputNetherrack);
         return;
     }
 }

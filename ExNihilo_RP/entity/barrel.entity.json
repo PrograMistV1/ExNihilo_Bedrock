@@ -1,24 +1,24 @@
-
 {
-  "format_version": "1.10.0",
-  "minecraft:client_entity": {
-    "description": {
-      "identifier": "exnihilo:barrel_tile",
-      "materials": { 
-        "default": "entity_alphablend",
-        "animated": "entity_animated",
-        "animated_blend": "entity_animated_blend"
-       },
-      "geometry": { "default": "geometry.exnihilo_container" },
-      "textures": { 
-        "default": "textures/misc/missing_texture",
-        "compost": "textures/blocks/compost",
-        "dirt": "textures/blocks/dirt",
-        "clay": "textures/blocks/clay",
-        "water": "textures/blocks/water",
-        "lava": "textures/blocks/lava_still"
-      },
-      "render_controllers": ["controller.render.exnihilo_container"]
-    }
-  }
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "exnihilo:barrel_tile",
+			"materials": {
+				"default": "entity_alphablend",
+				"animated": "entity_animated",
+				"animated_blend": "entity_animated_blend"
+			},
+			"geometry": {"default": "geometry.exnihilo_container"},
+			"textures": {
+				"default": "textures/misc/missing_texture",
+				"compost": "textures/blocks/compost",
+				"dirt": "textures/blocks/dirt",
+				"clay": "textures/blocks/clay",
+				"netherrack": "textures/blocks/netherrack",
+				"water": "textures/blocks/water",
+				"lava": "textures/blocks/lava_still"
+			},
+			"render_controllers": ["controller.render.exnihilo_barrel"]
+		}
+	}
 }
