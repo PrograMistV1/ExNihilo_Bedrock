@@ -16,7 +16,6 @@
 			"minecraft:material_instances": {
 				"*": {"texture": "fired_crucible"}
 			},
-			"minecraft:light_dampening": 2,
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
 			"tag:minecraft:is_pickaxe_item_destructible": {},
 			"minecraft:loot": "loot_tables/empty.json",
