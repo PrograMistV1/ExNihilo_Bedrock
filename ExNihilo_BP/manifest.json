@@ -4,7 +4,7 @@
 		"description": "pack.description",
 		"name": "ExNihilo_BP",
 		"uuid": "5e17af0d-f8fb-4103-82f7-508d7f6adaff",
-		"version": [2, 0, 6],
+		"version": [2, 0, 8],
 		"min_engine_version": [1, 26, 0]
 	},
 	"modules": [
@@ -12,11 +12,11 @@
 			"description": "ExNihilo_Bedrock by PrograMistV1",
 			"type": "data",
 			"uuid": "81b463ec-c56d-4942-8af7-5684268aba6f",
-			"version": [2, 0, 6]
+			"version": [2, 0, 8]
 		},
 		{
 			"uuid": "916a015c-6384-465d-a96b-eff4e2e2cbfd",
-			"version": [1, 0, 6],
+			"version": [1, 0, 8],
 			"type": "script",
 			"entry": "scripts/Main.js"
 		}
@@ -24,7 +24,7 @@
 	"dependencies": [
 		{
 			"uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
-			"version": [2, 0, 0]
+			"version": [2, 0, 2]
 		},
 		{
 			"module_name": "@minecraft/server",
