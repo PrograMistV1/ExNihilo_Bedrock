@@ -100,7 +100,7 @@ const EMERALD_MESH_DROPS: Record<string, RollPattern[]> = {};
 
 const NETHERITE_MESH_DROPS: Record<string, RollPattern[]> = {};
 
-const DROP_BY_MESH: Record<MeshType, Record<string, RollPattern[]>> = {
+export const DROP_BY_MESH: Record<MeshType, Record<string, RollPattern[]>> = {
     string: STRING_MESH_DROPS,
     flint: FLINT_MESH_DROPS,
     iron: IRON_MESH_DROPS,

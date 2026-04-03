@@ -23,7 +23,7 @@ import {
     VARIANT_STATE_MAP
 } from "../../data/SieveData";
 import {SIEVE_TILE_ID} from "../../data/TileList";
-import {rollDrops} from "../../data/loot/SieveLoot";
+import {DROP_BY_MESH, rollDrops} from "../../data/loot/SieveLoot";
 
 export class SieveComponent implements BlockCustomComponent {
     onBreak(e: BlockComponentBlockBreakEvent): void {
@@ -78,11 +78,17 @@ function handleInput(player: Player, block: Block): void {
     if (!state) return;
 
     for (const targetBlock of getSieveNeighbors(block)) {
-        if (getMeshType(targetBlock) === "null" || getInputBlock(targetBlock)) continue;
+        const mesh = getMeshType(targetBlock);
+        const input = getInputBlock(targetBlock);
+        if (mesh === "null" || input !== undefined || !canBeSifted(state, mesh)) continue;
 
         setInputBlock(targetBlock, state);
         if (consumeSelectedItem(selectedItem) === 0) break;
     }
+}
+
+function canBeSifted(input: string, mesh: MeshType): boolean {
+    return Object.keys(DROP_BY_MESH[mesh]).includes(input);
 }
 
 function handleMesh(player: Player, block: Block): void {
