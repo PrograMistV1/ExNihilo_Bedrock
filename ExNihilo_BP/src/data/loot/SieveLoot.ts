@@ -32,17 +32,17 @@ const STRING_MESH_DROPS: Record<string, RollPattern[]> = {
         {result: "exnihilo:fern_seeds", chances: [0.05]},
         {result: "exnihilo:large_fern_seeds", chances: [0.05]},
     ],
-    "minecraft:sand": [
+    "exnihilo:sand": [
         {result: "exnihilo:cactus_seeds", chances: [0.05]},
         {result: "exnihilo:sugarcane_seeds", chances: [0.05]},
         {result: "exnihilo:kelp_seeds", chances: [0.5]},
         {result: "exnihilo:pickle_seeds", chances: [0.5]},
     ],
-    "minecraft:gravel": [
+    "exnihilo:gravel": [
         {result: "minecraft:amethyst_shard", chances: [0.05]},
         {result: "minecraft:flint", chances: [0.25]},
     ],
-    "minecraft:soul_sand": [
+    "exnihilo:soul_sand": [
         {result: "minecraft:nether_wart", chances: [0.1]}
     ],
     "exnihilo:dust": [
@@ -52,10 +52,11 @@ const STRING_MESH_DROPS: Record<string, RollPattern[]> = {
 };
 
 const FLINT_MESH_DROPS: Record<string, RollPattern[]> = {
-    "minecraft:gravel": [
+    "exnihilo:gravel": [
         {result: "minecraft:amethyst_shard", chances: [0.1]},
-        {result: "minecraft:iron_nugget", chances: [0.1]},
-        {result: "minecraft:gold_nugget", chances: [0.05]},
+        {result: "exnihilo:iron_pieces", chances: [0.1]},
+        {result: "exnihilo:gold_pieces", chances: [0.05]},
+        {result: "exnihilo:copper_pieces", chances: [0.05]},
         {result: "minecraft:flint", chances: [0.25]},
         {result: "minecraft:coal", chances: [0.125]},
         {result: "minecraft:lapis_lazuli", chances: [0.05]},
@@ -63,10 +64,11 @@ const FLINT_MESH_DROPS: Record<string, RollPattern[]> = {
 };
 
 const IRON_MESH_DROPS: Record<string, RollPattern[]> = {
-    "minecraft:gravel": [
+    "exnihilo:gravel": [
         {result: "minecraft:amethyst_shard", chances: [0.15]},
-        {result: "minecraft:iron_nugget", chances: [0.15]},
-        {result: "minecraft:gold_nugget", chances: [0.075]},
+        {result: "exnihilo:iron_pieces", chances: [0.15]},
+        {result: "exnihilo:gold_pieces", chances: [0.075]},
+        {result: "exnihilo:copper_pieces", chances: [0.075]},
         {result: "minecraft:diamond", chances: [0.008]},
         {result: "minecraft:emerald", chances: [0.008]},
     ],
@@ -78,15 +80,16 @@ const IRON_MESH_DROPS: Record<string, RollPattern[]> = {
 };
 
 const DIAMOND_MESH_DROPS: Record<string, RollPattern[]> = {
-    "minecraft:gravel": [
+    "exnihilo:gravel": [
         {result: "minecraft:amethyst_shard", chances: [0.2]},
-        {result: "minecraft:iron_nugget", chances: [0.25]},
-        {result: "minecraft:gold_nugget", chances: [0.15]},
+        {result: "exnihilo:iron_pieces", chances: [0.25]},
+        {result: "exnihilo:gold_pieces", chances: [0.15]},
+        {result: "exnihilo:copper_pieces", chances: [0.1]},
         {result: "minecraft:diamond", chances: [0.016]},
         {result: "minecraft:emerald", chances: [0.016]},
     ],
-    "minecraft:sand": [
-        {result: "minecraft:iron_nugget", chances: [0.5]},
+    "exnihilo:sand": [
+        {result: "exnihilo:iron_pieces", chances: [0.5]},
     ],
     "exnihilo:dust": [
         {result: "minecraft:redstone", chances: [0.25]},

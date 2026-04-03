@@ -54,6 +54,9 @@
 		"spruce_seeds": {"textures": "textures/items/seeds/spruce_seeds"},
 		"sugarcane_seeds": {"textures": "textures/items/seeds/sugarcane_seeds"},
 		"sweet_berry_seeds": {"textures": "textures/items/seeds/sweet_berry_seeds"},
-		"warped_nylium_spores": {"textures": "textures/items/seeds/warped_nylium_spores"}
+		"warped_nylium_spores": {"textures": "textures/items/seeds/warped_nylium_spores"},
+		"iron_pieces": {"textures": "textures/items/iron_pieces"},
+		"gold_pieces": {"textures": "textures/items/gold_pieces"},
+		"copper_pieces": {"textures": "textures/items/copper_pieces"}
 	}
 }

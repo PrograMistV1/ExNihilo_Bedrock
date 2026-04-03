@@ -1,0 +1,19 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:raw_copper"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["PP", "PP"],
+		"key": {
+			"P": "exnihilo:copper_pieces"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:copper_pieces"
+			}
+		],
+		"result": "minecraft:raw_copper"
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:raw_iron"
+		},
+		"tags": ["crafting_table"],
+		"pattern": ["PP", "PP"],
+		"key": {
+			"P": "exnihilo:iron_pieces"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:iron_pieces"
+			}
+		],
+		"result": "minecraft:raw_iron"
+	}
+}
