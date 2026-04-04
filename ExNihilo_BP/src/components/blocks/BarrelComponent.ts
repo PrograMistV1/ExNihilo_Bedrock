@@ -14,8 +14,8 @@ import {
     MolangVariableMap,
     Player,
     system,
-    WeatherType,
-    world
+    VanillaEntityIdentifier,
+    WeatherType
 } from "@minecraft/server";
 import {
     BARREL_CONSTANTS,
@@ -47,8 +47,6 @@ const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
 
-let isRainingGlobal = false;
-
 export class BarrelComponent implements BlockCustomComponent {
     onBreak(e: BlockComponentBlockBreakEvent): void {
         getTileEntity(e.block, BARREL_TILE_ID)?.remove();
@@ -76,29 +74,13 @@ export class BarrelComponent implements BlockCustomComponent {
     }
 }
 
-
-world.afterEvents.weatherChange.subscribe(event => {
-    if (event.dimension != "overworld") return;
-
-    system.runTimeout(() => {
-        isRainingGlobal = event.newWeather != WeatherType.Clear;
-        world.setDynamicProperty("isRaining", isRainingGlobal);
-    }, 80) //wtf mojang?
-    // Even though the weather has changed, if you rejoin the world within a few seconds,
-    // the weather will revert to the previous state.
-});
-
-world.afterEvents.worldLoad.subscribe(() => {
-    isRainingGlobal = (world.getDynamicProperty("isRaining") as boolean | undefined) ?? false;
-});
-
 function handleRainFill(block: Block): void {
     const filling = getFilling(block);
     const input = getInputBlock(block);
     if ((input !== InputWater && input !== InputDefault) || filling >= 100) return;
 
     const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
-    if (isHighest && isRainingGlobal) {
+    if (isHighest && block.dimension.getWeather() !== WeatherType.Clear) {
         //todo: Rain is not found in all biomes, and only in the overworld.
         if (input === InputDefault) setInputBlock(block, InputWater);
         setFilling(block, filling + BARREL_CONSTANTS.RAIN_FILL_PER_TICK);
@@ -275,7 +257,7 @@ function setInputBlock(block: Block, input: BarrelInput): void {
     }
     if (!isDefault) {
         const newTile = block.dimension.spawnEntity(
-            BARREL_TILE_ID,
+            BARREL_TILE_ID as keyof VanillaEntityIdentifier,
             {
                 x: block.x + 0.5,
                 y: block.y + BARREL_CONSTANTS.HEIGHT_OFFSET,

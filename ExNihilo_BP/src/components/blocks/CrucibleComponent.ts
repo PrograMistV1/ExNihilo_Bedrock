@@ -8,7 +8,8 @@ import {
     Entity,
     EntityVariantComponent,
     ItemStack,
-    Player
+    Player,
+    VanillaEntityIdentifier
 } from "@minecraft/server";
 import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
 import {CRUCIBLE_TILE_ID} from "../../data/TileList";
@@ -143,7 +144,7 @@ function setInputBlock(block: Block, input: CrucibleInput): void {
     }
     if (!isDefault) {
         const newTile = block.dimension.spawnEntity(
-            CRUCIBLE_TILE_ID,
+            CRUCIBLE_TILE_ID as keyof VanillaEntityIdentifier,
             {
                 x: block.x + CRUCIBLE_CONSTANTS.CENTER_OFFSET,
                 y: block.y + CRUCIBLE_CONSTANTS.HEIGHT_OFFSET,

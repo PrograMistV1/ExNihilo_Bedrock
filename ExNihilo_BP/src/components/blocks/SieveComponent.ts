@@ -10,6 +10,7 @@ import {
     ItemUseAfterEvent,
     Player,
     system,
+    VanillaEntityIdentifier,
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
@@ -190,7 +191,7 @@ function setInputBlock(sieve: Block, input: string): void {
     if (getTileEntity(sieve, SIEVE_TILE_ID) !== undefined) return;
 
     const pos = sieve.location;
-    sieve.dimension.spawnEntity(SIEVE_TILE_ID, {
+    sieve.dimension.spawnEntity(SIEVE_TILE_ID as keyof VanillaEntityIdentifier, {
         x: pos.x + SIEVE_CONSTANTS.inputEntityCenterOffset,
         y: pos.y + SIEVE_CONSTANTS.inputEntityHeightOffset,
         z: pos.z + SIEVE_CONSTANTS.inputEntityCenterOffset
