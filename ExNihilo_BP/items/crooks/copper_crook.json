@@ -25,7 +25,6 @@
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",
-					"minecraft:is_hoe",
 					"minecraft:is_tool",
 					"minecraft:copper_tier"
 				]
