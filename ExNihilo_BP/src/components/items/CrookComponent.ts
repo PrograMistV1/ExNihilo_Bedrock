@@ -1,4 +1,11 @@
-import {GameMode, ItemComponentMineBlockEvent, ItemCustomComponent, ItemStack, Player} from "@minecraft/server";
+import {
+    GameMode,
+    ItemComponentMineBlockEvent,
+    ItemComponentUseEvent,
+    ItemCustomComponent,
+    ItemStack,
+    Player
+} from "@minecraft/server";
 import {DROP_CHANCES, INFESTED_LEAVES, LEAVES} from "../../data/InfestedLeavesData";
 import {damageSelectedItem, getSelectedItemContext} from "../../Utils";
 import {INFESTED_STATE} from "../blocks/InfestedLeavesComponent";
@@ -21,5 +28,23 @@ export class CrookComponent implements ItemCustomComponent {
                 e.block.dimension.spawnItem(new ItemStack("minecraft:string"), e.block);
             }
         }
+    }
+
+    onUse(e: ItemComponentUseEvent): void {
+        const entities = e.source.getEntitiesFromViewDirection({maxDistance: 4});
+        if (entities.length === 0) return;
+
+        const target = entities[0].entity;
+
+        const playerPos = e.source.location;
+        const targetPos = target.location;
+
+        const direction = {x: playerPos.x - targetPos.x, y: playerPos.y - targetPos.y, z: playerPos.z - targetPos.z};
+
+        const length = Math.sqrt(direction.x ** 2 + direction.y ** 2 + direction.z ** 2);
+        if (length === 0) return;
+
+        damageSelectedItem(getSelectedItemContext(e.source), e.source);
+        target.applyImpulse({x: direction.x / length, y: direction.y / length, z: direction.z / length});
     }
 }
