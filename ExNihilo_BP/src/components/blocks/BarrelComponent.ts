@@ -41,6 +41,7 @@ import {
 } from "../../Utils";
 import {BARREL_TILE_ID} from "../../data/TileList";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
+import {addProgressChecker} from "../../ProgressRegistry";
 
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
@@ -72,6 +73,22 @@ export class BarrelComponent implements BlockCustomComponent {
 
         e.block.dimension.spawnItem(new ItemStack(drop), {x: e.block.x + 0.5, y: e.block.y + 0.5, z: e.block.z + 0.5});
     }
+}
+
+addProgressChecker("exnihilo:barrel", (block: Block) => {
+    if (isProgressive(block)) {
+        return getProgressInPercents(block) + "%";
+    } else {
+        return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
+    }
+});
+
+function getProgressInPercents(block: Block): number {
+    return Math.floor(getTimer(block) / BARREL_CONSTANTS.COMPOSTING_TIME_TICKS * 100);
+}
+
+function isProgressive(block: Block): boolean {
+    return getInputBlock(block) === InputCompost && getFilling(block) === 100;
 }
 
 function handleRainFill(block: Block): void {
@@ -306,6 +323,13 @@ function resetTimer(block: Block): void {
     if (!tile) return;
 
     tile.setDynamicProperty("timer", 0);
+}
+
+function getTimer(block: Block): number {
+    const tile = getTileEntity(block, BARREL_TILE_ID);
+    if (!tile) return;
+
+    return tile.getDynamicProperty("timer") as number;
 }
 
 function fillBarrelFromBucket(
