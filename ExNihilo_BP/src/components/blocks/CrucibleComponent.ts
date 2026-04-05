@@ -11,7 +11,7 @@ import {
     Player,
     VanillaEntityIdentifier
 } from "@minecraft/server";
-import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
+import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../utils/Utils";
 import {CRUCIBLE_TILE_ID} from "../../data/TileList";
 import {
     CRUCIBLE_CONSTANTS,
@@ -24,7 +24,7 @@ import {
     VARIANT_STATE_MAP
 } from "../../data/CrucibleData";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {addProgressChecker} from "../../ProgressRegistry";
+import {addProgressChecker} from "../../utils/ProgressRegistry";
 
 export class CrucibleComponent implements BlockCustomComponent {
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {

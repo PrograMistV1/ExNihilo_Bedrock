@@ -7,7 +7,7 @@ import {
     Player,
     Vector3
 } from "@minecraft/server";
-import {consumeSelectedItem, getSelectedItemContext} from "../../Utils";
+import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
 
 /**
  * SeedComponent — a custom component for seeds.

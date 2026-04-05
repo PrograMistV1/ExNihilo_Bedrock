@@ -11,7 +11,7 @@ import {
     Player,
     Vector3
 } from "@minecraft/server";
-import {damageSelectedItem, getSelectedItemContext} from "../../Utils";
+import {damageSelectedItem, getSelectedItemContext} from "../../utils/Utils";
 import {HAMMERABLE_BLOCKS_MAP} from "../../data/HammerData";
 
 export class HammerComponent implements ItemCustomComponent {

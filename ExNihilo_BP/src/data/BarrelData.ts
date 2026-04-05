@@ -60,7 +60,7 @@ export const BARREL_CONFIG = {
 const updatesPerSecond = TicksPerSecond / BARREL_CONFIG.updateInterval;
 export const BARREL_TIMINGS = {
     compostingUpdates: Math.ceil(BARREL_CONFIG.compostingTimeSeconds * updatesPerSecond),
-    rainFillPerUpdate: 1 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
+    rainFillPerUpdate: 100 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
 };
 
 export type BarrelInput =
@@ -81,16 +81,6 @@ export const InputLava: NonEmptyLiquidBarrelType = "exnihilo:lava";
 export const InputDirt: BarrelInput = "exnihilo:dirt";
 export const InputClay: BarrelInput = "exnihilo:clay";
 export const InputNetherrack: BarrelInput = "exnihilo:netherrack";
-
-export const VARIANT_STATE_MAP: Readonly<Record<number, BarrelInput>> = {
-    0: "exnihilo:default",
-    1: "exnihilo:compost",
-    2: "exnihilo:dirt",
-    3: "exnihilo:clay",
-    4: "exnihilo:water",
-    5: "exnihilo:lava",
-    6: "exnihilo:netherrack",
-}
 
 export const DROP_FROM_INPUT_MAP: Readonly<Record<string, string>> = {
     [InputDirt]: "minecraft:dirt",

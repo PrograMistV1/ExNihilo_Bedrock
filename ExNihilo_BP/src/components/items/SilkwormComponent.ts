@@ -1,6 +1,6 @@
 import {ItemComponentUseOnEvent, ItemCustomComponent, Player} from "@minecraft/server";
 import {LEAVES_TO_INFESTED_MAP} from "../../data/InfestedLeavesData";
-import {consumeSelectedItem, getSelectedItemContext} from "../../Utils";
+import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
 
 export class SilkwormComponent implements ItemCustomComponent {
     onUseOn(e: ItemComponentUseOnEvent): void {

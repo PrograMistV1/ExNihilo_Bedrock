@@ -14,7 +14,7 @@ import {
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../Utils";
+import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../utils/Utils";
 import {
     MESH_ITEM_BY_TYPE,
     MESH_TYPE_BY_ITEM,

@@ -9,7 +9,7 @@ export type SelectedItemContext = {
 export function getTileEntity(block: Block, entityId: string): Entity | undefined {
     const pos = block.location;
     const entities = block.dimension.getEntities({
-        type: entityId,
+        type: entityId as string,
         location: {
             x: pos.x + 0.5,
             y: pos.y + 0.5,

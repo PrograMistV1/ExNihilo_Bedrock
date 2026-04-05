@@ -7,7 +7,7 @@ import {
     Player
 } from "@minecraft/server";
 import {DROP_CHANCES, INFESTED_LEAVES, LEAVES} from "../../data/InfestedLeavesData";
-import {damageSelectedItem, getSelectedItemContext} from "../../Utils";
+import {damageSelectedItem, getSelectedItemContext} from "../../utils/Utils";
 import {INFESTED_STATE} from "../blocks/InfestedLeavesComponent";
 
 export class CrookComponent implements ItemCustomComponent {
