@@ -12,6 +12,7 @@
 			"minecraft:max_stack_size": 1,
 			"minecraft:hand_equipped": true,
 			"minecraft:durability": {"max_durability": 60},
+			"minecraft:damage": 1,
 			"minecraft:digger": {
 				"use_efficiency": true,
 				"destroy_speeds": [
