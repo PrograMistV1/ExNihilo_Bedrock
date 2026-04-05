@@ -80,7 +80,7 @@ addProgressChecker("exnihilo:barrel", (block: Block) => {
     if (isProgressive(block)) {
         return getProgressInPercents(block) + "%";
     } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
-        return "done";
+        return {translate: "gui.done"};
     } else {
         return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
     }

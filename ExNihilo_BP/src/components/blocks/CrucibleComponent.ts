@@ -60,11 +60,17 @@ export class CrucibleComponent implements BlockCustomComponent {
 addProgressChecker("exnihilo:crucible", (block: Block) => {
     const input = getInputBlock(block);
     if (input === InputLava) {
-        return "done";
+        return {translate: "gui.done"};
+    } else if (getFilling(block) === 100) {
+        return getProgressInPercents(block) + "%";
     } else {
         return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
     }
 });
+
+function getProgressInPercents(block: Block): number {
+    return Math.floor(getTimer(block) / CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS * 100);
+}
 
 function handleLavaEntities(block: Block): void {
     if (getInputBlock(block) !== InputLava) return;
@@ -203,4 +209,11 @@ function resetTimer(block: Block): void {
     if (!tile) return;
 
     tile.setDynamicProperty("timer", 0);
+}
+
+function getTimer(block: Block): number {
+    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
+    if (!tile) return;
+
+    return tile.getDynamicProperty("timer") as number;
 }
