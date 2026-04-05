@@ -8,7 +8,9 @@
 			}
 		},
 		"components": {
-			"minecraft:icon": "andesite_pebble"
+			"minecraft:icon": "andesite_pebble",
+			"minecraft:throwable": {"do_swing_animation": true},
+			"minecraft:projectile": {"projectile_entity": "exnihilo:andesite_pebble"}
 		}
 	}
 }

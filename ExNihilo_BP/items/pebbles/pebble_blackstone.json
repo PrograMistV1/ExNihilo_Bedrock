@@ -8,7 +8,9 @@
 			}
 		},
 		"components": {
-			"minecraft:icon": "blackstone_pebble"
+			"minecraft:icon": "blackstone_pebble",
+			"minecraft:throwable": {"do_swing_animation": true},
+			"minecraft:projectile": {"projectile_entity": "exnihilo:blackstone_pebble"}
 		}
 	}
 }
