@@ -45,6 +45,6 @@ export const HeatRate: Readonly<Record<string, number>> = {
     "minecraft:lava": 3,
     "minecraft:fire": 4,
     "minecraft:soul_fire": 4,
-    "minecraft:campfire": 4,
-    "minecraft:soul_campfire": 4,
+    "minecraft:campfire": 3,
+    "minecraft:soul_campfire": 3,
 }
