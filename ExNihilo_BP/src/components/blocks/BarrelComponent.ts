@@ -76,8 +76,11 @@ export class BarrelComponent implements BlockCustomComponent {
 }
 
 addProgressChecker("exnihilo:barrel", (block: Block) => {
+    const input = getInputBlock(block);
     if (isProgressive(block)) {
         return getProgressInPercents(block) + "%";
+    } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
+        return "done";
     } else {
         return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
     }
