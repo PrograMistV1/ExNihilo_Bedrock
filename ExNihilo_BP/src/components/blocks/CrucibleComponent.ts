@@ -24,6 +24,7 @@ import {
     VARIANT_STATE_MAP
 } from "../../data/CrucibleData";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
+import {addProgressChecker} from "../../ProgressRegistry";
 
 export class CrucibleComponent implements BlockCustomComponent {
     onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
@@ -55,6 +56,15 @@ export class CrucibleComponent implements BlockCustomComponent {
         }
     }
 }
+
+addProgressChecker("exnihilo:crucible", (block: Block) => {
+    const input = getInputBlock(block);
+    if (input === InputLava) {
+        return "done";
+    } else {
+        return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
+    }
+});
 
 function handleLavaEntities(block: Block): void {
     if (getInputBlock(block) !== InputLava) return;
