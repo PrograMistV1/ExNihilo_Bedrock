@@ -5,7 +5,7 @@
 		"name": "ExNihilo_BP",
 		"uuid": "5e17af0d-f8fb-4103-82f7-508d7f6adaff",
 		"version": [2, 0, 9],
-		"min_engine_version": [1, 26, 0]
+		"min_engine_version": [1, 26, 10]
 	},
 	"modules": [
 		{
@@ -28,7 +28,7 @@
 		},
 		{
 			"module_name": "@minecraft/server",
-			"version": "2.6.0-beta"
+			"version": "2.7.0-beta"
 		}
 	]
 }

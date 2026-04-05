@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@minecraft/server": "^2.6.0-beta.1.26.0-stable",
+		"@minecraft/server": "^2.7.0-beta.1.26.10-stable",
 		"@minecraft/vanilla-data": "^1.26.2"
 	},
 	"name": "exnihilo_bp",
