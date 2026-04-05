@@ -41,6 +41,12 @@ const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
 
+interface TileContext {
+    tile: Entity | undefined;
+    filling: number;
+    input: BarrelInput;
+}
+
 export class BarrelComponent extends TileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:barrel_tile";
     static readonly VARIANT_STATE_MAP = {
@@ -58,7 +64,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         addProgressChecker("exnihilo:barrel", (block: Block) => {
             const input = this.getInputBlock(block);
             const filling = this.getFilling(block);
-            if (this.getInputBlock(block) === InputCompost && filling === 100) {
+            if (input === InputCompost && filling === 100) {
                 return Math.floor(this.getTimer(block) / BARREL_TIMINGS.compostingUpdates * 100) + "%";
             } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
                 return {translate: "gui.done"};
@@ -69,17 +75,19 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
-        this.handleCompostable(e.block, e.player);
-        this.handleLiquid(e.block, e.player);
-        this.handleExtractResult(e.block);
-        this.handleSpecialInteractions(e.block, e.player);
+        const ctx = this.getTileContext(e.block);
+        this.handleCompostable(e.block, e.player, ctx);
+        this.handleLiquid(e.block, e.player, ctx);
+        this.handleExtractResult(e.block, ctx);
+        this.handleSpecialInteractions(e.block, e.player, ctx);
     };
 
     onTick = (e: BlockComponentTickEvent, p: CustomComponentParameters) => {
-        this.handleRainFill(e.block);
-        this.handleWaterEntities(e.block);
-        this.handleLava(e.block, (p.params["flammable"] as boolean) ?? false);
-        this.handleCompost(e.block);
+        const ctx = this.getTileContext(e.block);
+        this.handleRainFill(e.block, ctx);
+        this.handleWaterEntities(e.block, ctx);
+        this.handleLava(e.block, ctx, (p.params["flammable"] as boolean) ?? false);
+        this.handleCompost(e.block, ctx);
     }
 
     onPlayerBreak = (e: BlockComponentPlayerBreakEvent) => {
@@ -89,25 +97,33 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         e.block.dimension.spawnItem(new ItemStack(drop), e.block.center());
     };
 
+    private getTileContext(block: Block): TileContext {
+        const tile = getTileEntity(block, this.tileId);
+
+        return {
+            tile,
+            filling: this.getFilling(block),
+            input: this.getInputBlock(block) as BarrelInput
+        };
+    }
+
     private yResolver(filling: number): number {
         return 1 / 16 + filling / 100 * 0.875;
     }
 
-    private handleRainFill(block: Block): void {
-        const filling = this.getFilling(block);
-        const input = this.getInputBlock(block);
-        if ((input !== InputWater && input !== InputDefault) || filling >= 100) return;
+    private handleRainFill(block: Block, ctx: TileContext): void {
+        if ((ctx.input !== InputWater && ctx.input !== InputDefault) || ctx.filling >= 100) return;
 
         const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
         if (isHighest && block.dimension.getWeather() !== WeatherType.Clear) {
             //todo: Rain is not found in all biomes, and only in the overworld.
-            if (input === InputDefault) this.setInputBlock(block, InputWater);
-            this.setFilling(block, filling + BARREL_TIMINGS.rainFillPerUpdate, this.yResolver);
+            if (ctx.input === InputDefault) this.setInputBlock(block, InputWater);
+            this.setFilling(block, ctx.filling + BARREL_TIMINGS.rainFillPerUpdate, this.yResolver);
         }
     }
 
-    private handleWaterEntities(block: Block): void {
-        if (this.getInputBlock(block) !== InputWater) return;
+    private handleWaterEntities(block: Block, ctx: TileContext): void {
+        if (ctx.input !== InputWater) return;
 
         for (const entity of this.getContainedEntities(block)) {
             if (entity.getVelocity().y < 0) {
@@ -124,8 +140,8 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         }
     }
 
-    private handleLava(block: Block, flammable: boolean): void {
-        if (this.getInputBlock(block) !== InputLava) return;
+    private handleLava(block: Block, ctx: TileContext, flammable: boolean): void {
+        if (ctx.input !== InputLava) return;
 
         if (flammable && Math.random() <= BARREL_CONFIG.lavaIgniteChance) {
             const directions = [
@@ -157,8 +173,8 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         });
     }
 
-    private handleCompost(block: Block): void {
-        if (this.getInputBlock(block) !== InputCompost || this.getFilling(block) !== 100) return;
+    private handleCompost(block: Block, ctx: TileContext): void {
+        if (ctx.input !== InputCompost || ctx.filling !== 100) return;
 
         if (this.incrementTimer(block) > BARREL_TIMINGS.compostingUpdates) {
             this.setInputBlock(block, InputDirt);
@@ -166,24 +182,22 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         }
     }
 
-    private handleCompostable(block: Block, player: Player): void {
+    private handleCompostable(block: Block, player: Player, ctx: TileContext): void {
         const selectedItem = getSelectedItemContext(player);
         if (!selectedItem.item) return;
 
         const fillAmount = CompostableItems[selectedItem.item.typeId];
         if (fillAmount === undefined) return;
 
-        const filling = this.getFilling(block);
-        const input = this.getInputBlock(block);
-        if ((input !== InputDefault && input !== InputCompost) || filling === 100) return;
+        if ((ctx.input !== InputDefault && ctx.input !== InputCompost) || ctx.filling === 100) return;
 
         consumeSelectedItem(selectedItem);
-        if (input === InputDefault) this.setInputBlock(block, InputCompost);
-        this.setFilling(block, filling + fillAmount, this.yResolver);
+        if (ctx.input === InputDefault) this.setInputBlock(block, InputCompost);
+        this.setFilling(block, ctx.filling + fillAmount, this.yResolver);
         block.dimension.playSound("block.composter.fill_success", block.center());
     }
 
-    private handleLiquid(block: Block, player: Player): void {
+    private handleLiquid(block: Block, player: Player, ctx: TileContext): void {
         const selectedItem = getSelectedItemContext(player);
         if (!selectedItem.item) return;
 
@@ -200,27 +214,25 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
             }
         } as const;
 
-        const filling = this.getFilling(block);
-        const input = this.getInputBlock(block);
         const itemId = selectedItem.item.typeId;
         for (const liquidType of Object.keys(LIQUIDS) as NonEmptyLiquidBarrelType[]) {
             const liquid = LIQUIDS[liquidType];
 
-            if (itemId === liquid.bucket && (input === InputDefault || input === liquidType)) {
-                if (input === liquidType && filling === 0) return;
+            if (itemId === liquid.bucket && (ctx.input === InputDefault || ctx.input === liquidType)) {
+                if (ctx.input === liquidType && ctx.filling === 0) return;
                 this.fillBarrelFromBucket(block, selectedItem, liquidType, liquid.emptySound);
                 return;
             }
 
-            if (itemId === EMPTY_BUCKET_ITEM && filling === 100 && input === liquidType) {
+            if (itemId === EMPTY_BUCKET_ITEM && ctx.filling === 100 && ctx.input === liquidType) {
                 this.drainBarrelToBucket(block, selectedItem, liquid.bucket, liquid.fillSound, player);
                 return;
             }
         }
     }
 
-    private handleExtractResult(block: Block): void {
-        const drop = DROP_FROM_INPUT_MAP[this.getInputBlock(block)];
+    private handleExtractResult(block: Block, ctx: TileContext): void {
+        const drop = DROP_FROM_INPUT_MAP[ctx.input];
         if (!drop) return;
 
         const entity = block.dimension.spawnItem(new ItemStack(drop), {...block.bottomCenter(), y: block.y + 1.1});
@@ -233,19 +245,17 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         this.setInputBlock(block, InputDefault);
     }
 
-    private handleSpecialInteractions(block: Block, player: Player): void {
+    private handleSpecialInteractions(block: Block, player: Player, ctx: TileContext): void {
         const selectedItem = getSelectedItemContext(player);
         if (!selectedItem.item) return;
 
-        const filling = this.getFilling(block);
-        const input = this.getInputBlock(block);
-        if (input === InputWater && filling === 100 && selectedItem.item.typeId === "exnihilo:dust") {
+        if (ctx.input === InputWater && ctx.filling === 100 && selectedItem.item.typeId === "exnihilo:dust") {
             consumeSelectedItem(selectedItem);
             this.setInputBlock(block, InputClay);
             block.dimension.playSound("dig.gravel", block.center());
             return;
         }
-        if (input === InputLava && filling === 100 && selectedItem.item.typeId === "minecraft:redstone") {
+        if (ctx.input === InputLava && ctx.filling === 100 && selectedItem.item.typeId === "minecraft:redstone") {
             consumeSelectedItem(selectedItem);
             this.setInputBlock(block, InputNetherrack);
             block.dimension.playSound("dig.netherrack", block.center());
