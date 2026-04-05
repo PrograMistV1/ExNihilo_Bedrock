@@ -1,6 +1,5 @@
 import {
     Block,
-    BlockComponentBlockBreakEvent,
     BlockComponentPlayerBreakEvent,
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
@@ -14,11 +13,11 @@ import {
     MolangVariableMap,
     Player,
     system,
-    VanillaEntityIdentifier,
     WeatherType
 } from "@minecraft/server";
 import {
-    BARREL_CONSTANTS,
+    BARREL_CONFIG,
+    BARREL_TIMINGS,
     BarrelInput,
     CompostableItems,
     DROP_FROM_INPUT_MAP,
@@ -49,8 +48,17 @@ const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
 
 export class BarrelComponent implements BlockCustomComponent {
-    onBreak(e: BlockComponentBlockBreakEvent): void {
-        getTileEntity(e.block, BARREL_TILE_ID)?.remove();
+    constructor() {
+        addProgressChecker("exnihilo:barrel", (block: Block) => {
+            const input = getInputBlock(block);
+            if (isProgressive(block)) {
+                return getProgressInPercents(block) + "%";
+            } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
+                return {translate: "gui.done"};
+            } else {
+                return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
+            }
+        });
     }
 
     onPlayerInteract(e: BlockComponentPlayerInteractEvent) {
@@ -71,23 +79,12 @@ export class BarrelComponent implements BlockCustomComponent {
         const drop = DROP_FROM_INPUT_MAP[getInputBlock(e.block)];
         if (!drop) return;
 
-        e.block.dimension.spawnItem(new ItemStack(drop), {x: e.block.x + 0.5, y: e.block.y + 0.5, z: e.block.z + 0.5});
+        e.block.dimension.spawnItem(new ItemStack(drop), e.block.center());
     }
 }
 
-addProgressChecker("exnihilo:barrel", (block: Block) => {
-    const input = getInputBlock(block);
-    if (isProgressive(block)) {
-        return getProgressInPercents(block) + "%";
-    } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
-        return {translate: "gui.done"};
-    } else {
-        return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
-    }
-});
-
 function getProgressInPercents(block: Block): number {
-    return Math.floor(getTimer(block) / BARREL_CONSTANTS.COMPOSTING_TIME_TICKS * 100);
+    return Math.floor(getTimer(block) / BARREL_TIMINGS.compostingUpdates * 100);
 }
 
 function isProgressive(block: Block): boolean {
@@ -103,7 +100,7 @@ function handleRainFill(block: Block): void {
     if (isHighest && block.dimension.getWeather() !== WeatherType.Clear) {
         //todo: Rain is not found in all biomes, and only in the overworld.
         if (input === InputDefault) setInputBlock(block, InputWater);
-        setFilling(block, filling + BARREL_CONSTANTS.RAIN_FILL_PER_TICK);
+        setFilling(block, filling + BARREL_TIMINGS.rainFillPerUpdate);
     }
 }
 
@@ -112,14 +109,14 @@ function handleWaterEntities(block: Block): void {
 
     for (const entity of getContainedEntities(block)) {
         if (entity.getVelocity().y < 0) {
-            block.dimension.playSound("random.splash", {x: block.x + 0.5, y: block.y + 0.5, z: block.z + 0.5});
+            block.dimension.playSound("random.splash", block.center());
             const molang = new MolangVariableMap();
             molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
-            block.dimension.spawnParticle("minecraft:water_splash_particle", {
-                x: block.x + 0.5,
-                y: block.y + 1.1,
-                z: block.z + 0.5
-            }, molang);
+            block.dimension.spawnParticle(
+                "minecraft:water_splash_particle",
+                {...block.bottomCenter(), y: block.y + 1.1},
+                molang
+            );
         }
         tryExtinguishEntity(entity);
     }
@@ -128,7 +125,7 @@ function handleWaterEntities(block: Block): void {
 function handleLava(block: Block, flammable: boolean): void {
     if (getInputBlock(block) !== InputLava) return;
 
-    if (flammable && Math.random() <= BARREL_CONSTANTS.LAVA_IGNITE_CHANCE_PER_TICK) {
+    if (flammable && Math.random() <= BARREL_CONFIG.lavaIgniteChance) {
         const directions = [
             {x: 1, y: 0, z: 0},
             {x: 0, y: 0, z: 1},
@@ -160,7 +157,7 @@ function handleLava(block: Block, flammable: boolean): void {
 function handleCompost(block: Block): void {
     if (getInputBlock(block) !== InputCompost || getFilling(block) !== 100) return;
 
-    if (incrementTimer(block) > BARREL_CONSTANTS.COMPOSTING_TIME_TICKS) {
+    if (incrementTimer(block) > BARREL_TIMINGS.compostingUpdates) {
         setInputBlock(block, InputDirt);
         resetTimer(block);
     }
@@ -223,14 +220,7 @@ function handleExtractResult(block: Block): void {
     const drop = DROP_FROM_INPUT_MAP[getInputBlock(block)];
     if (!drop) return;
 
-    const entity = block.dimension.spawnItem(
-        new ItemStack(drop),
-        {
-            x: block.x + 0.5,
-            y: block.y + 1.1,
-            z: block.z + 0.5
-        }
-    );
+    const entity = block.dimension.spawnItem(new ItemStack(drop), {...block.bottomCenter(), y: block.y + 1.1});
     entity.applyImpulse({
         x: Math.random() * 0.03,
         y: 0.03,
@@ -273,23 +263,19 @@ function setInputBlock(block: Block, input: BarrelInput): void {
 
     block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
 
-    const tile = getTileEntity(block, BARREL_TILE_ID);
+    let tile = getTileEntity(block, BARREL_TILE_ID);
     if (tile) {
         isDefault ? tile.remove() : tile.triggerEvent(input);
         return;
     }
     if (!isDefault) {
-        const newTile = block.dimension.spawnEntity(
-            BARREL_TILE_ID as keyof VanillaEntityIdentifier,
-            {
-                x: block.x + 0.5,
-                y: block.y + BARREL_CONSTANTS.HEIGHT_OFFSET,
-                z: block.z + 0.5
-            },
+        tile = block.dimension.spawnEntity(
+            BARREL_TILE_ID,
+            {...block.bottomCenter(), y: block.y + 1 / 16},
             {spawnEvent: input}
         );
-        newTile.setDynamicProperty("filling", 0);
-        newTile.setDynamicProperty("timer", 0);
+        tile.setDynamicProperty("filling", 0);
+        tile.setDynamicProperty("timer", 0);
     }
 }
 
@@ -305,12 +291,7 @@ function setFilling(barrel: Block, filling: number): void {
     if (!tile) return;
 
     filling = Math.max(Math.min(filling, 100), 0);
-    const pos = tile.location;
-    tile.teleport({
-        x: pos.x,
-        y: Math.floor(pos.y) + BARREL_CONSTANTS.HEIGHT_OFFSET + (filling / 100) * 0.875,
-        z: pos.z,
-    });
+    tile.teleport({...barrel.bottomCenter(), y: barrel.y + 1 / 16 + filling / 100 * 0.875});
     tile.setDynamicProperty("filling", filling);
 }
 
@@ -347,7 +328,7 @@ function fillBarrelFromBucket(
     setInputBlock(block, type);
     system.runTimeout(() => setFilling(block, 100), 1);
     selectedItem.container.setItem(selectedItem.slot, new ItemStack(EMPTY_BUCKET_ITEM, 1));
-    block.dimension.playSound(soundId, {x: block.x + 0.5, y: block.y + 0.5, z: block.z + 0.5});
+    block.dimension.playSound(soundId, block.center());
 }
 
 function drainBarrelToBucket(
@@ -370,19 +351,14 @@ function drainBarrelToBucket(
             player.dimension.playSound("random.pop", player.location);
         }
     }
-    block.dimension.playSound(soundId, {x: block.x + 0.5, y: block.y + 0.5, z: block.z + 0.5});
+    block.dimension.playSound(soundId, block.center());
 }
 
 function getContainedEntities(block: Block): Entity[] {
-    const newPos = {
-        x: block.x + 0.5,
-        y: Math.floor(block.y) + 0.46875,
-        z: block.z + 0.5
-    };
     return block.dimension.getEntities({
         excludeTypes: [BARREL_TILE_ID],
-        location: newPos,
-        maxDistance: BARREL_CONSTANTS.BARREL_ENTITY_RADIUS,
+        location: block.center(),
+        maxDistance: 0.47,
     });
 }
 

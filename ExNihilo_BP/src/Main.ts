@@ -8,7 +8,6 @@ import {CrookComponent} from "./components/items/CrookComponent";
 import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
-import {progressCheckers} from "./ProgressRegistry";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
@@ -28,24 +27,6 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     system.runInterval(() => {
         clearBuggedTiles();
     }, 6000)
-});
-
-system.runInterval(() => {
-    world.getPlayers().forEach(player => {
-        const block = player.getBlockFromViewDirection({maxDistance: 6})?.block;
-        if (!block) return;
-
-        for (const [component, callback] of progressCheckers) {
-            if (block.getComponent(component)) {
-                try {
-                    player.onScreenDisplay.setActionBar(callback(block));
-                } catch (e) {
-                    console.error(`Error in ${component} progress checker:`, e);
-                }
-                break;
-            }
-        }
-    });
 });
 
 function clearBuggedTiles() {

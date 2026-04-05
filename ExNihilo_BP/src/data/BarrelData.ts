@@ -1,3 +1,5 @@
+import {TicksPerSecond} from "@minecraft/server";
+
 export const CompostableItems: Record<string, number> = {
     "minecraft:acacia_sapling": 12.5,
     "minecraft:birch_sapling": 12.5,
@@ -48,14 +50,18 @@ export const CompostableItems: Record<string, number> = {
     "exnihilo:cooked_silkworm": 4
 };
 
-export const BARREL_CONSTANTS = {
-    MAX_FILLING: 100,
-    BARREL_ENTITY_RADIUS: 0.47,
-    COMPOSTING_TIME_TICKS: 514, //1 barrel update tick occurs every 7 game ticks. 514*7≈3600, which equals 3 minutes.
-    RAIN_FILL_PER_TICK: 0.33334, //1 minute 45 seconds to fill barrel,
-    HEIGHT_OFFSET: 0.0625,
-    LAVA_IGNITE_CHANCE_PER_TICK: 0.015
-}
+export const BARREL_CONFIG = {
+    updateInterval: 8,
+    compostingTimeSeconds: 180,
+    rainFillSeconds: 105,
+    lavaIgniteChance: 0.015
+};
+
+const updatesPerSecond = TicksPerSecond / BARREL_CONFIG.updateInterval;
+export const BARREL_TIMINGS = {
+    compostingUpdates: Math.ceil(BARREL_CONFIG.compostingTimeSeconds * updatesPerSecond),
+    rainFillPerUpdate: 1 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
+};
 
 export type BarrelInput =
     "exnihilo:default"

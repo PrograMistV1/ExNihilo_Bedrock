@@ -1,0 +1,7 @@
+{
+	"namespace": "hud",
+	"hud_actionbar_text": {
+		"$original_text": "$actionbar_text",
+		"visible": "(not ($original_text = 'exnihilo:hide'))"
+	}
+}
