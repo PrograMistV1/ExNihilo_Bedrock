@@ -17,7 +17,7 @@
 					"minecraft:dirt_with_roots"
 				],
 				"allowed_faces": ["Up"],
-				"block": "minecraft:bamboo"
+				"block": "minecraft:bamboo_sapling"
 			}
 		}
 	}
