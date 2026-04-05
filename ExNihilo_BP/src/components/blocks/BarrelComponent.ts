@@ -177,6 +177,7 @@ function handleCompostable(block: Block, player: Player): void {
     consumeSelectedItem(selectedItem);
     if (input === InputDefault) setInputBlock(block, InputCompost);
     setFilling(block, filling + fillAmount);
+    block.dimension.playSound("block.composter.fill_success", block.center());
 }
 
 function handleLiquid(block: Block, player: Player): void {
@@ -245,11 +246,13 @@ function handleSpecialInteractions(block: Block, player: Player): void {
     if (input === InputWater && filling === 100 && selectedItem.item.typeId === "exnihilo:dust") {
         consumeSelectedItem(selectedItem);
         setInputBlock(block, InputClay);
+        block.dimension.playSound("dig.gravel", block.center());
         return;
     }
     if (input === InputLava && filling === 100 && selectedItem.item.typeId === "minecraft:redstone") {
         consumeSelectedItem(selectedItem);
         setInputBlock(block, InputNetherrack);
+        block.dimension.playSound("dig.netherrack", block.center());
         return;
     }
 }
