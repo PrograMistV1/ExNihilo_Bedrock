@@ -1,6 +1,5 @@
 export const CompostableItems: Record<string, number> = {
     "minecraft:acacia_sapling": 12.5,
-    "minecraft:bamboo_sapling": 12.5,
     "minecraft:birch_sapling": 12.5,
     "minecraft:cherry_sapling": 12.5,
     "minecraft:dark_oak_sapling": 12.5,
@@ -22,6 +21,7 @@ export const CompostableItems: Record<string, number> = {
     "minecraft:oak_leaves": 12.5,
     "minecraft:pale_oak_leaves": 12.5,
     "minecraft:spruce_leaves": 12.5,
+    "minecraft:bamboo": 10,
     "minecraft:cactus_flower": 10,
     "minecraft:dandelion": 10,
     "minecraft:poppy": 10,
