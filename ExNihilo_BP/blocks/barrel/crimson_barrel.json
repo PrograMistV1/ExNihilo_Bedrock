@@ -28,7 +28,7 @@
 				{"origin": [-7, 0, -7], "size": [13, 16, 1]}
 			],
 			"minecraft:tick": {
-				"interval_range": [7, 7],
+				"interval_range": [8, 8],
 				"looping": true
 			},
 			"minecraft:movable": {
