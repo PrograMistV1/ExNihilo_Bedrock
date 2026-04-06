@@ -13,15 +13,14 @@ import {
     MolangVariableMap,
     Player,
     system,
-    VanillaEntityIdentifier,
     WeatherType
 } from "@minecraft/server";
+import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, DROP_FROM_INPUT_MAP,} from "../../data/BarrelData";
+import {consumeSelectedItem, getSelectedItemContext, SelectedItemContext} from "../../utils/Utils";
+import {addProgressChecker} from "../../utils/ProgressRegistry";
 import {
-    BARREL_CONFIG,
-    BARREL_TIMINGS,
-    BarrelInput,
-    CompostableItems,
-    DROP_FROM_INPUT_MAP,
+    BlockInput,
+    FilledTileEntityBlock,
     InputClay,
     InputCompost,
     InputDefault,
@@ -29,27 +28,16 @@ import {
     InputLava,
     InputNetherrack,
     InputWater,
-    NonEmptyLiquidBarrelType
-} from "../../data/BarrelData";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity, SelectedItemContext} from "../../utils/Utils";
-import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {addProgressChecker} from "../../utils/ProgressRegistry";
-import {TileEntityBlock} from "../../utils/TileEntityBlock";
-
+    TileContext
+} from "./tiles/FilledTileEntityBlock";
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
 
-interface TileContext {
-    tile: Entity | undefined;
-    filling: number;
-    input: BarrelInput;
-}
-
-export class BarrelComponent extends TileEntityBlock implements BlockCustomComponent {
+export class BarrelComponent extends FilledTileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:barrel_tile";
-    static readonly VARIANT_STATE_MAP: Record<number, BarrelInput> = {
+    static readonly VARIANT_STATE_MAP: Record<number, BlockInput> = {
         0: "exnihilo:default",
         1: "exnihilo:compost",
         2: "exnihilo:dirt",
@@ -97,17 +85,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         e.block.dimension.spawnItem(new ItemStack(drop), e.block.center());
     };
 
-    private getTileContext(block: Block): TileContext {
-        const tile = getTileEntity(block, this.tileId);
-
-        return {
-            tile,
-            filling: this.getFilling(block),
-            input: this.getInputBlock(block) as BarrelInput
-        };
-    }
-
-    private yResolver(filling: number): number {
+    protected yResolver(filling: number): number {
         return 1 / 16 + filling / 100 * 0.875;
     }
 
@@ -118,7 +96,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         if (isHighest && block.dimension.getWeather() !== WeatherType.Clear) {
             //todo: Rain is not found in all biomes, and only in the overworld.
             if (ctx.input === InputDefault) this.setInputBlock(block, InputWater);
-            this.setFilling(block, ctx.filling + BARREL_TIMINGS.rainFillPerUpdate, this.yResolver);
+            this.setFilling(block, ctx.filling + BARREL_TIMINGS.rainFillPerUpdate);
         }
     }
 
@@ -193,7 +171,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
 
         consumeSelectedItem(selectedItem);
         if (ctx.input === InputDefault) this.setInputBlock(block, InputCompost);
-        this.setFilling(block, ctx.filling + fillAmount, this.yResolver);
+        this.setFilling(block, ctx.filling + fillAmount);
         block.dimension.playSound("block.composter.fill_success", block.center());
     }
 
@@ -215,7 +193,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         } as const;
 
         const itemId = selectedItem.item.typeId;
-        for (const liquidType of Object.keys(LIQUIDS) as NonEmptyLiquidBarrelType[]) {
+        for (const liquidType of Object.keys(LIQUIDS) as BlockInput[]) {
             const liquid = LIQUIDS[liquidType];
 
             if (itemId === liquid.bucket && (ctx.input === InputDefault || ctx.input === liquidType)) {
@@ -263,36 +241,14 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         }
     }
 
-    private setInputBlock(block: Block, input: BarrelInput): void {
-        const isLava = input === InputLava;
-        const isDefault = input === InputDefault;
-
-        block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
-
-        let tile = getTileEntity(block, this.tileId);
-        if (tile) {
-            isDefault ? tile.remove() : tile.triggerEvent(input);
-            return;
-        }
-        if (!isDefault) {
-            tile = block.dimension.spawnEntity(
-                this.tileId as keyof VanillaEntityIdentifier,
-                {...block.bottomCenter(), y: block.y + 1 / 16},
-                {spawnEvent: input}
-            );
-            tile.setDynamicProperty("filling", 0);
-            tile.setDynamicProperty("timer", 0);
-        }
-    }
-
     private fillBarrelFromBucket(
         block: Block,
         selectedItem: SelectedItemContext,
-        type: NonEmptyLiquidBarrelType,
+        type: BlockInput,
         soundId: string
     ): void {
         this.setInputBlock(block, type);
-        system.runTimeout(() => this.setFilling(block, 100, this.yResolver), 1);
+        system.runTimeout(() => this.setFilling(block, 100), 1);
         selectedItem.container.setItem(selectedItem.slot, new ItemStack(EMPTY_BUCKET_ITEM, 1));
         block.dimension.playSound(soundId, block.center());
     }
@@ -304,7 +260,7 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
         soundId: string,
         player: Player
     ): void {
-        this.setFilling(block, 0, this.yResolver);
+        this.setFilling(block, 0);
         system.runTimeout(() => this.setInputBlock(block, InputDefault), 10);
         if (selectedItem.item.amount === 1) {
             selectedItem.container.setItem(selectedItem.slot, new ItemStack(filledBucketItemId, 1));

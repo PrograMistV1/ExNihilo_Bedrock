@@ -7,32 +7,23 @@ import {
     BlockCustomComponent,
     Entity,
     ItemStack,
-    Player,
-    VanillaEntityIdentifier
+    Player
 } from "@minecraft/server";
-import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../utils/Utils";
+import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
+import {CRUCIBLE_TIMINGS, HeatRate, MeltableBlocks} from "../../data/CrucibleData";
+import {addProgressChecker} from "../../utils/ProgressRegistry";
 import {
-    CRUCIBLE_CONSTANTS,
-    CrucibleInput,
-    HeatRate,
+    BlockInput,
+    FilledTileEntityBlock,
     InputDefault,
     InputGravel,
     InputLava,
-    MeltableBlocks
-} from "../../data/CrucibleData";
-import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {addProgressChecker} from "../../utils/ProgressRegistry";
-import {TileEntityBlock} from "../../utils/TileEntityBlock";
+    TileContext
+} from "./tiles/FilledTileEntityBlock";
 
-interface TileContext {
-    tile: Entity | undefined;
-    filling: number;
-    input: CrucibleInput;
-}
-
-export class CrucibleComponent extends TileEntityBlock implements BlockCustomComponent {
+export class CrucibleComponent extends FilledTileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:crucible_tile";
-    static readonly VARIANT_STATE_MAP: Record<number, CrucibleInput> = {
+    static readonly VARIANT_STATE_MAP: Record<number, BlockInput> = {
         0: "exnihilo:default",
         1: "exnihilo:gravel",
         2: "exnihilo:lava"
@@ -46,7 +37,7 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
             if (input === InputLava) {
                 return {translate: "gui.done"};
             } else if (filling === 100) {
-                return Math.floor(this.getTimer(block) / CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS * 100) + "%";
+                return Math.floor(this.getTimer(block) / CRUCIBLE_TIMINGS.meltingUpdates * 100) + "%";
             } else {
                 return parseFloat(filling.toFixed(1)).toString() + "/100"
             }
@@ -60,7 +51,7 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
     };
 
     onBreak = (e: BlockComponentBlockBreakEvent) => {
-        getTileEntity(e.block, this.tileId)?.remove();
+        this.getTileEntity(e.block)?.remove();
     };
 
     onTick = (e: BlockComponentTickEvent) => {
@@ -78,18 +69,8 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
         }
     };
 
-    private yResolver(filling: number): number {
+    protected yResolver(filling: number): number {
         return 3 / 16 + filling / 100 * 0.75;
-    }
-
-    private getTileContext(block: Block): TileContext {
-        const tile = getTileEntity(block, this.tileId);
-
-        return {
-            tile,
-            filling: this.getFilling(block),
-            input: this.getInputBlock(block) as CrucibleInput
-        };
     }
 
     private handleMeltable(block: Block, player: Player, ctx: TileContext): void {
@@ -99,7 +80,7 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
         if (!selectedItem.item || !canInsertMeltable || fillAmount === 0 || ctx.filling === 100) return;
 
         this.setInputBlock(block, InputGravel);
-        this.setFilling(block, ctx.filling + fillAmount, this.yResolver);
+        this.setFilling(block, ctx.filling + fillAmount);
         consumeSelectedItem(selectedItem);
     }
 
@@ -131,7 +112,7 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
         const heatRate = HeatRate[block.below()?.typeId] ?? 0;
         if (heatRate === 0) return;
 
-        if (this.incrementTimer(block, heatRate) > CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS) {
+        if (this.incrementTimer(block, heatRate) > CRUCIBLE_TIMINGS.meltingUpdates) {
             this.setInputBlock(block, InputLava);
             this.resetTimer(block);
         }
@@ -143,27 +124,5 @@ export class CrucibleComponent extends TileEntityBlock implements BlockCustomCom
         this.getContainedEntities(block).forEach((entity: Entity) => {
             applyLavaEffects(entity);
         });
-    }
-
-    private setInputBlock(block: Block, input: CrucibleInput): void {
-        const isLava = input === InputLava;
-        const isDefault = input === InputDefault;
-
-        block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
-
-        const tile = getTileEntity(block, this.tileId);
-        if (tile) {
-            isDefault ? tile.remove() : tile.triggerEvent(input);
-            return;
-        }
-        if (!isDefault) {
-            const newTile = block.dimension.spawnEntity(
-                this.tileId as keyof VanillaEntityIdentifier,
-                {...block.bottomCenter(), y: block.y + this.yResolver(0)},
-                {spawnEvent: input}
-            );
-            newTile.setDynamicProperty("filling", 0);
-            newTile.setDynamicProperty("timer", 0);
-        }
     }
 }

@@ -1,4 +1,5 @@
 import {TicksPerSecond} from "@minecraft/server";
+import {InputClay, InputDirt, InputNetherrack} from "../components/blocks/tiles/FilledTileEntityBlock";
 
 export const CompostableItems: Record<string, number> = {
     "minecraft:acacia_sapling": 12.5,
@@ -62,25 +63,6 @@ export const BARREL_TIMINGS = {
     compostingUpdates: Math.ceil(BARREL_CONFIG.compostingTimeSeconds * updatesPerSecond),
     rainFillPerUpdate: 100 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
 };
-
-export type BarrelInput =
-    "exnihilo:default"
-    | "exnihilo:compost"
-    | "exnihilo:water"
-    | "exnihilo:lava"
-    | "exnihilo:dirt"
-    | "exnihilo:clay"
-    | "witch_water"
-    | "exnihilo:netherrack";
-export type NonEmptyLiquidBarrelType = Extract<BarrelInput, "exnihilo:water" | "exnihilo:lava">;
-
-export const InputDefault: BarrelInput = "exnihilo:default";
-export const InputCompost: BarrelInput = "exnihilo:compost";
-export const InputWater: NonEmptyLiquidBarrelType = "exnihilo:water";
-export const InputLava: NonEmptyLiquidBarrelType = "exnihilo:lava";
-export const InputDirt: BarrelInput = "exnihilo:dirt";
-export const InputClay: BarrelInput = "exnihilo:clay";
-export const InputNetherrack: BarrelInput = "exnihilo:netherrack";
 
 export const DROP_FROM_INPUT_MAP: Readonly<Record<string, string>> = {
     [InputDirt]: "minecraft:dirt",

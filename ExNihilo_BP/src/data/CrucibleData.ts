@@ -1,12 +1,14 @@
-export const CRUCIBLE_CONSTANTS = {
-    MELTING_TIME_TICKS: 514
-}
+import {TicksPerSecond} from "@minecraft/server";
 
-export type CrucibleInput = "exnihilo:default" | "exnihilo:gravel" | "exnihilo:lava";
+export const CRUCIBLE_CONFIG = {
+    updateInterval: 8,
+    meltingTimeSeconds: 180
+};
 
-export const InputDefault = "exnihilo:default";
-export const InputGravel = "exnihilo:gravel";
-export const InputLava = "exnihilo:lava";
+const updatesPerSecond = TicksPerSecond / CRUCIBLE_CONFIG.updateInterval;
+export const CRUCIBLE_TIMINGS = {
+    meltingUpdates: Math.ceil(CRUCIBLE_CONFIG.meltingTimeSeconds * updatesPerSecond)
+};
 
 export const MeltableBlocks: Readonly<Record<string, number>> = {
     "minecraft:stone": 25,

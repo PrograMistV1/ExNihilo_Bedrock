@@ -1,4 +1,12 @@
-import {Block, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
+import {
+    Block,
+    Entity,
+    EntityDamageCause,
+    EntityInventoryComponent,
+    ItemStack,
+    Player,
+    VanillaEntityIdentifier
+} from "@minecraft/server";
 
 export type SelectedItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
@@ -6,21 +14,7 @@ export type SelectedItemContext = {
     slot: number;
 };
 
-export function getTileEntity(block: Block, entityId: string): Entity | undefined {
-    const pos = block.location;
-    const entities = block.dimension.getEntities({
-        type: entityId as string,
-        location: {
-            x: pos.x + 0.5,
-            y: pos.y + 0.5,
-            z: pos.z + 0.5
-        },
-        closest: 1,
-        maxDistance: 0.5
-    });
-    if (entities.length === 0) return undefined;
-    return entities[0];
-}
+
 
 export function getSelectedItemContext(player: Player): SelectedItemContext | null {
     const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;

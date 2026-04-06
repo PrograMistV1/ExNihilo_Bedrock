@@ -14,19 +14,31 @@ import {
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../utils/Utils";
+import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
 import {
     MESH_ITEM_BY_TYPE,
     MESH_TYPE_BY_ITEM,
     MeshType,
     SIEVE_CONSTANTS,
-    SIFTABLE_BLOCK_STATES,
-    VARIANT_STATE_MAP
+    SIFTABLE_BLOCK_STATES
 } from "../../data/SieveData";
 import {DROP_BY_MESH, rollDrops} from "../../data/loot/SieveLoot";
+import {TileEntityBlock} from "./tiles/TileEntityBlock";
 
-export class SieveComponent implements BlockCustomComponent {
+export class SieveComponent extends TileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:sieve_tile";
+    static readonly VARIANT_STATE_MAP: Record<number, string> = {
+        0: "exnihilo:default",
+        1: "exnihilo:dirt",
+        2: "exnihilo:gravel",
+        3: "exnihilo:sand",
+        4: "exnihilo:soul_sand",
+        5: "exnihilo:dust",
+    }
+
+    constructor() {
+        super(SieveComponent.TILE_ID, SieveComponent.VARIANT_STATE_MAP);
+    }
 
     onBreak(e: BlockComponentBlockBreakEvent): void {
         removeInputBlock(e.block);
@@ -182,14 +194,14 @@ function* getSieveNeighbors(block: Block): Generator<Block> {
 }
 
 function getInputBlock(sieve: Block): string | undefined {
-    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
+    const tile = this.getTileEntity(sieve);
     if (!tile) return undefined;
 
-    return VARIANT_STATE_MAP[tile.getComponent("minecraft:variant").value];
+    return this.VARIANT_STATE_MAP[tile.getComponent("minecraft:variant").value];
 }
 
 function setInputBlock(sieve: Block, input: string): void {
-    if (getTileEntity(sieve, SieveComponent.TILE_ID) !== undefined) return;
+    if (this.getTileEntity(sieve) !== undefined) return;
 
     const pos = sieve.location;
     sieve.dimension.spawnEntity(SieveComponent.TILE_ID as keyof VanillaEntityIdentifier, {
@@ -200,18 +212,18 @@ function setInputBlock(sieve: Block, input: string): void {
 }
 
 function removeInputBlock(sieve: Block): void {
-    getTileEntity(sieve, SieveComponent.TILE_ID)?.remove();
+    this.getTileEntity(sieve)?.remove();
 }
 
 function getProgress(sieve: Block): number | undefined {
-    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
+    const tile = this.getTileEntity(sieve);
     if (!tile) return undefined;
 
     return tile.getProperty("exnihilo:progress") as number;
 }
 
 function setProgress(sieve: Block, progress: number): void {
-    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
+    const tile = this.getTileEntity(sieve);
     if (!tile) return;
 
     tile.setProperty("exnihilo:progress", progress);
@@ -230,7 +242,7 @@ function isReadyToSieve(block: Block): boolean {
 }
 
 function isSieveBlock(block?: Block): block is Block {
-    return !!block?.getComponent("exnihilo:sieve");
+    return block?.hasComponent("exnihilo:sieve");
 }
 
 function isMeshItemId(itemId?: string): itemId is keyof typeof MESH_TYPE_BY_ITEM {
