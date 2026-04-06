@@ -20,6 +20,7 @@
 				"use_duration": 1.6,
 				"movement_modifier": 0.35
 			},
+			"minecraft:compostable": {"composting_chance": 5},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:is_food",

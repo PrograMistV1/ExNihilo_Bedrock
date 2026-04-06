@@ -9,7 +9,8 @@
 		},
 		"components": {
 			"minecraft:icon": "silkworm",
-			"exnihilo:silkworm": {}
+			"exnihilo:silkworm": {},
+			"minecraft:compostable": {"composting_chance": 5}
 		}
 	}
 }
