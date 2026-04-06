@@ -6,13 +6,11 @@ import {
     BlockComponentTickEvent,
     BlockCustomComponent,
     Entity,
-    EntityVariantComponent,
     ItemStack,
     Player,
     VanillaEntityIdentifier
 } from "@minecraft/server";
 import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext, getTileEntity} from "../../utils/Utils";
-import {CRUCIBLE_TILE_ID} from "../../data/TileList";
 import {
     CRUCIBLE_CONSTANTS,
     CrucibleInput,
@@ -20,200 +18,152 @@ import {
     InputDefault,
     InputGravel,
     InputLava,
-    MeltableBlocks,
-    VARIANT_STATE_MAP
+    MeltableBlocks
 } from "../../data/CrucibleData";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {addProgressChecker} from "../../utils/ProgressRegistry";
+import {TileEntityBlock} from "../../utils/TileEntityBlock";
 
-export class CrucibleComponent implements BlockCustomComponent {
-    onPlayerInteract(e: BlockComponentPlayerInteractEvent): void {
-        handleMeltable(e.block, e.player);
-        handleExtractLava(e.block, e.player);
+interface TileContext {
+    tile: Entity | undefined;
+    filling: number;
+    input: CrucibleInput;
+}
+
+export class CrucibleComponent extends TileEntityBlock implements BlockCustomComponent {
+    static readonly TILE_ID: string = "exnihilo:crucible_tile";
+    static readonly VARIANT_STATE_MAP: Record<number, CrucibleInput> = {
+        0: "exnihilo:default",
+        1: "exnihilo:gravel",
+        2: "exnihilo:lava"
+    };
+
+    constructor() {
+        super(CrucibleComponent.TILE_ID, CrucibleComponent.VARIANT_STATE_MAP);
+        addProgressChecker("exnihilo:crucible", (block: Block) => {
+            const input = this.getInputBlock(block);
+            const filling = this.getFilling(block);
+            if (input === InputLava) {
+                return {translate: "gui.done"};
+            } else if (filling === 100) {
+                return Math.floor(this.getTimer(block) / CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS * 100) + "%";
+            } else {
+                return parseFloat(filling.toFixed(1)).toString() + "/100"
+            }
+        });
     }
 
-    onBreak(e: BlockComponentBlockBreakEvent): void {
-        getTileEntity(e.block, CRUCIBLE_TILE_ID)?.remove();
-    }
+    onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
+        const ctx = this.getTileContext(e.block);
+        this.handleMeltable(e.block, e.player, ctx);
+        this.handleExtractLava(e.block, e.player, ctx);
+    };
 
-    onTick(e: BlockComponentTickEvent): void {
-        handleMeltingTick(e.block);
-        handleLavaEntities(e.block);
-    }
+    onBreak = (e: BlockComponentBlockBreakEvent) => {
+        getTileEntity(e.block, this.tileId)?.remove();
+    };
 
-    onPlayerBreak(e: BlockComponentPlayerBreakEvent): void {
+    onTick = (e: BlockComponentTickEvent) => {
+        const ctx = this.getTileContext(e.block);
+        this.handleMeltingTick(e.block, ctx);
+        this.handleLavaEntities(e.block, ctx);
+    };
+
+    onPlayerBreak = (e: BlockComponentPlayerBreakEvent) => {
         const selectedItem = getSelectedItemContext(e.player);
         if (!selectedItem.item) return;
 
         if (selectedItem.item.hasTag("minecraft:is_pickaxe")) {
-            e.dimension.spawnItem(new ItemStack(e.brokenBlockPermutation.type.id),
-                {
-                    x: e.block.x + 0.5,
-                    y: e.block.y + 0.5,
-                    z: e.block.z + 0.5
-                }
-            );
+            e.dimension.spawnItem(new ItemStack(e.brokenBlockPermutation.type.id), e.block.center());
         }
-    }
-}
-
-addProgressChecker("exnihilo:crucible", (block: Block) => {
-    const input = getInputBlock(block);
-    if (input === InputLava) {
-        return {translate: "gui.done"};
-    } else if (getFilling(block) === 100) {
-        return getProgressInPercents(block) + "%";
-    } else {
-        return parseFloat(getFilling(block).toFixed(1)).toString() + "/100"
-    }
-});
-
-function getProgressInPercents(block: Block): number {
-    return Math.floor(getTimer(block) / CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS * 100);
-}
-
-function handleLavaEntities(block: Block): void {
-    if (getInputBlock(block) !== InputLava) return;
-
-    for (const entity of getContainedEntities(block)) {
-        applyLavaEffects(entity);
-    }
-}
-
-function getContainedEntities(block: Block): Entity[] {
-    const newPos = {
-        x: block.x + 0.5,
-        y: Math.floor(block.y) + 0.5625,
-        z: block.z + 0.5
     };
-    return block.dimension.getEntities({
-        excludeTypes: [CRUCIBLE_TILE_ID],
-        location: newPos,
-        maxDistance: 0.4,
-    });
-}
 
-function handleMeltingTick(block: Block): void {
-    const input = getInputBlock(block);
-    const filling = getFilling(block);
-    if (input !== InputGravel || filling !== 100) return;
-
-    const heatRate = HeatRate[block.dimension.getBlock({x: block.x, y: block.y - 1, z: block.z}).typeId] ?? 0;
-    if (heatRate === 0) return;
-
-    if (incrementTimer(block, heatRate) > CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS) {
-        setInputBlock(block, InputLava);
-        resetTimer(block);
+    private yResolver(filling: number): number {
+        return 3 / 16 + filling / 100 * 0.75;
     }
-}
 
-function handleMeltable(block: Block, player: Player): void {
-    const selectedItem = getSelectedItemContext(player);
-    const canInsertMeltable = getInputBlock(block) === InputDefault || getInputBlock(block) === InputGravel;
-    const fillAmount = MeltableBlocks[selectedItem.item?.typeId] ?? 0;
-    if (!selectedItem.item || !canInsertMeltable || fillAmount === 0 || getFilling(block) === 100) return;
+    private getTileContext(block: Block): TileContext {
+        const tile = getTileEntity(block, this.tileId);
 
-    setInputBlock(block, InputGravel);
-    setFilling(block, getFilling(block) + fillAmount);
-    consumeSelectedItem(selectedItem);
-}
+        return {
+            tile,
+            filling: this.getFilling(block),
+            input: this.getInputBlock(block) as CrucibleInput
+        };
+    }
 
-function handleExtractLava(block: Block, player: Player): void {
-    const selectedItem = getSelectedItemContext(player);
-    if (!selectedItem.item
-        || selectedItem.item.typeId !== "minecraft:bucket"
-        || getInputBlock(block) !== InputLava
-        || getFilling(block) !== 100) return;
+    private handleMeltable(block: Block, player: Player, ctx: TileContext): void {
+        const selectedItem = getSelectedItemContext(player);
+        const canInsertMeltable = ctx.input === InputDefault || ctx.input === InputGravel;
+        const fillAmount = MeltableBlocks[selectedItem.item?.typeId] ?? 0;
+        if (!selectedItem.item || !canInsertMeltable || fillAmount === 0 || ctx.filling === 100) return;
 
-    setInputBlock(block, InputDefault);
-    if (selectedItem.item.amount === 1) {
-        selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
-    } else {
+        this.setInputBlock(block, InputGravel);
+        this.setFilling(block, ctx.filling + fillAmount, this.yResolver);
         consumeSelectedItem(selectedItem);
-        if (selectedItem.container.emptySlotsCount > 0) {
-            selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
+    }
+
+    private handleExtractLava(block: Block, player: Player, ctx: TileContext): void {
+        const selectedItem = getSelectedItemContext(player);
+        if (!selectedItem.item
+            || selectedItem.item.typeId !== "minecraft:bucket"
+            || ctx.input !== InputLava
+            || ctx.filling !== 100) return;
+
+        this.setInputBlock(block, InputDefault);
+        if (selectedItem.item.amount === 1) {
+            selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
         } else {
-            player.dimension.spawnItem(new ItemStack("minecraft:lava_bucket", 1), player.location);
-            player.dimension.playSound("random.pop", player.location);
+            consumeSelectedItem(selectedItem);
+            if (selectedItem.container.emptySlotsCount > 0) {
+                selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
+            } else {
+                player.dimension.spawnItem(new ItemStack("minecraft:lava_bucket", 1), player.location);
+                player.dimension.playSound("random.pop", player.location);
+            }
+        }
+        block.dimension.playSound("bucket.fill_lava", block);
+    }
+
+    private handleMeltingTick(block: Block, ctx: TileContext): void {
+        if (ctx.input !== InputGravel || ctx.filling !== 100) return;
+
+        const heatRate = HeatRate[block.below()?.typeId] ?? 0;
+        if (heatRate === 0) return;
+
+        if (this.incrementTimer(block, heatRate) > CRUCIBLE_CONSTANTS.MELTING_TIME_TICKS) {
+            this.setInputBlock(block, InputLava);
+            this.resetTimer(block);
         }
     }
-    block.dimension.playSound("bucket.fill_lava", block);
-}
 
-function getInputBlock(crucible: Block): CrucibleInput {
-    const tile = getTileEntity(crucible, CRUCIBLE_TILE_ID);
-    if (!tile) return InputDefault;
+    private handleLavaEntities(block: Block, ctx: TileContext): void {
+        if (ctx.input !== InputLava) return;
 
-    return VARIANT_STATE_MAP[tile.getComponent(EntityVariantComponent.componentId).value];
-}
-
-function setInputBlock(block: Block, input: CrucibleInput): void {
-    const isLava = input === InputLava;
-    const isDefault = input === InputDefault;
-
-    block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
-
-    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
-    if (tile) {
-        isDefault ? tile.remove() : tile.triggerEvent(input);
-        return;
+        this.getContainedEntities(block).forEach((entity: Entity) => {
+            applyLavaEffects(entity);
+        });
     }
-    if (!isDefault) {
-        const newTile = block.dimension.spawnEntity(
-            CRUCIBLE_TILE_ID as keyof VanillaEntityIdentifier,
-            {
-                x: block.x + CRUCIBLE_CONSTANTS.CENTER_OFFSET,
-                y: block.y + CRUCIBLE_CONSTANTS.HEIGHT_OFFSET,
-                z: block.z + CRUCIBLE_CONSTANTS.CENTER_OFFSET
-            },
-            {spawnEvent: input}
-        );
-        newTile.setDynamicProperty("filling", 0);
-        newTile.setDynamicProperty("timer", 0);
+
+    private setInputBlock(block: Block, input: CrucibleInput): void {
+        const isLava = input === InputLava;
+        const isDefault = input === InputDefault;
+
+        block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
+
+        const tile = getTileEntity(block, this.tileId);
+        if (tile) {
+            isDefault ? tile.remove() : tile.triggerEvent(input);
+            return;
+        }
+        if (!isDefault) {
+            const newTile = block.dimension.spawnEntity(
+                this.tileId as keyof VanillaEntityIdentifier,
+                {...block.bottomCenter(), y: block.y + this.yResolver(0)},
+                {spawnEvent: input}
+            );
+            newTile.setDynamicProperty("filling", 0);
+            newTile.setDynamicProperty("timer", 0);
+        }
     }
-}
-
-function getFilling(crucible: Block): number {
-    const tile = getTileEntity(crucible, CRUCIBLE_TILE_ID);
-    if (!tile) return 0;
-
-    return tile.getDynamicProperty("filling") as number ?? 0;
-}
-
-function setFilling(crucible: Block, filling: number): void {
-    const tile = getTileEntity(crucible, CRUCIBLE_TILE_ID);
-    if (!tile) return;
-
-    filling = Math.max(Math.min(filling, 100), 0);
-    const pos = tile.location;
-    tile.teleport({
-        x: pos.x,
-        y: Math.floor(pos.y) + CRUCIBLE_CONSTANTS.HEIGHT_OFFSET + (filling / 100) * 0.75,
-        z: pos.z,
-    });
-    tile.setDynamicProperty("filling", filling);
-}
-
-function incrementTimer(block: Block, amount: number): number {
-    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
-    if (!tile) return;
-
-    const currTime = tile.getDynamicProperty("timer") as number;
-    const newTime = currTime + amount;
-    tile.setDynamicProperty("timer", newTime);
-    return newTime;
-}
-
-function resetTimer(block: Block): void {
-    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
-    if (!tile) return;
-
-    tile.setDynamicProperty("timer", 0);
-}
-
-function getTimer(block: Block): number {
-    const tile = getTileEntity(block, CRUCIBLE_TILE_ID);
-    if (!tile) return;
-
-    return tile.getDynamicProperty("timer") as number;
 }

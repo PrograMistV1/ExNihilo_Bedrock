@@ -1,6 +1,5 @@
 import {system, world} from "@minecraft/server";
 import {BarrelComponent} from "./components/blocks/BarrelComponent";
-import {CRUCIBLE_TILE_ID, SIEVE_TILE_ID} from "./data/TileList";
 import {SieveComponent} from "./components/blocks/SieveComponent";
 import {CrucibleComponent} from "./components/blocks/CrucibleComponent";
 import {InfestedLeavesComponent} from "./components/blocks/InfestedLeavesComponent";
@@ -38,14 +37,14 @@ function clearBuggedTiles() {
                 entity.remove();
             }
         });
-        world.getDimension(dimension).getEntities({type: SIEVE_TILE_ID}).forEach(entity => {
+        world.getDimension(dimension).getEntities({type: SieveComponent.TILE_ID}).forEach(entity => {
             const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:sieve");
             if (!comp) {
                 console.log(`Removing bugged sieve tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
                 entity.remove();
             }
         });
-        world.getDimension(dimension).getEntities({type: CRUCIBLE_TILE_ID}).forEach(entity => {
+        world.getDimension(dimension).getEntities({type: CrucibleComponent.TILE_ID}).forEach(entity => {
             const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:crucible");
             if (!comp) {
                 console.log(`Removing bugged crucible tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);

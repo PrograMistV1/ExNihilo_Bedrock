@@ -23,10 +23,11 @@ import {
     SIFTABLE_BLOCK_STATES,
     VARIANT_STATE_MAP
 } from "../../data/SieveData";
-import {SIEVE_TILE_ID} from "../../data/TileList";
 import {DROP_BY_MESH, rollDrops} from "../../data/loot/SieveLoot";
 
 export class SieveComponent implements BlockCustomComponent {
+    static readonly TILE_ID: string = "exnihilo:sieve_tile";
+
     onBreak(e: BlockComponentBlockBreakEvent): void {
         removeInputBlock(e.block);
     }
@@ -181,17 +182,17 @@ function* getSieveNeighbors(block: Block): Generator<Block> {
 }
 
 function getInputBlock(sieve: Block): string | undefined {
-    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
     if (!tile) return undefined;
 
     return VARIANT_STATE_MAP[tile.getComponent("minecraft:variant").value];
 }
 
 function setInputBlock(sieve: Block, input: string): void {
-    if (getTileEntity(sieve, SIEVE_TILE_ID) !== undefined) return;
+    if (getTileEntity(sieve, SieveComponent.TILE_ID) !== undefined) return;
 
     const pos = sieve.location;
-    sieve.dimension.spawnEntity(SIEVE_TILE_ID as keyof VanillaEntityIdentifier, {
+    sieve.dimension.spawnEntity(SieveComponent.TILE_ID as keyof VanillaEntityIdentifier, {
         x: pos.x + SIEVE_CONSTANTS.inputEntityCenterOffset,
         y: pos.y + SIEVE_CONSTANTS.inputEntityHeightOffset,
         z: pos.z + SIEVE_CONSTANTS.inputEntityCenterOffset
@@ -199,18 +200,18 @@ function setInputBlock(sieve: Block, input: string): void {
 }
 
 function removeInputBlock(sieve: Block): void {
-    getTileEntity(sieve, SIEVE_TILE_ID)?.remove();
+    getTileEntity(sieve, SieveComponent.TILE_ID)?.remove();
 }
 
 function getProgress(sieve: Block): number | undefined {
-    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
     if (!tile) return undefined;
 
     return tile.getProperty("exnihilo:progress") as number;
 }
 
 function setProgress(sieve: Block, progress: number): void {
-    const tile = getTileEntity(sieve, SIEVE_TILE_ID);
+    const tile = getTileEntity(sieve, SieveComponent.TILE_ID);
     if (!tile) return;
 
     tile.setProperty("exnihilo:progress", progress);

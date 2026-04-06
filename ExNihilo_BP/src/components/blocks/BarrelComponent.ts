@@ -49,7 +49,7 @@ interface TileContext {
 
 export class BarrelComponent extends TileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:barrel_tile";
-    static readonly VARIANT_STATE_MAP = {
+    static readonly VARIANT_STATE_MAP: Record<number, BarrelInput> = {
         0: "exnihilo:default",
         1: "exnihilo:compost",
         2: "exnihilo:dirt",
@@ -318,14 +318,6 @@ export class BarrelComponent extends TileEntityBlock implements BlockCustomCompo
             }
         }
         block.dimension.playSound(soundId, block.center());
-    }
-
-    private getContainedEntities(block: Block): Entity[] {
-        return block.dimension.getEntities({
-            excludeTypes: [this.tileId],
-            location: block.center(),
-            maxDistance: 0.47,
-        });
     }
 
     private tryExtinguishEntity(entity: Entity): void {

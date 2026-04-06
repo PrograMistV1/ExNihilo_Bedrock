@@ -1,4 +1,4 @@
-import {Block, EntityVariantComponent} from "@minecraft/server";
+import {Block, Entity, EntityVariantComponent} from "@minecraft/server";
 import {getTileEntity} from "./Utils";
 
 export abstract class TileEntityBlock {
@@ -41,5 +41,13 @@ export abstract class TileEntityBlock {
 
     protected resetTimer(block: Block): void {
         getTileEntity(block, this.tileId)?.setDynamicProperty("timer", 0);
+    }
+
+    protected getContainedEntities(block: Block): Entity[] {
+        return block.dimension.getEntities({
+            excludeTypes: [this.tileId],
+            location: block.center(),
+            maxDistance: 0.47,
+        });
     }
 }

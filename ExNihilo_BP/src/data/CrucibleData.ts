@@ -1,12 +1,4 @@
-export const VARIANT_STATE_MAP: Readonly<Record<number, CrucibleInput>> = {
-    0: "exnihilo:default",
-    1: "exnihilo:gravel",
-    2: "exnihilo:lava"
-}
-
 export const CRUCIBLE_CONSTANTS = {
-    CENTER_OFFSET: 0.5,
-    HEIGHT_OFFSET: 0.1875,
     MELTING_TIME_TICKS: 514
 }
 
