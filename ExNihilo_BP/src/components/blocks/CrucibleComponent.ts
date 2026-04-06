@@ -9,7 +9,7 @@ import {
     ItemStack,
     Player
 } from "@minecraft/server";
-import {applyLavaEffects, consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
+import {applyLavaEffects, consumeItem, getSelectedItemContext} from "../../utils/Utils";
 import {CRUCIBLE_TIMINGS, HeatRate, MeltableBlocks} from "../../data/CrucibleData";
 import {addProgressChecker} from "../../utils/ProgressRegistry";
 import {
@@ -81,7 +81,7 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
 
         this.setInputBlock(block, InputGravel);
         this.setFilling(block, ctx.filling + fillAmount);
-        consumeSelectedItem(selectedItem);
+        consumeItem(selectedItem);
     }
 
     private handleExtractLava(block: Block, player: Player, ctx: TileContext): void {
@@ -95,7 +95,7 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
         if (selectedItem.item.amount === 1) {
             selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
         } else {
-            consumeSelectedItem(selectedItem);
+            consumeItem(selectedItem);
             if (selectedItem.container.emptySlotsCount > 0) {
                 selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
             } else {

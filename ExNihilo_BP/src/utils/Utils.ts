@@ -1,33 +1,24 @@
-import {
-    Block,
-    Entity,
-    EntityDamageCause,
-    EntityInventoryComponent,
-    ItemStack,
-    Player,
-    VanillaEntityIdentifier
-} from "@minecraft/server";
+import {Container, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
 
-export type SelectedItemContext = {
+export type ItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
-    item?: ItemStack;
+    item?: ItemStack | undefined;
     slot: number;
 };
 
-
-
-export function getSelectedItemContext(player: Player): SelectedItemContext | null {
-    const inventory = player.getComponent("minecraft:inventory") as EntityInventoryComponent;
-    const container = inventory?.container;
+export function getSelectedItemContext(player: Player): ItemContext | null {
+    const container = player.getComponent("minecraft:inventory")?.container;
     if (!container) return null;
 
-    const slot = player.selectedSlotIndex;
-    const item = container.getItem(slot);
+    return getItemContext(container, player.selectedSlotIndex);
+}
 
+export function getItemContext(container: Container, slot: number): ItemContext {
+    const item = container.getItem(slot);
     return {container, item, slot};
 }
 
-export function consumeSelectedItem(selectedItem: SelectedItemContext, amount: number = 1): number {
+export function consumeItem(selectedItem: ItemContext, amount: number = 1): number {
     const newAmount = selectedItem.item.amount - amount;
     if (newAmount > 0) {
         selectedItem.item.amount = newAmount;
@@ -38,7 +29,7 @@ export function consumeSelectedItem(selectedItem: SelectedItemContext, amount: n
     return 0;
 }
 
-export function damageSelectedItem(selectedItem: SelectedItemContext, player: Player, damage: number = 1): void {
+export function damageSelectedItem(selectedItem: ItemContext, player: Player, damage: number = 1): void {
     const durability = selectedItem.item.getComponent("minecraft:durability");
     if (!durability) return;
 

@@ -14,7 +14,7 @@ import {
     world
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
+import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
 import {
     MESH_ITEM_BY_TYPE,
     MESH_TYPE_BY_ITEM,
@@ -105,7 +105,7 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
             if (mesh === "null" || input !== undefined || !this.canBeSifted(state, mesh)) continue;
 
             this.setInputBlock(targetBlock, state);
-            if (consumeSelectedItem(selectedItem) === 0) break;
+            if (consumeItem(selectedItem) === 0) break;
         }
     }
 

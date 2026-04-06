@@ -7,7 +7,7 @@ import {
     Player,
     Vector3
 } from "@minecraft/server";
-import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
+import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
 
 /**
  * SeedComponent — a custom component for seeds.
@@ -80,7 +80,7 @@ export class SeedComponent implements ItemCustomComponent {
         dimension.setBlockType(offset, p.params["block"] as string);
 
         if (!e.source.matches({gameMode: GameMode.Creative})) {
-            consumeSelectedItem(getSelectedItemContext(e.source as Player));
+            consumeItem(getSelectedItemContext(e.source as Player));
         }
     }
 

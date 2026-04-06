@@ -1,12 +1,12 @@
 import {ItemComponentUseOnEvent, ItemCustomComponent, Player} from "@minecraft/server";
 import {LEAVES_TO_INFESTED_MAP} from "../../data/InfestedLeavesData";
-import {consumeSelectedItem, getSelectedItemContext} from "../../utils/Utils";
+import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
 
 export class SilkwormComponent implements ItemCustomComponent {
     onUseOn(e: ItemComponentUseOnEvent): void {
         if (LEAVES_TO_INFESTED_MAP[e.usedOnBlockPermutation.type.id]) {
             e.block.setType(LEAVES_TO_INFESTED_MAP[e.usedOnBlockPermutation.type.id]);
-            consumeSelectedItem(getSelectedItemContext(e.source as Player));
+            consumeItem(getSelectedItemContext(e.source as Player));
         }
     }
 }
