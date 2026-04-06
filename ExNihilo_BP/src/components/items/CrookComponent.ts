@@ -31,7 +31,7 @@ export class CrookComponent implements ItemCustomComponent {
     }
 
     onUse(e: ItemComponentUseEvent): void {
-        const entities = e.source.getEntitiesFromViewDirection({maxDistance: 4});
+        const entities = e.source.getEntitiesFromViewDirection({maxDistance: 6});
         if (entities.length === 0) return;
 
         const target = entities[0].entity;
@@ -39,12 +39,23 @@ export class CrookComponent implements ItemCustomComponent {
         const playerPos = e.source.location;
         const targetPos = target.location;
 
-        const direction = {x: playerPos.x - targetPos.x, y: playerPos.y - targetPos.y, z: playerPos.z - targetPos.z};
+        const direction = {
+            x: playerPos.x - targetPos.x,
+            y: playerPos.y - targetPos.y,
+            z: playerPos.z - targetPos.z
+        };
 
         const length = Math.sqrt(direction.x ** 2 + direction.y ** 2 + direction.z ** 2);
         if (length === 0) return;
 
+        const forceScale = Math.log2(length + 1) * 0.5;
+        const impulse = {
+            x: (direction.x / length) * forceScale,
+            y: (direction.y / length) * forceScale,
+            z: (direction.z / length) * forceScale
+        };
+
         damageSelectedItem(getSelectedItemContext(e.source), e.source);
-        target.applyImpulse({x: direction.x / length, y: direction.y / length, z: direction.z / length});
+        target.applyImpulse(impulse);
     }
 }
