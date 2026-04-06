@@ -1,4 +1,12 @@
-import {system, world} from "@minecraft/server";
+import {
+    CommandPermissionLevel,
+    CustomCommandOrigin,
+    CustomCommandParamType,
+    CustomCommandStatus,
+    Player,
+    system,
+    world
+} from "@minecraft/server";
 import {BarrelComponent} from "./components/blocks/BarrelComponent";
 import {SieveComponent} from "./components/blocks/SieveComponent";
 import {CrucibleComponent} from "./components/blocks/CrucibleComponent";
@@ -7,6 +15,7 @@ import {CrookComponent} from "./components/items/CrookComponent";
 import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
+import {setProgressVisibility} from "./utils/ProgressRegistry";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
@@ -18,6 +27,21 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:hammer', new HammerComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:silkworm', new SilkwormComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:seed', new SeedComponent());
+
+    initEvent.customCommandRegistry.registerCommand({
+        name: "exnihilo:showprogress",
+        description: "command.exnihilo.showprogress.description",
+        cheatsRequired: false,
+        permissionLevel: CommandPermissionLevel.Any,
+        mandatoryParameters: [{name: "show", type: CustomCommandParamType.Boolean}]
+    }, (origin: CustomCommandOrigin, show: boolean) => {
+        if (!(origin.sourceEntity instanceof Player)) return {
+            status: CustomCommandStatus.Failure,
+            message: "command.exnihilo.invalidPlayer"
+        };
+        setProgressVisibility(origin.sourceEntity, show);
+        return {status: CustomCommandStatus.Success}
+    });
 
     system.runTimeout(() => {
         clearBuggedTiles();
