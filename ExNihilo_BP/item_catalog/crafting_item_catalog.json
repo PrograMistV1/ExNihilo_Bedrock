@@ -45,6 +45,25 @@
 							"exnihilo:crimson_sieve",
 							"exnihilo:warped_sieve"
 						]
+					},
+					{
+						"group_identifier": {
+							"icon": "exnihilo:crushed_granite",
+							"name": "exnihilo:crushed_stone"
+						},
+						"items": [
+							"exnihilo:crushed_granite",
+							"exnihilo:crushed_diorite",
+							"exnihilo:crushed_andesite",
+							"exnihilo:crushed_blackstone",
+							"exnihilo:crushed_deepslate",
+							"exnihilo:crushed_tuff",
+							"exnihilo:crushed_basalt",
+							"exnihilo:crushed_calcite",
+							"exnihilo:crushed_dripstone",
+							"exnihilo:crushed_end_stone",
+							"exnihilo:crushed_netherrack"
+						]
 					}
 				]
 			},

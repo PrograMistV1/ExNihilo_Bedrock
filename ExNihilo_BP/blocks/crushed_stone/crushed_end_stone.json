@@ -2,7 +2,7 @@
 	"format_version": "1.26.0",
 	"minecraft:block": {
 		"description": {
-			"identifier": "exnihilo:dust",
+			"identifier": "exnihilo:crushed_end_stone",
 			"menu_category": {
 				"category": "construction",
 				"is_hidden_in_commands": false
@@ -10,9 +10,9 @@
 		},
 		"components": {
 			"minecraft:geometry": "minecraft:geometry.full_block",
-			"minecraft:material_instances": {"*": {"texture": "dust"}},
+			"minecraft:material_instances": {"*": {"texture": "crushed_end_stone"}},
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 0.7},
-			"tag:minecraft:is_shovel_item_destructible": {}
+			"tag:minecraft:is_pickaxe_item_destructible": {}
 		}
 	}
 }

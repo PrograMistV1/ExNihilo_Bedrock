@@ -31,6 +31,17 @@
 		"infested_pale_oak_leaves": {"textures": "textures/blocks/infested_pale_oak_leaves"},
 		"fully_infested_pale_oak_leaves": {"textures": "textures/blocks/fully_infested_pale_oak_leaves"},
 		"infested_azalea_leaves": {"textures": "textures/blocks/infested_azalea_leaves"},
-		"fully_infested_azalea_leaves": {"textures": "textures/blocks/fully_infested_azalea_leaves"}
+		"fully_infested_azalea_leaves": {"textures": "textures/blocks/fully_infested_azalea_leaves"},
+		"crushed_andesite": {"textures": "textures/blocks/crushed_andesite"},
+		"crushed_basalt": {"textures": "textures/blocks/crushed_basalt"},
+		"crushed_blackstone": {"textures": "textures/blocks/crushed_blackstone"},
+		"crushed_calcite": {"textures": "textures/blocks/crushed_calcite"},
+		"crushed_deepslate": {"textures": "textures/blocks/crushed_deepslate"},
+		"crushed_diorite": {"textures": "textures/blocks/crushed_diorite"},
+		"crushed_dripstone": {"textures": "textures/blocks/crushed_dripstone"},
+		"crushed_end_stone": {"textures": "textures/blocks/crushed_end_stone"},
+		"crushed_granite": {"textures": "textures/blocks/crushed_granite"},
+		"crushed_netherrack": {"textures": "textures/blocks/crushed_netherrack"},
+		"crushed_tuff": {"textures": "textures/blocks/crushed_tuff"}
 	}
 }

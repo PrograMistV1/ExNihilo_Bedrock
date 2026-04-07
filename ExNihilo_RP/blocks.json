@@ -33,5 +33,17 @@
 	"infested_dark_oak_leaves": {"sound": "grass"},
 	"infested_mangrove_leaves": {"sound": "grass"},
 	"infested_pale_oak_leaves": {"sound": "grass"},
-	"infested_azalea_leaves": {"sound": "grass"}
+	"infested_azalea_leaves": {"sound": "grass"},
+	"dust": {"sound": "cloth"},
+	"crushed_andesite": {"sound": "gravel"},
+	"crushed_basalt": {"sound": "gravel"},
+	"crushed_blackstone": {"sound": "gravel"},
+	"crushed_calcite": {"sound": "gravel"},
+	"crushed_deepslate": {"sound": "gravel"},
+	"crushed_diorite": {"sound": "gravel"},
+	"crushed_dripstone": {"sound": "gravel"},
+	"crushed_end_stone": {"sound": "gravel"},
+	"crushed_granite": {"sound": "gravel"},
+	"crushed_netherrack": {"sound": "gravel"},
+	"crushed_tuff": {"sound": "gravel"}
 }
