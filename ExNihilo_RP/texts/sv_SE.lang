@@ -1,5 +1,5 @@
 command.exnihilo.invalidPlayer=This command can only be used by a player.
-command.exnihilo.showprogress.description=Shows the progress of the current process in the barrel or sieve you are looking at.
+command.exnihilo.showprogress.description=Shows the progress of the current process in the barrel or crucible you are looking at.
 exnihilo:barrels=Barrels
 exnihilo:crooks=Crooks
 exnihilo:hammers=Hammers

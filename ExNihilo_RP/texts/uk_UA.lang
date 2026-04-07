@@ -1,5 +1,5 @@
 command.exnihilo.invalidPlayer=Цю команду може використовувати лише гравець.
-command.exnihilo.showprogress.description=Показує перебіг поточного процесу в бочці або ситі, на яке ви дивитеся.
+command.exnihilo.showprogress.description=Показує перебіг поточного процесу в бочці або тиглі, на який ви дивитеся.
 exnihilo:barrels=Бочки
 exnihilo:crooks=Посохи
 exnihilo:hammers=Молоти
