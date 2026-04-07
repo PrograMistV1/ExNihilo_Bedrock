@@ -4,6 +4,7 @@ import {
     BlockComponentPlayerInteractEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
+    Container,
     CustomComponentParameters,
     Entity,
     EntityComponentTypes,
@@ -11,11 +12,10 @@ import {
     EntityOnFireComponent,
     ItemStack,
     MolangVariableMap,
-    Player,
     system,
     WeatherType
 } from "@minecraft/server";
-import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, DROP_FROM_INPUT_MAP,} from "../../data/BarrelData";
+import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results,} from "../../data/BarrelData";
 import {consumeItem, getItemContext, getSelectedItemContext, ItemContext} from "../../utils/Utils";
 import {addProgressChecker} from "../../utils/ProgressRegistry";
 import {
@@ -63,12 +63,14 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
-        const tileCtx = this.getTileContext(e.block);
         const itemCtx = getSelectedItemContext(e.player);
-        this.handleCompostable(e.block, e.player, tileCtx);
-        this.handleLiquid(e.block, e.player, tileCtx);
-        this.handleExtractResult(e.block, tileCtx);
-        this.handleSpecialInteractions(e.block, itemCtx, tileCtx);
+        if (!itemCtx.item) return;
+        const tileCtx = this.getTileContext(e.block);
+
+        if (this.tryCompost(e.block, itemCtx, tileCtx)) return;
+        if (this.handleLiquid(e.block, itemCtx, tileCtx)) return;
+        if (this.tryExtractResult(e.block, tileCtx)) return;
+        if (this.handleSpecialInteractions(e.block, itemCtx, tileCtx)) return;
     };
 
     onTick = (e: BlockComponentTickEvent, p: CustomComponentParameters) => {
@@ -81,10 +83,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     }
 
     onPlayerBreak = (e: BlockComponentPlayerBreakEvent) => {
-        const drop = DROP_FROM_INPUT_MAP[this.getInputBlock(e.block)];
-        if (!drop) return;
-
-        e.block.dimension.spawnItem(new ItemStack(drop), e.block.center());
+        this.tryExtractResult(e.block, this.getTileContext(e.block));
     };
 
     protected yResolver(filling: number): number {
@@ -107,9 +106,8 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     private handleHoppers(block: Block, ctx: TileContext): boolean {
         const blockAbove = block.above();
         if (blockAbove.typeId === "minecraft:hopper" && !blockAbove.permutation.getState('toggle_bit')) {
-            const hopperInventory = blockAbove.getComponent(EntityComponentTypes.Inventory).container;
             for (let slotId = 0; slotId < 5; slotId++) {
-                const itemCtx = getItemContext(hopperInventory, slotId);
+                const itemCtx = getItemContext(blockAbove, slotId);
                 if (this.tryCompost(block, itemCtx, ctx)) return true;
                 if (this.handleSpecialInteractions(block, itemCtx, ctx)) return true;
             }
@@ -117,11 +115,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         const blockBelow = block.below();
         if (blockBelow.typeId === "minecraft:hopper" && !blockBelow.permutation.getState('toggle_bit')) {
             const hopperInventory = blockBelow.getComponent(EntityComponentTypes.Inventory).container;
-            const result = DROP_FROM_INPUT_MAP[ctx.input];
-            if (result && !hopperInventory.addItem(new ItemStack(result))) {
-                this.setInputBlock(block, InputDefault);
-                return true;
-            }
+            return this.tryExtractResult(block, ctx, hopperInventory);
         }
         return false;
     }
@@ -188,13 +182,6 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         return true;
     }
 
-    private handleCompostable(block: Block, player: Player, ctx: TileContext): void {
-        const selectedItem = getSelectedItemContext(player);
-        if (!selectedItem.item) return;
-
-        this.tryCompost(block, selectedItem, ctx);
-    }
-
     private tryCompost(block: Block, itemCtx: ItemContext, ctx: TileContext): boolean {
         const fillAmount = CompostableItems[itemCtx.item?.typeId];
         if (fillAmount === undefined) return false;
@@ -208,52 +195,48 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         return true;
     }
 
-    private handleLiquid(block: Block, player: Player, ctx: TileContext): void {
-        const selectedItem = getSelectedItemContext(player);
-        if (!selectedItem.item) return;
-
+    private handleLiquid(block: Block, itemCtx: ItemContext, tileCtx: TileContext): boolean {
         const LIQUIDS = {
-            [InputWater]: {
-                bucket: WATER_BUCKET_ITEM,
-                emptySound: "bucket.empty_water",
-                fillSound: "bucket.fill_water",
-            },
-            [InputLava]: {
-                bucket: LAVA_BUCKET_ITEM,
-                emptySound: "bucket.empty_lava",
-                fillSound: "bucket.fill_lava",
-            }
+            [InputWater]: {bucket: WATER_BUCKET_ITEM, emptySound: "bucket.empty_water", fillSound: "bucket.fill_water"},
+            [InputLava]: {bucket: LAVA_BUCKET_ITEM, emptySound: "bucket.empty_lava", fillSound: "bucket.fill_lava"},
         } as const;
 
-        const itemId = selectedItem.item.typeId;
-        for (const liquidType of Object.keys(LIQUIDS) as BlockInput[]) {
-            const liquid = LIQUIDS[liquidType];
+        const itemId = itemCtx.item.typeId;
 
-            if (itemId === liquid.bucket && (ctx.input === InputDefault || ctx.input === liquidType)) {
-                if (ctx.input === liquidType && ctx.filling === 0) return;
-                this.fillBarrelFromBucket(block, selectedItem, liquidType, liquid.emptySound);
-                return;
-            }
-
-            if (itemId === EMPTY_BUCKET_ITEM && ctx.filling === 100 && ctx.input === liquidType) {
-                this.drainBarrelToBucket(block, selectedItem, liquid.bucket, liquid.fillSound, player);
-                return;
+        if (itemId === EMPTY_BUCKET_ITEM) {
+            const liquid = LIQUIDS[tileCtx.input as keyof typeof LIQUIDS];
+            if (liquid && tileCtx.filling === 100) {
+                this.drainBarrelToBucket(block, itemCtx, liquid.bucket, liquid.fillSound);
+                return true;
             }
         }
+
+        for (const [liquidType, liquid] of Object.entries(LIQUIDS)) {
+            if (itemId !== liquid.bucket) continue;
+            if (tileCtx.input !== InputDefault && tileCtx.input !== liquidType) continue;
+            if (tileCtx.input === liquidType && tileCtx.filling === 0) return false; //This is necessary for the correct animation of emptying
+
+            this.fillBarrelFromBucket(block, itemCtx, liquidType as BlockInput, liquid.emptySound);
+            return true;
+        }
+        return false;
     }
 
-    private handleExtractResult(block: Block, ctx: TileContext): void {
-        const drop = DROP_FROM_INPUT_MAP[ctx.input];
-        if (!drop) return;
+    private tryExtractResult(block: Block, tileCtx: TileContext, toContainer: Container | null = null): boolean {
+        const result = Results[tileCtx.input];
+        if (!result) return false;
 
-        const entity = block.dimension.spawnItem(new ItemStack(drop), {...block.bottomCenter(), y: block.y + 1.1});
-        entity.applyImpulse({
-            x: Math.random() * 0.03,
-            y: 0.03,
-            z: Math.random() * 0.03
-        });
+        const resultItem = new ItemStack(result);
+        if (toContainer && toContainer.addItem(resultItem)) {
+            return false;
+        } else if (!toContainer) {
+            block.dimension
+                .spawnItem(resultItem, {...block.bottomCenter(), y: block.y + 1.1})
+                .applyImpulse({x: Math.random() * 0.03, y: 0.03, z: Math.random() * 0.03});
+        }
 
         this.setInputBlock(block, InputDefault);
+        return true;
     }
 
     private handleSpecialInteractions(block: Block, itemCtx: ItemContext, ctx: TileContext): boolean {
@@ -288,22 +271,21 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
     private drainBarrelToBucket(
         block: Block,
-        selectedItem: ItemContext,
+        itemCtx: ItemContext,
         filledBucketItemId: string,
-        soundId: string,
-        player: Player
+        soundId: string
     ): void {
         this.setFilling(block, 0);
         system.runTimeout(() => this.setInputBlock(block, InputDefault), 10);
-        if (selectedItem.item.amount === 1) {
-            selectedItem.container.setItem(selectedItem.slot, new ItemStack(filledBucketItemId, 1));
+        if (itemCtx.item.amount === 1) {
+            itemCtx.container.setItem(itemCtx.slot, new ItemStack(filledBucketItemId, 1));
         } else {
-            consumeItem(selectedItem);
-            if (selectedItem.container.emptySlotsCount > 0) {
-                selectedItem.container.addItem(new ItemStack(filledBucketItemId, 1));
+            consumeItem(itemCtx);
+            if (itemCtx.container.emptySlotsCount > 0) {
+                itemCtx.container.addItem(new ItemStack(filledBucketItemId, 1));
             } else {
-                player.dimension.spawnItem(new ItemStack(filledBucketItemId, 1), player.location);
-                player.dimension.playSound("random.pop", player.location);
+                itemCtx.source.dimension.spawnItem(new ItemStack(filledBucketItemId, 1), itemCtx.source.location);
+                itemCtx.source.dimension.playSound("random.pop", itemCtx.source.location);
             }
         }
         block.dimension.playSound(soundId, block.center());

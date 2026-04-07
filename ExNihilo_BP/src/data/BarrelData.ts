@@ -64,7 +64,7 @@ export const BARREL_TIMINGS = {
     rainFillPerUpdate: 100 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
 };
 
-export const DROP_FROM_INPUT_MAP: Readonly<Record<string, string>> = {
+export const Results: Readonly<Record<string, string>> = {
     [InputDirt]: "minecraft:dirt",
     [InputClay]: "minecraft:clay",
     [InputNetherrack]: "minecraft:netherrack",

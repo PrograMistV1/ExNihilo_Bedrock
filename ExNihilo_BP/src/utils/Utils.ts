@@ -1,21 +1,22 @@
-import {Container, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
+import {Block, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
 
 export type ItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
     item?: ItemStack | undefined;
     slot: number;
+    source: Entity | Block;
 };
 
 export function getSelectedItemContext(player: Player): ItemContext | null {
-    const container = player.getComponent("minecraft:inventory")?.container;
-    if (!container) return null;
-
-    return getItemContext(container, player.selectedSlotIndex);
+    return getItemContext(player, player.selectedSlotIndex);
 }
 
-export function getItemContext(container: Container, slot: number): ItemContext {
+export function getItemContext(source: Entity | Block, slot: number): ItemContext | null {
+    const container = source.getComponent("minecraft:inventory")?.container;
+    if (!container) return null;
+
     const item = container.getItem(slot);
-    return {container, item, slot};
+    return {container, item, slot, source};
 }
 
 export function consumeItem(selectedItem: ItemContext, amount: number = 1): number {

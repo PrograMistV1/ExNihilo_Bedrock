@@ -43,6 +43,8 @@ export abstract class FilledTileEntityBlock extends TileEntityBlock {
     }
 
     protected setInputBlock(block: Block, input: BlockInput): void {
+        if (block.isAir) return;
+
         const isLava = input === InputLava;
         const isDefault = input === InputDefault;
 
