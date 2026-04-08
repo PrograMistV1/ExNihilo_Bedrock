@@ -16,6 +16,7 @@ import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
 import {setProgressVisibility} from "./utils/ProgressRegistry";
+import "utils/FallingBlocksManager"
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
