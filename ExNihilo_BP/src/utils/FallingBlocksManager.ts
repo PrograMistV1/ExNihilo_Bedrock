@@ -1,120 +1,71 @@
 /*
- * FallingBlock template by GST378
+ * FallingBlockComponent template by GST378
  * https://github.com/GST378/GSTs-Repository/blob/main/templates/FallingBlock/BP/scripts/FallingBlock/manager.js
  * Copyright (C) 2025 GST378
  *
  * Used with permission. Original license: GPL v3.
  */
 
-import {
-    Block,
-    type BlockComponentPlayerInteractEvent,
-    type BlockComponentPlayerPlaceBeforeEvent,
-    type BlockCustomComponent,
-    BlockPermutation,
-    BlockVolume,
-    Entity,
-    EquipmentSlot,
-    GameMode,
-    system,
-    VanillaEntityIdentifier,
-    world
-} from '@minecraft/server';
-import {FallingBlocks} from "./FallingBlocks";
+import {Block, BlockPermutation, BlockVolume, Entity, system, VanillaEntityIdentifier, world} from '@minecraft/server';
+import {FallingBlock, FallingBlocks} from "./FallingBlocks";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
+export const FALLING_BLOCK_LAYER_STATE = 'falling_block:layers' as keyof BlockStateSuperset;
+export const FALLING_BLOCK_LAYER_PROPERTY = 'falling_block:layers';
+
+// These are the blocks that can be replaced by the falling blocks
+export const REPLACEABLE_BLOCKS = new Set([
+    'minecraft:air', 'minecraft:structure_void',
+    'minecraft:water', 'minecraft:flowing_water', 'minecraft:bubble_column',
+    'minecraft:lava', 'minecraft:flowing_lava',
+    'minecraft:fire', 'minecraft:soul_fire',
+    'minecraft:vine', 'minecraft:glow_lichen',
+    'minecraft:deadbush', 'minecraft:short_grass', 'minecraft:tall_grass',
+    'minecraft:fern', 'minecraft:large_fern', 'minecraft:seagrass',
+    'minecraft:warped_roots', 'minecraft:crimson_roots', 'minecraft:nether_sprouts',
+    ...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(n => `minecraft:light_block_${n}`)
+]);
+
+// The Falling Blocks that are on top of these blocks will fall
+export const PASSABLE_BLOCKS = new Set([...REPLACEABLE_BLOCKS,
+    'minecraft:moss_carpet', 'minecraft:pale_moss_carpet', 'minecraft:pale_hanging_moss',
+    'minecraft:acacia_sapling', 'minecraft:bamboo_sapling', 'minecraft:birch_sapling',
+    'minecraft:cherry_sapling', 'minecraft:dark_oak_sapling', 'minecraft:jungle_sapling',
+    'minecraft:mangrove_propagule', 'minecraft:pale_oak_sapling', 'minecraft:oak_sapling',
+    'minecraft:spruce_sapling', 'minecraft:kelp', 'minecraft:sea_pickle', 'minecraft:reeds',
+    'minecraft:nether_wart', 'minecraft:twisting_vines', 'minecraft:warped_fungus',
+    'minecraft:crimson_fungus', 'minecraft:brown_mushroom', 'minecraft:red_mushroom',
+    'minecraft:small_dripleaf_block', 'minecraft:snow_layer', 'minecraft:cocoa', 'minecraft:wheat',
+    'minecraft:potatoes', 'minecraft:carrots', 'minecraft:beetroot', 'minecraft:pumpkin_stem',
+    'minecraft:melon_stem', 'minecraft:pitcher_crop', 'minecraft:torchflower_crop', 'minecraft:sweet_berry_bush',
+    'minecraft:brain_coral', 'minecraft:brain_coral_fan', 'minecraft:brain_coral_wall_fan',
+    'minecraft:bubble_coral', 'minecraft:bubble_coral_fan', 'minecraft:bubble_coral_wall_fan',
+    'minecraft:fire_coral', 'minecraft:fire_coral_fan', 'minecraft:fire_coral_wall_fan',
+    'minecraft:horn_coral', 'minecraft:horn_coral_fan', 'minecraft:horn_coral_wall_fan',
+    'minecraft:tube_coral', 'minecraft:tube_coral_fan', 'minecraft:tube_coral_wall_fan',
+    'minecraft:dead_brain_coral', 'minecraft:dead_brain_coral_fan', 'minecraft:dead_brain_coral_wall_fan',
+    'minecraft:dead_bubble_coral', 'minecraft:dead_bubble_coral_fan', 'minecraft:dead_bubble_coral_wall_fan',
+    'minecraft:dead_fire_coral', 'minecraft:dead_fire_coral_fan', 'minecraft:dead_fire_coral_wall_fan',
+    'minecraft:dead_horn_coral', 'minecraft:dead_horn_coral_fan', 'minecraft:dead_horn_coral_wall_fan',
+    'minecraft:dead_tube_coral', 'minecraft:dead_tube_coral_fan', 'minecraft:dead_tube_coral_wall_fan',
+    'minecraft:dandelion', 'minecraft:poppy', 'minecraft:blue_orchid', 'minecraft:allium', 'minecraft:azure_bluet',
+    'minecraft:red_tulip', 'minecraft:orange_tulip', 'minecraft:white_tulip', 'minecraft:pink_tulip', 'minecraft:oxeye_daisy',
+    'minecraft:cornflower', 'minecraft:lily_of_the_valley', 'minecraft:sunflower', 'minecraft:lilac',
+    'minecraft:rose_bush', 'minecraft:peony', 'minecraft:pitcher_plant', 'minecraft:pink_petals',
+    'minecraft:wither_rose', 'minecraft:torchflower', 'minecraft:open_eyeblossom', 'minecraft:closed_eyeblossom'
+]);
+
+// These entities can trigger falling blocks when spawning
+export const TRIGGERING_ENTITIES = new Set(['minecraft:tnt', 'minecraft:falling_block']);
+
+
 class FallingBlockUtils {
-    // The name of the states and properties used in layer blocks
-    static LayerState = 'falling_block:layers' as keyof BlockStateSuperset;
-    static LayerProperty = 'falling_block:layers';
-    // These are the blocks that can be replaced by the falling blocks
-    static ReplaceableBlocks = new Set([
-        'minecraft:air', 'minecraft:structure_void',
-        'minecraft:water', 'minecraft:flowing_water', 'minecraft:bubble_column',
-        'minecraft:lava', 'minecraft:flowing_lava',
-        'minecraft:fire', 'minecraft:soul_fire',
-        'minecraft:vine', 'minecraft:glow_lichen',
-        'minecraft:deadbush', 'minecraft:short_grass', 'minecraft:tall_grass',
-        'minecraft:fern', 'minecraft:large_fern', 'minecraft:seagrass',
-        'minecraft:warped_roots', 'minecraft:crimson_roots', 'minecraft:nether_sprouts',
-        'minecraft:light_block_0', 'minecraft:light_block_1', 'minecraft:light_block_2', 'minecraft:light_block_3',
-        'minecraft:light_block_4', 'minecraft:light_block_5', 'minecraft:light_block_6', 'minecraft:light_block_7',
-        'minecraft:light_block_8', 'minecraft:light_block_9', 'minecraft:light_block_10', 'minecraft:light_block_11',
-        'minecraft:light_block_12', 'minecraft:light_block_13', 'minecraft:light_block_14', 'minecraft:light_block_15'
-    ]);
-    // The Falling Blocks that are on top of these blocks will fall
-    static PassableBlocks = new Set([...FallingBlockUtils.ReplaceableBlocks,
-        'minecraft:moss_carpet', 'minecraft:pale_moss_carpet', 'minecraft:pale_hanging_moss',
-        'minecraft:acacia_sapling', 'minecraft:bamboo_sapling', 'minecraft:birch_sapling',
-        'minecraft:cherry_sapling', 'minecraft:dark_oak_sapling', 'minecraft:jungle_sapling',
-        'minecraft:mangrove_propagule', 'minecraft:pale_oak_sapling', 'minecraft:oak_sapling',
-        'minecraft:spruce_sapling', 'minecraft:kelp', 'minecraft:sea_pickle', 'minecraft:reeds',
-        'minecraft:nether_wart', 'minecraft:twisting_vines', 'minecraft:warped_fungus',
-        'minecraft:crimson_fungus', 'minecraft:brown_mushroom', 'minecraft:red_mushroom',
-        'minecraft:small_dripleaf_block', 'minecraft:snow_layer', 'minecraft:cocoa', 'minecraft:wheat',
-        'minecraft:potatoes', 'minecraft:carrots', 'minecraft:beetroot', 'minecraft:pumpkin_stem',
-        'minecraft:melon_stem', 'minecraft:pitcher_crop', 'minecraft:torchflower_crop', 'minecraft:sweet_berry_bush',
-        'minecraft:brain_coral', 'minecraft:brain_coral_fan', 'minecraft:brain_coral_wall_fan',
-        'minecraft:bubble_coral', 'minecraft:bubble_coral_fan', 'minecraft:bubble_coral_wall_fan',
-        'minecraft:fire_coral', 'minecraft:fire_coral_fan', 'minecraft:fire_coral_wall_fan',
-        'minecraft:horn_coral', 'minecraft:horn_coral_fan', 'minecraft:horn_coral_wall_fan',
-        'minecraft:tube_coral', 'minecraft:tube_coral_fan', 'minecraft:tube_coral_wall_fan',
-        'minecraft:dead_brain_coral', 'minecraft:dead_brain_coral_fan', 'minecraft:dead_brain_coral_wall_fan',
-        'minecraft:dead_bubble_coral', 'minecraft:dead_bubble_coral_fan', 'minecraft:dead_bubble_coral_wall_fan',
-        'minecraft:dead_fire_coral', 'minecraft:dead_fire_coral_fan', 'minecraft:dead_fire_coral_wall_fan',
-        'minecraft:dead_horn_coral', 'minecraft:dead_horn_coral_fan', 'minecraft:dead_horn_coral_wall_fan',
-        'minecraft:dead_tube_coral', 'minecraft:dead_tube_coral_fan', 'minecraft:dead_tube_coral_wall_fan',
-        'minecraft:dandelion', 'minecraft:poppy', 'minecraft:blue_orchid', 'minecraft:allium', 'minecraft:azure_bluet',
-        'minecraft:red_tulip', 'minecraft:orange_tulip', 'minecraft:white_tulip', 'minecraft:pink_tulip', 'minecraft:oxeye_daisy',
-        'minecraft:cornflower', 'minecraft:lily_of_the_valley', 'minecraft:sunflower', 'minecraft:lilac',
-        'minecraft:rose_bush', 'minecraft:peony', 'minecraft:pitcher_plant', 'minecraft:pink_petals',
-        'minecraft:wither_rose', 'minecraft:torchflower', 'minecraft:open_eyeblossom', 'minecraft:closed_eyeblossom'
-    ]);
-    // These entities can trigger falling blocks when spawning
-    static TriggeringEntities = new Set(['minecraft:tnt', 'minecraft:falling_block']);
-    // Custom component for placing powder blocks
-    static PowderPlacement: BlockCustomComponent = {
-        beforeOnPlayerPlace(data: BlockComponentPlayerPlaceBeforeEvent) {
-            if (FallingBlockUtils.isWater(data.block)) data.permutationToPlace = FallingBlockUtils.resolvePowderPermutation(data.permutationToPlace.type.id, FallingBlocks[data.permutationToPlace.type.id]?.config?.solidBlock, true);
-        }
-    }
-    // Custom component for placing layer blocks
-    static LayerPlacement: BlockCustomComponent = {
-        onPlayerInteract({player, block}: BlockComponentPlayerInteractEvent) {
-            if (!player) return;
-            const equippableComp = player.getComponent('equippable'),
-                itemStack = equippableComp.getEquipment(EquipmentSlot.Mainhand);
-            if (itemStack?.typeId !== block.typeId) return;
-            block.setPermutation(block.permutation.withState(
-                FallingBlockUtils.LayerState as keyof BlockStateSuperset,
-                Number(block.permutation.getState(FallingBlockUtils.LayerState as keyof BlockStateSuperset)) + 1
-            ));
-            // decrement stack
-            if (player.getGameMode() !== GameMode.Creative) {
-                if (itemStack.amount <= 1) equippableComp.setEquipment(EquipmentSlot.Mainhand, null);
-                else {
-                    itemStack.amount--;
-                    equippableComp.setEquipment(EquipmentSlot.Mainhand, itemStack);
-                }
-            }
-        }
-    }
-    // Maps custom components with their respective identifiers
-    static CustomComponents: Record<string, BlockCustomComponent> = {
-        'falling_block:powder_placement': FallingBlockUtils.PowderPlacement,
-        'falling_block:layer_placement': FallingBlockUtils.LayerPlacement
-    }
 
     // Check if the block should fall
-    static shouldFall(block: Block, fb) {
+    static shouldFall(block: Block, fallingBlock: FallingBlock) {
         if (block.y <= block.dimension.heightRange.min) return false;
         const blockBelow = block.below();
-        return blockBelow && (FallingBlockUtils.PassableBlocks.has(blockBelow.typeId) || (fb.config?.type === 'layers' && blockBelow.typeId === block.typeId && (blockBelow.permutation.getState(FallingBlockUtils.LayerState) as number) < fb.config.maxLayers - 1));
-    }
-
-    // Check if the block is water
-    static isWater(block: Block) {
-        return block && (block.typeId === 'minecraft:water' || block.typeId === 'minecraft:flowing_water');
+        return blockBelow && (PASSABLE_BLOCKS.has(blockBelow.typeId) || (fallingBlock?.config?.type === 'layers' && blockBelow.typeId === block.typeId && (blockBelow.permutation.getState(FALLING_BLOCK_LAYER_STATE) as number) < fallingBlock?.config?.maxLayers - 1));
     }
 
     // Resolves the permutation to be placed for the powder blocks
@@ -134,15 +85,15 @@ class FallingBlockManager {
         const fb = FallingBlocks[block?.typeId];
         if (!fb || !FallingBlockUtils.shouldFall(block, fb)) return;
         const {typeId, permutation} = block;
-        fb.onStartFalling?.(block.dimension, block.location);
+        fb.onStartFalling?.(block.permutation, block);
         block.setType("minecraft:air");
         const fallingEntity = block.dimension.spawnEntity(`${typeId}.entity` as keyof VanillaEntityIdentifier, block.bottomCenter());
-        if (fb.config?.fallingSpeed) fallingEntity.applyImpulse({
+        if (fb?.config?.fallingSpeed) fallingEntity.applyImpulse({
             x: 0,
             y: Math.min(1, -Math.abs(fb.config.fallingSpeed)),
             z: 0
         });
-        if (fb.config?.type === 'layers') fallingEntity.setProperty(FallingBlockUtils.LayerProperty, permutation.getState(FallingBlockUtils.LayerState));
+        if (fb?.config?.type === 'layers') fallingEntity.setProperty(FALLING_BLOCK_LAYER_PROPERTY, permutation.getState(FALLING_BLOCK_LAYER_STATE));
         this.pullAboveBlock(block);
     }
 
@@ -151,28 +102,28 @@ class FallingBlockManager {
         const id = entity.typeId.replace('.entity', ''), fb = FallingBlocks[id];
         if (!fb) return;
         let permutationToPlace = null;
-        const isReplaceable = FallingBlockUtils.ReplaceableBlocks.has(block.typeId),
-            stackLayers = fb.config?.type === 'layers' && block.typeId === id,
-            action = !stackLayers && (fb.config?.destroyOnFall || !isReplaceable) ? 'destroy' : fb.config?.type;
+        const isReplaceable = REPLACEABLE_BLOCKS.has(block.typeId),
+            stackLayers = fb?.config?.type === 'layers' && block.typeId === id,
+            action = !stackLayers && (fb?.config?.destroyOnFall || !isReplaceable) ? 'destroy' : fb?.config?.type;
         switch (action) {
             case 'destroy':
                 break;
             case 'powder':
-                permutationToPlace = FallingBlockUtils.resolvePowderPermutation(id, fb.config?.solidBlock, entity.isInWater);
+                permutationToPlace = FallingBlockUtils.resolvePowderPermutation(id, fb?.config?.solidBlock, entity.isInWater);
                 break;
             case 'layers': {
-                const addLayers = 1 + (entity.getProperty(FallingBlockUtils.LayerProperty) as number);
+                const addLayers = 1 + (entity.getProperty(FALLING_BLOCK_LAYER_PROPERTY) as number);
                 if (!stackLayers) {
-                    if (isReplaceable) permutationToPlace = BlockPermutation.resolve(id).withState(FallingBlockUtils.LayerState as keyof BlockStateSuperset, addLayers - 1);
+                    if (isReplaceable) permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, addLayers - 1);
                     break;
                 }
-                const blockLayers = (block.permutation.getState(FallingBlockUtils.LayerState) as number) + addLayers;
-                if (blockLayers < fb.config.maxLayers) {
-                    permutationToPlace = BlockPermutation.resolve(id).withState(FallingBlockUtils.LayerState as keyof BlockStateSuperset, blockLayers);
+                const blockLayers = (block.permutation.getState(FALLING_BLOCK_LAYER_STATE) as number) + addLayers;
+                if (blockLayers < fb?.config.maxLayers) {
+                    permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, blockLayers);
                     break;
                 }
-                permutationToPlace = BlockPermutation.resolve(id).withState(FallingBlockUtils.LayerState as keyof BlockStateSuperset, fb.config.maxLayers - 1);
-                if (block.y < block.dimension.heightRange.max) block.above().setPermutation(BlockPermutation.resolve(id, {[FallingBlockUtils.LayerState]: blockLayers - fb.config.maxLayers}));
+                permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, fb?.config.maxLayers - 1);
+                if (block.y < block.dimension.heightRange.max) block.above().setPermutation(BlockPermutation.resolve(id, {[FALLING_BLOCK_LAYER_STATE]: blockLayers - fb.config.maxLayers}));
                 break;
             }
             default:
@@ -181,8 +132,8 @@ class FallingBlockManager {
         entity.remove();
         if (permutationToPlace) {
             block.setPermutation(permutationToPlace);
-            fb.onGround?.(block);
-        } else fb.onRemove?.(block.dimension, block);
+            fb.onGround?.(block.permutation, block);
+        } else fb.onRemove?.(block.permutation, block);
     }
 }
 
@@ -204,6 +155,7 @@ world.afterEvents.explosion.subscribe((data) => {
         if (FallingBlocks[aboveBlock?.typeId]) FBM.startFalling(aboveBlock);
     }
 });
+
 world.afterEvents.pistonActivate.subscribe(async ({piston: {block}, isExpanding}) => {
     if (block.typeId === 'minecraft:piston' && !isExpanding) {
         const offset = {x: 0, y: 1, z: 0};
@@ -239,24 +191,20 @@ world.afterEvents.pistonActivate.subscribe(async ({piston: {block}, isExpanding}
     await system.waitTicks(2);
     if (fallingBlockLocations) for (const location of fallingBlockLocations) FBM.startFalling(block.dimension.getBlock(location));
 });
+
 world.afterEvents.entitySpawn.subscribe(({entity}) => {
-    if (!FallingBlockUtils.TriggeringEntities.has(entity.typeId)) return;
+    if (!TRIGGERING_ENTITIES.has(entity.typeId)) return;
     if (entity.location.y < entity.dimension.heightRange.max) FBM.startFalling(entity.dimension.getBlock({
         x: entity.location.x,
         y: entity.location.y + 1,
         z: entity.location.z
     }));
 });
+
 // Triggers when the falling entity touches the ground
 system.afterEvents.scriptEventReceive.subscribe(({id, sourceEntity}) => {
     if (id === 'falling_block:is_on_ground') {
         if (!sourceEntity || sourceEntity.location.y < sourceEntity.dimension.heightRange.min || sourceEntity.location.y > sourceEntity.dimension.heightRange.max) sourceEntity?.remove();
         else FBM.onGround(sourceEntity.dimension.getBlock(sourceEntity.location), sourceEntity);
     }
-});
-// Custom component registration
-system.beforeEvents.startup.subscribe((initEvent) => {
-    Object.entries(FallingBlockUtils.CustomComponents).forEach(([id, comp]) => {
-        initEvent.blockComponentRegistry.registerCustomComponent(id, comp);
-    });
 });
