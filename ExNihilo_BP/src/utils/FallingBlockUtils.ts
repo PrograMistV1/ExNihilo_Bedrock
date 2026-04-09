@@ -1,6 +1,6 @@
 import {Block, BlockPermutation} from '@minecraft/server';
 import {FallingBlock} from './FallingBlocks';
-import {FALLING_BLOCK_LAYER_STATE, PASSABLE_BLOCKS, REPLACEABLE_BLOCKS} from "./FallingBlocksManager";
+import {FALLING_BLOCK_LAYER_STATE, PASSABLE_BLOCKS} from "./FallingBlocksManager";
 
 export function isWater(block: Block): boolean {
     return block.typeId === 'minecraft:water' || block.typeId === 'minecraft:flowing_water';
@@ -25,12 +25,4 @@ export function resolvePowderPermutation(
     return solidBlock instanceof BlockPermutation
         ? solidBlock
         : BlockPermutation.resolve(solidBlock);
-}
-
-export function isReplaceable(block: Block): boolean {
-    return REPLACEABLE_BLOCKS.has(block.typeId);
-}
-
-export function entityIdToBlockId(entityTypeId: string): string {
-    return entityTypeId.replace('.entity', '');
 }
