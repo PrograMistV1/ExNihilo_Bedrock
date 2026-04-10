@@ -23,6 +23,8 @@ export const SIFTABLE_BLOCK_STATES: Readonly<Record<string, string>> = {
     "minecraft:sand": "exnihilo:sand",
     "minecraft:soul_sand": "exnihilo:soul_sand",
     "exnihilo:dust": "exnihilo:dust",
+    "exnihilo:crushed_end_stone": "exnihilo:crushed_end_stone",
+    "exnihilo:crushed_netherrack": "exnihilo:crushed_netherrack",
 };
 
 export const MESH_ITEM_BY_TYPE = {

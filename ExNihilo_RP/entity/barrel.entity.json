@@ -15,6 +15,7 @@
 				"dirt": "textures/blocks/dirt",
 				"clay": "textures/blocks/clay",
 				"netherrack": "textures/blocks/netherrack",
+				"end_stone": "textures/blocks/end_stone",
 				"water": "textures/blocks/water",
 				"lava": "textures/blocks/lava_still"
 			},

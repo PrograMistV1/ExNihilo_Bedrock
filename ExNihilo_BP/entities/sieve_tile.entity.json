@@ -50,7 +50,9 @@
 			"exnihilo:gravel": {"minecraft:variant": {"value": 2}},
 			"exnihilo:sand": {"minecraft:variant": {"value": 3}},
 			"exnihilo:soul_sand": {"minecraft:variant": {"value": 4}},
-			"exnihilo:dust": {"minecraft:variant": {"value": 5}}
+			"exnihilo:dust": {"minecraft:variant": {"value": 5}},
+			"exnihilo:crushed_end_stone": {"minecraft:variant": {"value": 6}},
+			"exnihilo:crushed_netherrack": {"minecraft:variant": {"value": 7}}
 		},
 		"events": {
 			"exnihilo:default": {"add": {"component_groups": ["exnihilo:default"]}},
@@ -58,7 +60,9 @@
 			"exnihilo:gravel": {"add": {"component_groups": ["exnihilo:gravel"]}},
 			"exnihilo:sand": {"add": {"component_groups": ["exnihilo:sand"]}},
 			"exnihilo:soul_sand": {"add": {"component_groups": ["exnihilo:soul_sand"]}},
-			"exnihilo:dust": {"add": {"component_groups": ["exnihilo:dust"]}}
+			"exnihilo:dust": {"add": {"component_groups": ["exnihilo:dust"]}},
+			"exnihilo:crushed_end_stone": {"add": {"component_groups": ["exnihilo:crushed_end_stone"]}},
+			"exnihilo:crushed_netherrack": {"add": {"component_groups": ["exnihilo:crushed_netherrack"]}}
 		}
 	}
 }

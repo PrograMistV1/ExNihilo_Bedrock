@@ -1,5 +1,5 @@
 import {TicksPerSecond} from "@minecraft/server";
-import {InputClay, InputDirt, InputNetherrack} from "../components/blocks/tiles/FilledTileEntityBlock";
+import {InputClay, InputDirt, InputEndStone, InputNetherrack} from "../components/blocks/tiles/FilledTileEntityBlock";
 
 export const CompostableItems: Record<string, number> = {
     "minecraft:acacia_sapling": 12.5,
@@ -68,4 +68,5 @@ export const Results: Readonly<Record<string, string>> = {
     [InputDirt]: "minecraft:dirt",
     [InputClay]: "minecraft:clay",
     [InputNetherrack]: "minecraft:netherrack",
+    [InputEndStone]: "minecraft:end_stone",
 }

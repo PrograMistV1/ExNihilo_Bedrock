@@ -10,7 +10,9 @@
 						"texture.gravel",
 						"texture.sand",
 						"texture.soul_sand",
-						"texture.dust"
+						"texture.dust",
+						"texture.crushed_end_stone",
+						"texture.crushed_netherrack"
 					]
 				}
 			},

@@ -1,0 +1,16 @@
+{
+	"format_version": "1.26.0",
+	"minecraft:item": {
+		"description": {
+			"identifier": "exnihilo:pebble_end_stone",
+			"menu_category": {
+				"category": "nature"
+			}
+		},
+		"components": {
+			"minecraft:icon": "end_stone_pebble",
+			"minecraft:throwable": {"do_swing_animation": true},
+			"minecraft:projectile": {"projectile_entity": "exnihilo:end_stone_pebble"}
+		}
+	}
+}

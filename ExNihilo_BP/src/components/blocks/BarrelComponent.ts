@@ -25,6 +25,7 @@ import {
     InputCompost,
     InputDefault,
     InputDirt,
+    InputEndStone,
     InputLava,
     InputNetherrack,
     InputWater,
@@ -44,7 +45,8 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         3: "exnihilo:clay",
         4: "exnihilo:water",
         5: "exnihilo:lava",
-        6: "exnihilo:netherrack"
+        6: "exnihilo:netherrack",
+        7: "exnihilo:end_stone",
     };
 
     constructor() {
@@ -64,12 +66,11 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
         const itemCtx = getSelectedItemContext(e.player);
-        if (!itemCtx.item) return;
         const tileCtx = this.getTileContext(e.block);
 
+        if (this.tryExtractResult(e.block, tileCtx) || !itemCtx.item) return;
         if (this.tryCompost(e.block, itemCtx, tileCtx)) return;
         if (this.handleLiquid(e.block, itemCtx, tileCtx)) return;
-        if (this.tryExtractResult(e.block, tileCtx)) return;
         if (this.handleSpecialInteractions(e.block, itemCtx, tileCtx)) return;
     };
 
@@ -252,6 +253,12 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             consumeItem(itemCtx);
             this.setInputBlock(block, InputNetherrack);
             block.dimension.playSound("dig.netherrack", block.center());
+            return true;
+        }
+        if (ctx.input === InputLava && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:glowstone_dust") {
+            consumeItem(itemCtx);
+            this.setInputBlock(block, InputEndStone);
+            block.dimension.playSound("dig.stone", block.center());
             return true;
         }
         return false;

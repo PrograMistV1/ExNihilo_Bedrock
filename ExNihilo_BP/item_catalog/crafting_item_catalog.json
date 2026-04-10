@@ -104,7 +104,9 @@
 							"exnihilo:pebble_calcite",
 							"exnihilo:pebble_deepslate",
 							"exnihilo:pebble_dripstone",
-							"exnihilo:pebble_tuff"
+							"exnihilo:pebble_tuff",
+							"exnihilo:pebble_netherrack",
+							"exnihilo:pebble_end_stone"
 						]
 					},
 					{

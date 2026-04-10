@@ -47,7 +47,15 @@ const STRING_MESH_DROPS: Record<string, RollPattern[]> = {
     ],
     "exnihilo:dust": [
         {result: "minecraft:gunpowder", chances: [0.07]},
-        {result: "minecraft:bone_meal", chances: [0.2]}
+        {result: "minecraft:bone_meal", chances: [0.2]},
+    ],
+    "exnihilo:crushed_netherrack": [
+        {result: "exnihilo:pebble_netherrack", chances: [0.5, 0.1]},
+        {result: "exnihilo:crimson_nylium_spores", chances: [0.05]},
+        {result: "exnihilo:warped_nylium_spores", chances: [0.05]},
+    ],
+    "exnihilo:crushed_end_stone": [
+        {result: "exnihilo:pebble_end_stone", chances: [0.5, 0.1]},
     ]
 };
 
@@ -61,6 +69,9 @@ const FLINT_MESH_DROPS: Record<string, RollPattern[]> = {
         {result: "minecraft:coal", chances: [0.125]},
         {result: "minecraft:lapis_lazuli", chances: [0.05]},
     ],
+    "exnihilo:crushed_netherrack": [
+        {result: "exnihilo:gold_pieces", chances: [0.25]},
+    ]
 };
 
 const IRON_MESH_DROPS: Record<string, RollPattern[]> = {
@@ -77,6 +88,13 @@ const IRON_MESH_DROPS: Record<string, RollPattern[]> = {
         {result: "minecraft:glowstone_dust", chances: [0.0625]},
         {result: "minecraft:blaze_powder", chances: [0.05]},
     ],
+    "exnihilo:crushed_netherrack": [
+        {result: "exnihilo:gold_pieces", chances: [0.25]},
+        {result: "minecraft:netherite_scrap", chances: [0.004]},
+    ],
+    "exnihilo:crushed_end_stone": [
+        {result: "minecraft:ender_pearl", chances: [0.005]},
+    ]
 };
 
 const DIAMOND_MESH_DROPS: Record<string, RollPattern[]> = {
@@ -94,11 +112,29 @@ const DIAMOND_MESH_DROPS: Record<string, RollPattern[]> = {
     "exnihilo:dust": [
         {result: "minecraft:redstone", chances: [0.25]},
     ],
+    "exnihilo:crushed_netherrack": [
+        {result: "exnihilo:gold_pieces", chances: [0.4]},
+        {result: "minecraft:netherite_scrap", chances: [0.008]},
+    ],
+    "exnihilo:crushed_end_stone": [
+        {result: "minecraft:ender_pearl", chances: [0.01]},
+        {result: "minecraft:chorus_flower", chances: [0.01]},
+    ]
 };
 
-const EMERALD_MESH_DROPS: Record<string, RollPattern[]> = {};
+const EMERALD_MESH_DROPS: Record<string, RollPattern[]> = {
+    "exnihilo:crushed_end_stone": [
+        {result: "minecraft:ender_pearl", chances: [0.015]},
+        {result: "minecraft:chorus_flower", chances: [0.02]},
+    ]
+};
 
-const NETHERITE_MESH_DROPS: Record<string, RollPattern[]> = {};
+const NETHERITE_MESH_DROPS: Record<string, RollPattern[]> = {
+    "exnihilo:crushed_end_stone": [
+        {result: "minecraft:ender_pearl", chances: [0.02]},
+        {result: "minecraft:chorus_flower", chances: [0.05]},
+    ]
+};
 
 export const DROP_BY_MESH: Record<MeshType, Record<string, RollPattern[]>> = {
     string: STRING_MESH_DROPS,

@@ -9,6 +9,7 @@ export type BlockInput =
     | "exnihilo:gravel"
     | "exnihilo:clay"
     | "exnihilo:netherrack"
+    | "exnihilo:end_stone"
     | "exnihilo:water"
     | "exnihilo:lava"
     | "exnihilo:witch_water";
@@ -19,6 +20,7 @@ export const InputDirt: BlockInput = "exnihilo:dirt";
 export const InputGravel: BlockInput = "exnihilo:gravel";
 export const InputClay: BlockInput = "exnihilo:clay";
 export const InputNetherrack: BlockInput = "exnihilo:netherrack";
+export const InputEndStone: BlockInput = "exnihilo:end_stone";
 export const InputWater: BlockInput = "exnihilo:water";
 export const InputLava: BlockInput = "exnihilo:lava";
 export const InputWitchWater: BlockInput = "exnihilo:witch_water";

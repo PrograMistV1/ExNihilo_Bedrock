@@ -6,7 +6,7 @@
 				"textures": {
 					"array.tex_variant": [
 						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water",
-						"texture.lava", "texture.netherrack"
+						"texture.lava", "texture.netherrack", "texture.end_stone"
 					]
 				},
 				"materials": {

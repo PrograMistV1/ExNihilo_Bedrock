@@ -11,7 +11,9 @@
 				"gravel": "textures/blocks/gravel",
 				"sand": "textures/blocks/sand",
 				"soul_sand": "textures/blocks/soul_sand",
-				"dust": "textures/blocks/dust"
+				"dust": "textures/blocks/dust",
+				"crushed_end_stone": "textures/blocks/crushed_end_stone",
+				"crushed_netherrack": "textures/blocks/crushed_netherrack"
 			},
 			"render_controllers": ["controller.render.exnihilo_sieve"],
 			"scripts": {

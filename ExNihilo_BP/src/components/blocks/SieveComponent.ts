@@ -34,6 +34,8 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         3: "exnihilo:sand",
         4: "exnihilo:soul_sand",
         5: "exnihilo:dust",
+        6: "exnihilo:crushed_end_stone",
+        7: "exnihilo:crushed_netherrack",
     }
 
     constructor() {
@@ -75,6 +77,7 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
     private handleProgress(block: Block): void {
         for (const targetBlock of this.getSieveNeighbors(block)) {
             if (!this.isReadyToSieve(targetBlock)) continue;
+            3
 
             const progress = this.getProgress(targetBlock) + (1 / SIEVE_CONSTANTS.maxSieveClicks);
             if (progress >= SIEVE_CONSTANTS.completeProgress) {
