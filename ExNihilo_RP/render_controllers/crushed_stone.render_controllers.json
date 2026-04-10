@@ -1,0 +1,30 @@
+{
+	"format_version": "1.10.0",
+	"render_controllers": {
+		"controller.render.crushed_stone": {
+			"arrays": {
+				"textures": {
+					"array.tex_variant": [
+						"texture.default",
+						"texture.crushed_andesite",
+						"texture.crushed_basalt",
+						"texture.crushed_blackstone",
+						"texture.crushed_calcite",
+						"texture.crushed_deepslate",
+						"texture.crushed_diorite",
+						"texture.crushed_dripstone",
+						"texture.crushed_end_stone",
+						"texture.crushed_granite",
+						"texture.crushed_netherrack",
+						"texture.crushed_tuff"
+					]
+				}
+			},
+			"geometry": "geometry.default",
+			"materials": [{"*": "material.default"}],
+			"textures": ["array.tex_variant[q.variant]"],
+			"is_hurt_color": {},
+			"on_fire_color": {}
+		}
+	}
+}

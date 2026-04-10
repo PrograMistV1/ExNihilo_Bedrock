@@ -1,0 +1,25 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "exnihilo:crushed_stone.entity",
+			"materials": {"default": "entity_alphablend"},
+			"geometry": {"default": "geometry.full_block.entity"},
+			"textures": {
+				"default": "textures/misc/missing_texture",
+				"crushed_andesite": "textures/blocks/crushed_andesite",
+				"crushed_basalt": "textures/blocks/crushed_basalt",
+				"crushed_blackstone": "textures/blocks/crushed_blackstone",
+				"crushed_calcite": "textures/blocks/crushed_calcite",
+				"crushed_deepslate": "textures/blocks/crushed_deepslate",
+				"crushed_diorite": "textures/blocks/crushed_diorite",
+				"crushed_dripstone": "textures/blocks/crushed_dripstone",
+				"crushed_end_stone": "textures/blocks/crushed_end_stone",
+				"crushed_granite": "textures/blocks/crushed_granite",
+				"crushed_netherrack": "textures/blocks/crushed_netherrack",
+				"crushed_tuff": "textures/blocks/crushed_tuff"
+			},
+			"render_controllers": ["controller.render.crushed_stone"]
+		}
+	}
+}
