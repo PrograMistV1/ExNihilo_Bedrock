@@ -6,11 +6,6 @@
  * Used with permission. Original license: GPL v3.
  */
 
-import {BlockStateSuperset} from "@minecraft/vanilla-data";
-
-export const FALLING_BLOCK_LAYER_STATE = 'falling_block:layers' as keyof BlockStateSuperset;
-export const FALLING_BLOCK_LAYER_PROPERTY = 'falling_block:layers';
-
 // These are the blocks that can be replaced by the falling blocks
 export const REPLACEABLE_BLOCKS = new Set([
     'minecraft:air', 'minecraft:structure_void',

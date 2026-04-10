@@ -12,7 +12,9 @@
 			"minecraft:geometry": "minecraft:geometry.full_block",
 			"minecraft:material_instances": {"*": {"texture": "dust"}},
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 0.7},
-			"exnihilo:falling_block": {},
+			"exnihilo:falling_block": {
+				"convertTo": "minecraft:clay"
+			},
 			"tag:minecraft:is_shovel_item_destructible": {}
 		}
 	}

@@ -5,9 +5,10 @@ import {
     BlockCustomComponent,
     BlockPermutation,
     BlockVolume,
-    Entity,
+    CustomComponentParameters,
     EntitySpawnAfterEvent,
     ExplosionAfterEvent,
+    ItemStack,
     PistonActivateAfterEvent,
     PlayerBreakBlockAfterEvent,
     ScriptEventCommandMessageAfterEvent,
@@ -15,15 +16,13 @@ import {
     VanillaEntityIdentifier,
     world
 } from "@minecraft/server";
-import {isWater, resolvePowderPermutation, shouldFall} from "../../utils/FallingBlockUtils";
-import {FallingBlocks} from "../../utils/FallingBlocks";
-import {
-    FALLING_BLOCK_LAYER_PROPERTY,
-    FALLING_BLOCK_LAYER_STATE,
-    REPLACEABLE_BLOCKS,
-    TRIGGERING_ENTITIES
-} from "utils/FallingBlocksManager";
-import {BlockStateSuperset} from "@minecraft/vanilla-data";
+import {PASSABLE_BLOCKS, REPLACEABLE_BLOCKS, TRIGGERING_ENTITIES} from "data/FallingBlocksData";
+
+export interface FallingBlockConfig {
+    alias?: string;
+    spawnEvent?: string;
+    convertTo?: string;
+}
 
 export class FallingBlockComponent implements BlockCustomComponent {
 
@@ -36,101 +35,94 @@ export class FallingBlockComponent implements BlockCustomComponent {
         FallingBlockComponent.eventsBound = true;
         FallingBlockComponent.eventHandler = this;
 
-        system.afterEvents.scriptEventReceive.subscribe((e) => FallingBlockComponent.eventHandler.onScriptEvent(e), {namespaces: ['falling_block']});
-        world.afterEvents.entitySpawn.subscribe((e) => FallingBlockComponent.eventHandler.onEntitySpawn(e));
-        world.afterEvents.playerBreakBlock.subscribe((e) => FallingBlockComponent.eventHandler.onPlayerBreakEvent(e));
-        world.afterEvents.explosion.subscribe((e) => FallingBlockComponent.eventHandler.onExplosion(e));
-        world.afterEvents.pistonActivate.subscribe((e) => FallingBlockComponent.eventHandler.onPistonActivate(e));
+        const handler = FallingBlockComponent.eventHandler;
+        system.afterEvents.scriptEventReceive.subscribe(this.onScriptEvent.bind(this), {namespaces: ['exnihilo']});
+        world.afterEvents.entitySpawn.subscribe((e) => handler.onEntitySpawn(e));
+        world.afterEvents.playerBreakBlock.subscribe((e) => handler.onPlayerBreakEvent(e));
+        world.afterEvents.explosion.subscribe((e) => handler.onExplosion(e));
+        world.afterEvents.pistonActivate.subscribe((e) => handler.onPistonActivate(e));
+        world.beforeEvents.entityRemove.subscribe((e) => {
+            const dimension = e.removedEntity.dimension;
+            const location = e.removedEntity.location;
+            const block = dimension.getBlock(location);
+            const originalBlock = e.removedEntity.getDynamicProperty('blockTypeId') as string | undefined;
+            if (!block || !originalBlock || e.removedEntity.getDynamicProperty('converted')) return;
+
+            system.run(() => {
+                if (block.hasComponent('minecraft:replaceable') || REPLACEABLE_BLOCKS.has(block.typeId)) {
+                    dimension.setBlockType(location, originalBlock);
+                } else {
+                    dimension.spawnItem(new ItemStack(originalBlock), {...location, y: location.y + 0.5});
+                    dimension.spawnParticle(`${originalBlock}.break_particle`, {...location, y: location.y + 0.5});
+                }
+            });
+        })
     }
 
-    beforeOnPlayerPlace = (e: BlockComponentPlayerPlaceBeforeEvent): void => {
-        if (!isWater(e.block)) return;
-        const blockId = e.permutationToPlace.type.id;
+    beforeOnPlayerPlace = (e: BlockComponentPlayerPlaceBeforeEvent, param: CustomComponentParameters): void => {
+        const isWater = e.block.typeId === 'minecraft:water' || e.block.typeId === 'minecraft:flowing_water';
+        const config = param.params as FallingBlockConfig;
 
-        e.permutationToPlace = resolvePowderPermutation(blockId, FallingBlocks[blockId]?.config?.solidBlock, true);
+        if (!isWater || !config['convertTo']) return;
+
+        e.permutationToPlace = BlockPermutation.resolve(config['convertTo']);
     };
 
     onPlace = (e: BlockComponentOnPlaceEvent): void => {
         this.startFalling(e.block);
-    }
+    };
 
-    pullAboveBlock(block: Block) {
-        if (block.y < block.dimension.heightRange.max) system.runTimeout(() => this.startFalling(block.above()), 5);
-    }
+    private startFalling(block: Block): void {
+        if (!this.isFallingBlock(block) || !PASSABLE_BLOCKS.has(block.below()?.typeId)) return;
 
-    // Handles the logic of causing the blocks to fall.
-    private startFalling(block: Block) {
-        const fb = FallingBlocks[block?.typeId];
-        if (!fb || !shouldFall(block, fb)) return;
-        const {typeId, permutation} = block;
-        fb.onStartFalling?.(block.permutation, block);
+        const config = this.getConfig(block);
+        const blockId = block.typeId;
+        const entityId = `${config.alias ?? blockId}.entity` as keyof VanillaEntityIdentifier;
+
         block.setType("minecraft:air");
-        const fallingEntity = block.dimension.spawnEntity(`${typeId}.entity` as keyof VanillaEntityIdentifier, block.bottomCenter());
-        if (fb?.config?.fallingSpeed) fallingEntity.applyImpulse({
-            x: 0,
-            y: Math.min(1, -Math.abs(fb.config.fallingSpeed)),
-            z: 0
+
+        const fallingEntity = block.dimension.spawnEntity(entityId, block.center(), {
+            spawnEvent: config.spawnEvent
         });
-        if (fb?.config?.type === 'layers') fallingEntity.setProperty(FALLING_BLOCK_LAYER_PROPERTY, permutation.getState(FALLING_BLOCK_LAYER_STATE));
-        this.pullAboveBlock(block);
+        fallingEntity.setDynamicProperty('config', JSON.stringify(config));
+        fallingEntity.setDynamicProperty('blockTypeId', blockId)
+
+        if (block.y < block.dimension.heightRange.max) {
+            system.run(() => this.startFalling(block.above()));
+        }
     }
 
-    // Handles the logic of placing the blocks after falling.
-    private onGround(block: Block, entity: Entity) {
-        const id = entity.typeId.replace('.entity', ''), fb = FallingBlocks[id];
-        if (!fb) return;
-        let permutationToPlace = null;
-        const isReplaceable = REPLACEABLE_BLOCKS.has(block.typeId),
-            stackLayers = fb?.config?.type === 'layers' && block.typeId === id,
-            action = !stackLayers && (fb?.config?.destroyOnFall || !isReplaceable) ? 'destroy' : fb?.config?.type;
-        switch (action) {
-            case 'destroy':
-                break;
-            case 'powder':
-                permutationToPlace = resolvePowderPermutation(id, fb?.config?.solidBlock, entity.isInWater);
-                break;
-            case 'layers': {
-                const addLayers = 1 + (entity.getProperty(FALLING_BLOCK_LAYER_PROPERTY) as number);
-                if (!stackLayers) {
-                    if (isReplaceable) permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, addLayers - 1);
-                    break;
-                }
-                const blockLayers = (block.permutation.getState(FALLING_BLOCK_LAYER_STATE) as number) + addLayers;
-                if (blockLayers < fb?.config.maxLayers) {
-                    permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, blockLayers);
-                    break;
-                }
-                permutationToPlace = BlockPermutation.resolve(id).withState(FALLING_BLOCK_LAYER_STATE as keyof BlockStateSuperset, fb?.config.maxLayers - 1);
-                if (block.y < block.dimension.heightRange.max) block.above().setPermutation(BlockPermutation.resolve(id, {[FALLING_BLOCK_LAYER_STATE]: blockLayers - fb.config.maxLayers}));
-                break;
-            }
-            default:
-                permutationToPlace = BlockPermutation.resolve(id);
+    private isFallingBlock(block: Block): boolean {
+        return block.hasComponent("exnihilo:falling_block")
+            || block.hasComponent("exnihilo:falling_layer_block");
+    }
+
+    private getConfig(block: Block): FallingBlockConfig {
+        if (!this.isFallingBlock(block)) {
+            throw new Error(`${block.typeId} must have "exnihilo:falling_block" or "exnihilo:falling_layer_block" component to get config!`);
         }
-        entity.remove();
-        if (permutationToPlace) {
-            block.setPermutation(permutationToPlace);
-            fb.onGround?.(block.permutation, block);
-        } else fb.onRemove?.(block.permutation, block);
+        return (
+            block.getComponent("exnihilo:falling_block")
+            ?? block.getComponent("exnihilo:falling_layer_block")
+        ).customComponentParameters.params as FallingBlockConfig;
     }
 
     private onScriptEvent(e: ScriptEventCommandMessageAfterEvent): void {
-        if (e.id !== 'falling_block:is_on_ground' || !e.sourceEntity) return;
+        if (e.id !== 'exnihilo:convert_to') return;
 
-        const pos = e.sourceEntity.location;
-        const dimension = e.sourceEntity.dimension;
-        if (pos.y < dimension.heightRange.min || pos.y > dimension.heightRange.max) {
-            e.sourceEntity?.remove();
-        } else {
-            this.onGround(dimension.getBlock(pos), e.sourceEntity);
-        }
+        const config = JSON.parse(e.sourceEntity.getDynamicProperty('config') as string) as FallingBlockConfig;
+        if (!config['convertTo']) return;
+
+        e.sourceEntity.dimension.setBlockType(e.sourceEntity.location, config['convertTo']);
+        e.sourceEntity.setDynamicProperty("converted", true)
+        e.sourceEntity.remove();
     }
 
     private onEntitySpawn(e: EntitySpawnAfterEvent): void {
         if (!TRIGGERING_ENTITIES.has(e.entity.typeId)) return;
 
-        const pos = e.entity.location;
-        const dimension = e.entity.dimension;
+        const {location: pos, dimension} = e.entity;
+
         if (pos.y < dimension.heightRange.max) {
             this.startFalling(dimension.getBlock({...pos, y: pos.y + 2}));
         }
@@ -141,36 +133,53 @@ export class FallingBlockComponent implements BlockCustomComponent {
     }
 
     private onExplosion(e: ExplosionAfterEvent): void {
-        const impactedBlocks = e.getImpactedBlocks();
-        for (let i = 0; i < impactedBlocks.length; i++) {
-            const aboveBlock = impactedBlocks[i]?.above();
-            if (FallingBlocks[aboveBlock?.typeId]) this.startFalling(aboveBlock);
+        for (const impactedBlock of e.getImpactedBlocks()) {
+            const aboveBlock = impactedBlock?.above();
+            if (this.isFallingBlock(aboveBlock)) this.startFalling(aboveBlock);
         }
     }
 
     private async onPistonActivate(e: PistonActivateAfterEvent): Promise<void> {
         const {dimension, x, y, z} = e.block;
+
         if (e.block.typeId === 'minecraft:piston' && !e.isExpanding) {
-            if (y === dimension.heightRange.max) return;
-
-            const facing = e.block.permutation.getState('facing_direction');
-            let offsetX = 0, offsetY = 1, offsetZ = 0;
-
-            if (facing === 0) offsetY = 0;
-            else if (facing === 1) {
-                if (y + 1 < dimension.heightRange.max) offsetY = 2;
-                else return;
-            } else if (facing === 2) offsetZ = 1;
-            else if (facing === 3) offsetZ = -1;
-            else if (facing === 4) offsetX = 1;
-            else if (facing === 5) offsetX = -1;
-
-            if (offsetX || offsetY || offsetZ) {
-                this.startFalling(e.block.offset({x: offsetX, y: offsetY, z: offsetZ}));
-            }
+            this.handlePistonRetract(e.block, dimension, y);
             return;
         }
 
+        await this.handleMovingBlocks(dimension, x, y, z);
+    }
+
+    private handlePistonRetract(block: Block, dimension: Block['dimension'], y: number): void {
+        if (y === dimension.heightRange.max) return;
+
+        const facing = block.permutation.getState('facing_direction');
+        const offset = this.getPistonOffset(facing, y, dimension);
+
+        if (offset) this.startFalling(block.offset(offset));
+    }
+
+    private getPistonOffset(
+        facing: unknown,
+        y: number,
+        dimension: Block['dimension']
+    ): { x: number; y: number; z: number } | null {
+        if (facing === 0) return {x: 0, y: 0, z: 0};
+        if (facing === 1) {
+            if (y + 1 >= dimension.heightRange.max) return null;
+            return {x: 0, y: 2, z: 0};
+        }
+        if (facing === 2) return {x: 0, y: 1, z: 1};
+        if (facing === 3) return {x: 0, y: 1, z: -1};
+        if (facing === 4) return {x: 1, y: 1, z: 0};
+        if (facing === 5) return {x: -1, y: 1, z: 0};
+        return {x: 0, y: 1, z: 0};
+    }
+
+    private async handleMovingBlocks(
+        dimension: Block['dimension'],
+        x: number, y: number, z: number
+    ): Promise<void> {
         const iterator = dimension.getBlocks(
             new BlockVolume(
                 {x: x - 13, y: y - 13, z: z - 13},
@@ -178,14 +187,14 @@ export class FallingBlockComponent implements BlockCustomComponent {
             ),
             {includeTypes: ['minecraft:moving_block']}
         )?.getBlockLocationIterator();
+
         if (!iterator) return;
 
         await system.waitTicks(2);
+
         for (const location of iterator) {
             const target = dimension.getBlock(location);
-            if (target) {
-                this.startFalling(target);
-            }
+            if (target) this.startFalling(target);
         }
     }
 }

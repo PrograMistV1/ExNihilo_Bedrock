@@ -16,9 +16,8 @@ import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
 import {setProgressVisibility} from "./utils/ProgressRegistry";
-import "utils/FallingBlocksManager"
+import "data/FallingBlocksData"
 import {FallingBlockComponent} from "./components/blocks/FallingBlockComponent";
-import {FallingLayerBlockComponent} from "./components/blocks/FallingLayerBlockComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
@@ -26,7 +25,6 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:crucible', new CrucibleComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:infested_leaves', new InfestedLeavesComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:falling_block', new FallingBlockComponent());
-    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:falling_layer_block', new FallingLayerBlockComponent());
 
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:crook', new CrookComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:hammer', new HammerComponent());
