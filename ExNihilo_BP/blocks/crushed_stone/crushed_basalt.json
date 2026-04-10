@@ -13,7 +13,7 @@
 			"minecraft:material_instances": {"*": {"texture": "crushed_basalt"}},
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 0.7},
 			"exnihilo:falling_block": {"alias": "exnihilo:crushed_stone"},
-			"tag:minecraft:is_pickaxe_item_destructible": {}
+			"tag:minecraft:is_shovel_item_destructible": {}
 		}
 	}
 }

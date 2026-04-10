@@ -27,7 +27,18 @@ export const MeltableBlocks: Readonly<Record<string, number>> = {
     "minecraft:sand": 10,
     "minecraft:obsidian": 100,
     "minecraft:netherrack": 100,
-    "exnihilo:dust": 5
+    "exnihilo:dust": 5,
+    "exnihilo:crushed_andesite": 20,
+    "exnihilo:crushed_basalt": 20,
+    "exnihilo:crushed_blackstone": 20,
+    "exnihilo:crushed_calcite": 20,
+    "exnihilo:crushed_deepslate": 20,
+    "exnihilo:crushed_diorite": 20,
+    "exnihilo:crushed_dripstone": 20,
+    "exnihilo:crushed_end_stone": 20,
+    "exnihilo:crushed_granite": 20,
+    "exnihilo:crushed_netherrack": 20,
+    "exnihilo:crushed_tuff": 20,
 }
 
 export const HeatRate: Readonly<Record<string, number>> = {
