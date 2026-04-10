@@ -12,6 +12,7 @@
 			"minecraft:geometry": "minecraft:geometry.full_block",
 			"minecraft:material_instances": {"*": {"texture": "crushed_end_stone"}},
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 0.7},
+			"exnihilo:falling_block": {"alias": "exnihilo:crushed_stone"},
 			"tag:minecraft:is_pickaxe_item_destructible": {}
 		}
 	}

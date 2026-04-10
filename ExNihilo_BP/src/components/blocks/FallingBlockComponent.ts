@@ -20,7 +20,6 @@ import {PASSABLE_BLOCKS, REPLACEABLE_BLOCKS, TRIGGERING_ENTITIES} from "data/Fal
 
 export interface FallingBlockConfig {
     alias?: string;
-    spawnEvent?: string;
     convertTo?: string;
 }
 
@@ -49,7 +48,11 @@ export class FallingBlockComponent implements BlockCustomComponent {
             if (!block || !originalBlock || e.removedEntity.getDynamicProperty('converted')) return;
 
             system.run(() => {
-                if (block.hasComponent('minecraft:replaceable') || REPLACEABLE_BLOCKS.has(block.typeId)) {
+                if (
+                    block.hasComponent('minecraft:replaceable')
+                    || REPLACEABLE_BLOCKS.has(block.typeId)
+                    && block.below().typeId !== 'minecraft:soul_sand'
+                ) {
                     dimension.setBlockType(location, originalBlock);
                 } else {
                     dimension.spawnItem(new ItemStack(originalBlock), {...location, y: location.y + 0.5});
@@ -82,7 +85,7 @@ export class FallingBlockComponent implements BlockCustomComponent {
         block.setType("minecraft:air");
 
         const fallingEntity = block.dimension.spawnEntity(entityId, block.center(), {
-            spawnEvent: config.spawnEvent
+            spawnEvent: blockId
         });
         fallingEntity.setDynamicProperty('config', JSON.stringify(config));
         fallingEntity.setDynamicProperty('blockTypeId', blockId)
