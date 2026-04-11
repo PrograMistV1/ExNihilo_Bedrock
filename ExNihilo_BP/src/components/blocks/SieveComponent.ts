@@ -77,7 +77,6 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
     private handleProgress(block: Block): void {
         for (const targetBlock of this.getSieveNeighbors(block)) {
             if (!this.isReadyToSieve(targetBlock)) continue;
-            3
 
             const progress = this.getProgress(targetBlock) + (1 / SIEVE_CONSTANTS.maxSieveClicks);
             if (progress >= SIEVE_CONSTANTS.completeProgress) {

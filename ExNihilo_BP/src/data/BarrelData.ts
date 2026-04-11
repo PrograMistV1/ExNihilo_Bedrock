@@ -51,6 +51,20 @@ export const CompostableItems: Record<string, number> = {
     "exnihilo:cooked_silkworm": 4
 };
 
+export const StoneToMossyStone: Readonly<Record<string, string>> = {
+    "minecraft:stone_bricks": "minecraft:mossy_stone_bricks",
+    "minecraft:infested_stone_bricks": "minecraft:infested_mossy_stone_bricks",
+    "minecraft:cobblestone": "minecraft:mossy_cobblestone",
+    "minecraft:stone_brick_slab": "minecraft:mossy_stone_brick_slab",
+    "minecraft:stone_brick_double_slab": "minecraft:mossy_stone_brick_double_slab",
+    "minecraft:cobblestone_slab": "minecraft:mossy_cobblestone_slab",
+    "minecraft:cobblestone_double_slab": "minecraft:mossy_cobblestone_double_slab",
+    "minecraft:stone_brick_stairs": "minecraft:mossy_stone_brick_stairs",
+    "minecraft:stone_stairs": "minecraft:mossy_cobblestone_stairs",
+    "minecraft:stone_brick_wall": "minecraft:mossy_stone_brick_wall",
+    "minecraft:cobblestone_wall": "minecraft:mossy_cobblestone_wall",
+}
+
 export const BARREL_CONFIG = {
     updateInterval: 8,
     compostingTimeSeconds: 180,

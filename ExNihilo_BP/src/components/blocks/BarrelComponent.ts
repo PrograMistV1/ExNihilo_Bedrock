@@ -2,8 +2,10 @@ import {
     Block,
     BlockComponentPlayerBreakEvent,
     BlockComponentPlayerInteractEvent,
+    BlockComponentRandomTickEvent,
     BlockComponentTickEvent,
     BlockCustomComponent,
+    BlockPermutation,
     Container,
     CustomComponentParameters,
     Entity,
@@ -17,7 +19,7 @@ import {
     system,
     WeatherType
 } from "@minecraft/server";
-import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results,} from "../../data/BarrelData";
+import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results, StoneToMossyStone,} from "../../data/BarrelData";
 import {consumeItem, getItemContext, getSelectedItemContext, ItemContext} from "../../utils/Utils";
 import {addProgressChecker} from "../../utils/ProgressRegistry";
 import {
@@ -33,6 +35,7 @@ import {
     InputWater,
     TileContext
 } from "./tiles/FilledTileEntityBlock";
+import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
@@ -85,12 +88,56 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         if (this.handleCompost(e.block, ctx)) return;
     }
 
+    onRandomTick = (e: BlockComponentRandomTickEvent): void => {
+        const ctx = this.getTileContext(e.block);
+        if (ctx.input !== InputWater || ctx.filling < 15) return;
+
+        const targets: Block[] = [];
+        for (let x = e.block.x - 1; x <= e.block.x + 1; x++) {
+            for (let z = e.block.z - 1; z <= e.block.z + 1; z++) {
+                const target = e.block.dimension.getBlock({x, y: e.block.y - 1, z});
+                if (StoneToMossyStone[target.typeId]) targets.push(target);
+            }
+        }
+        if (targets.length === 0) return;
+        const target = targets[Math.floor(Math.random() * targets.length)];
+
+        const newStates = this.resolveMossyBlockStates(target);
+        target.setPermutation(BlockPermutation.resolve(StoneToMossyStone[target.typeId], newStates));
+
+        this.setFilling(e.block, this.getFilling(e.block) - 15);
+        e.dimension.playSound('dig.moss', target.center());
+    }
+
     onPlayerBreak = (e: BlockComponentPlayerBreakEvent) => {
         this.tryExtractResult(e.block, this.getTileContext(e.block));
     };
 
     protected yResolver(filling: number): number {
         return 1 / 16 + filling / 100 * 0.875;
+    }
+
+    private resolveMossyBlockStates(block: Block): Record<string, string | number | boolean> {
+        const blockStates: Record<string, string | number | boolean> = {};
+        const perm = block.permutation;
+
+        const keys = [
+            'wall_connection_type_east',
+            'wall_connection_type_north',
+            'wall_connection_type_south',
+            'wall_connection_type_west',
+            'wall_post_bit',
+            'minecraft:vertical_half',
+            'upside_down_bit',
+            'weirdo_direction'
+        ];
+
+        for (const key of keys) {
+            const value = perm.getState(key as keyof BlockStateSuperset);
+            if (value !== undefined) blockStates[key] = value;
+        }
+
+        return blockStates;
     }
 
     private handleRainFill(block: Block, ctx: TileContext): boolean {
