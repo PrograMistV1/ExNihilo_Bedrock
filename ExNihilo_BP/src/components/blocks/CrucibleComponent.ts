@@ -6,6 +6,7 @@ import {
     BlockComponentTickEvent,
     BlockCustomComponent,
     Entity,
+    GameMode,
     ItemStack,
     Player
 } from "@minecraft/server";
@@ -92,18 +93,17 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
             || ctx.filling !== 100) return;
 
         this.setInputBlock(block, InputDefault);
-        if (selectedItem.item.amount === 1) {
+        block.dimension.playSound("bucket.fill_lava", block);
+
+        if (player.getGameMode() === GameMode.Creative) return;
+        if (consumeItem(selectedItem) === 0) {
             selectedItem.container.setItem(selectedItem.slot, new ItemStack("minecraft:lava_bucket", 1));
         } else {
-            consumeItem(selectedItem);
-            if (selectedItem.container.emptySlotsCount > 0) {
-                selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
-            } else {
-                player.dimension.spawnItem(new ItemStack("minecraft:lava_bucket", 1), player.location);
-                player.dimension.playSound("random.pop", player.location);
-            }
+            const stackToDrop = selectedItem.container.addItem(new ItemStack("minecraft:lava_bucket", 1));
+            if (!stackToDrop) return;
+            player.dimension.spawnItem(stackToDrop, player.location);
+            player.dimension.playSound("random.pop", player.location);
         }
-        block.dimension.playSound("bucket.fill_lava", block);
     }
 
     private handleMeltingTick(block: Block, ctx: TileContext): void {

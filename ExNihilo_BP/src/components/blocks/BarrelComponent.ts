@@ -10,8 +10,10 @@ import {
     EntityComponentTypes,
     EntityDamageCause,
     EntityOnFireComponent,
+    GameMode,
     ItemStack,
     MolangVariableMap,
+    Player,
     system,
     WeatherType
 } from "@minecraft/server";
@@ -266,14 +268,16 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
     private fillBarrelFromBucket(
         block: Block,
-        selectedItem: ItemContext,
+        itemCtx: ItemContext,
         type: BlockInput,
         soundId: string
     ): void {
         this.setInputBlock(block, type);
         system.runTimeout(() => this.setFilling(block, 100), 1);
-        selectedItem.container.setItem(selectedItem.slot, new ItemStack(EMPTY_BUCKET_ITEM, 1));
         block.dimension.playSound(soundId, block.center());
+        if ((itemCtx.source as Player).getGameMode() !== GameMode.Creative) {
+            itemCtx.container.setItem(itemCtx.slot, new ItemStack(EMPTY_BUCKET_ITEM, 1));
+        }
     }
 
     private drainBarrelToBucket(
@@ -284,18 +288,17 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     ): void {
         this.setFilling(block, 0);
         system.runTimeout(() => this.setInputBlock(block, InputDefault), 10);
-        if (itemCtx.item.amount === 1) {
+        block.dimension.playSound(soundId, block.center());
+
+        if ((itemCtx.source as Player).getGameMode() === GameMode.Creative) return;
+        if (consumeItem(itemCtx) === 0) {
             itemCtx.container.setItem(itemCtx.slot, new ItemStack(filledBucketItemId, 1));
         } else {
-            consumeItem(itemCtx);
-            if (itemCtx.container.emptySlotsCount > 0) {
-                itemCtx.container.addItem(new ItemStack(filledBucketItemId, 1));
-            } else {
-                itemCtx.source.dimension.spawnItem(new ItemStack(filledBucketItemId, 1), itemCtx.source.location);
-                itemCtx.source.dimension.playSound("random.pop", itemCtx.source.location);
-            }
+            const stackToDrop = itemCtx.container.addItem(new ItemStack(filledBucketItemId, 1));
+            if (!stackToDrop) return;
+            itemCtx.source.dimension.spawnItem(stackToDrop, itemCtx.source.location);
+            itemCtx.source.dimension.playSound("random.pop", itemCtx.source.location);
         }
-        block.dimension.playSound(soundId, block.center());
     }
 
     private tryExtinguishEntity(entity: Entity): void {
