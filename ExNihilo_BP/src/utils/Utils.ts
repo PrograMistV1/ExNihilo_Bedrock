@@ -1,4 +1,12 @@
-import {Block, Entity, EntityDamageCause, EntityInventoryComponent, ItemStack, Player} from "@minecraft/server";
+import {
+    Block,
+    Entity,
+    EntityDamageCause,
+    EntityInventoryComponent,
+    GameMode,
+    ItemStack,
+    Player
+} from "@minecraft/server";
 
 export type ItemContext = {
     container: NonNullable<EntityInventoryComponent["container"]>;
@@ -20,6 +28,8 @@ export function getItemContext(source: Entity | Block, slot: number): ItemContex
 }
 
 export function consumeItem(selectedItem: ItemContext, amount: number = 1): number {
+    if (selectedItem.source instanceof Player && selectedItem.source.getGameMode() === GameMode.Creative) return;
+
     const newAmount = selectedItem.item.amount - amount;
     if (newAmount > 0) {
         selectedItem.item.amount = newAmount;
@@ -32,7 +42,7 @@ export function consumeItem(selectedItem: ItemContext, amount: number = 1): numb
 
 export function damageSelectedItem(selectedItem: ItemContext, player: Player, damage: number = 1): void {
     const durability = selectedItem.item.getComponent("minecraft:durability");
-    if (!durability) return;
+    if (!durability || player.getGameMode() === GameMode.Creative) return;
 
     durability.damage += damage;
     if (durability.damage >= durability.maxDurability) {

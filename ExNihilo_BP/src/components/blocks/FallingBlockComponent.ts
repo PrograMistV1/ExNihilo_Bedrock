@@ -6,6 +6,7 @@ import {
     BlockPermutation,
     BlockVolume,
     CustomComponentParameters,
+    EntityRemoveBeforeEvent,
     EntitySpawnAfterEvent,
     ExplosionAfterEvent,
     ItemStack,
@@ -25,41 +26,13 @@ export interface FallingBlockConfig {
 
 export class FallingBlockComponent implements BlockCustomComponent {
 
-    private static eventsBound = false;
-    private static eventHandler: FallingBlockComponent;
-
     constructor() {
-        if (FallingBlockComponent.eventsBound) return;
-
-        FallingBlockComponent.eventsBound = true;
-        FallingBlockComponent.eventHandler = this;
-
-        const handler = FallingBlockComponent.eventHandler;
         system.afterEvents.scriptEventReceive.subscribe(this.onScriptEvent.bind(this), {namespaces: ['exnihilo']});
-        world.afterEvents.entitySpawn.subscribe((e) => handler.onEntitySpawn(e));
-        world.afterEvents.playerBreakBlock.subscribe((e) => handler.onPlayerBreakEvent(e));
-        world.afterEvents.explosion.subscribe((e) => handler.onExplosion(e));
-        world.afterEvents.pistonActivate.subscribe((e) => handler.onPistonActivate(e));
-        world.beforeEvents.entityRemove.subscribe((e) => {
-            const dimension = e.removedEntity.dimension;
-            const location = e.removedEntity.location;
-            const block = dimension.getBlock(location);
-            const originalBlock = e.removedEntity.getDynamicProperty('blockTypeId') as string | undefined;
-            if (!block || !originalBlock || e.removedEntity.getDynamicProperty('converted')) return;
-
-            system.run(() => {
-                if (
-                    block.hasComponent('minecraft:replaceable')
-                    || REPLACEABLE_BLOCKS.has(block.typeId)
-                    && block.below().typeId !== 'minecraft:soul_sand'
-                ) {
-                    dimension.setBlockType(location, originalBlock);
-                } else {
-                    dimension.spawnItem(new ItemStack(originalBlock), {...location, y: location.y + 0.5});
-                    dimension.spawnParticle(`${originalBlock}.break_particle`, {...location, y: location.y + 0.5});
-                }
-            });
-        })
+        world.afterEvents.entitySpawn.subscribe(this.onEntitySpawn.bind(this));
+        world.afterEvents.playerBreakBlock.subscribe(this.onPlayerBreakEvent.bind(this));
+        world.afterEvents.explosion.subscribe(this.onExplosion.bind(this));
+        world.afterEvents.pistonActivate.subscribe(this.onPistonActivate.bind(this));
+        world.beforeEvents.entityRemove.subscribe(this.onRemove.bind(this));
     }
 
     beforeOnPlayerPlace = (e: BlockComponentPlayerPlaceBeforeEvent, param: CustomComponentParameters): void => {
@@ -93,6 +66,27 @@ export class FallingBlockComponent implements BlockCustomComponent {
         if (block.y < block.dimension.heightRange.max) {
             system.run(() => this.startFalling(block.above()));
         }
+    }
+
+    private onRemove(e: EntityRemoveBeforeEvent): void {
+        const dimension = e.removedEntity.dimension;
+        const location = e.removedEntity.location;
+        const block = dimension.getBlock(location);
+        const originalBlock = e.removedEntity.getDynamicProperty('blockTypeId') as string | undefined;
+        if (!block || !originalBlock || e.removedEntity.getDynamicProperty('converted')) return;
+
+        system.run(() => {
+            if (
+                block.hasComponent('minecraft:replaceable')
+                || REPLACEABLE_BLOCKS.has(block.typeId)
+                && block.below().typeId !== 'minecraft:soul_sand'
+            ) {
+                dimension.setBlockType(location, originalBlock);
+            } else {
+                dimension.spawnItem(new ItemStack(originalBlock), {...location, y: location.y + 0.5});
+                dimension.spawnParticle(`${originalBlock}.break_particle`, {...location, y: location.y + 0.5});
+            }
+        });
     }
 
     private isFallingBlock(block: Block): boolean {
