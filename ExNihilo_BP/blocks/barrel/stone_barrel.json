@@ -14,7 +14,7 @@
 		"components": {
 			"minecraft:geometry": "geometry.barrel",
 			"minecraft:material_instances": {
-				"*": {"texture": "stone"}
+				"*": {"texture": "smooth_stone"}
 			},
 			"minecraft:destructible_by_mining": {"seconds_to_destroy": 2},
 			"tag:minecraft:is_pickaxe_item_destructible": {},
