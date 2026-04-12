@@ -4,14 +4,14 @@
 		"description": "pack.description",
 		"name": "ExNihilo_RP",
 		"uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
-		"version": [2, 0, 2]
+		"version": [2, 0, 9]
 	},
 	"modules": [
 		{
 			"description": "ExNihilo_Bedrock by PrograMistV1",
 			"type": "resources",
 			"uuid": "b57e843f-c3cb-44d7-ab60-8b960f03ca25",
-			"version": [2, 0, 2]
+			"version": [2, 0, 9]
 		}
 	]
 }
