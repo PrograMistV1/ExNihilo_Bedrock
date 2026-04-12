@@ -38,6 +38,7 @@
 					{"pivot": [0, 100, 0], "width": 0, "height": 0}
 				]
 			},
+			"minecraft:collision_box": {"height": 0, "width": 0.0},
 			"minecraft:spell_effects": {
 				"add_effects": [
 					{"duration": "infinite", "effect": "invisibility", "visible": false}
