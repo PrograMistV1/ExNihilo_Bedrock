@@ -71,6 +71,7 @@ export class FallingBlockComponent implements BlockCustomComponent {
     private onRemove(e: EntityRemoveBeforeEvent): void {
         const dimension = e.removedEntity.dimension;
         const location = e.removedEntity.location;
+        if (location.y < dimension.heightRange.min || location.y > dimension.heightRange.max) return;
         const block = dimension.getBlock(location);
         const originalBlock = e.removedEntity.getDynamicProperty('blockTypeId') as string | undefined;
         if (!block || !originalBlock || e.removedEntity.getDynamicProperty('converted')) return;

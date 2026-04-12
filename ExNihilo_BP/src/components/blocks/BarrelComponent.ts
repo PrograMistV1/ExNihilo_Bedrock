@@ -93,7 +93,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         for (let x = e.block.x - 1; x <= e.block.x + 1; x++) {
             for (let z = e.block.z - 1; z <= e.block.z + 1; z++) {
                 const target = e.block.dimension.getBlock({x, y: e.block.y - 1, z});
-                if (StoneToMossyStone[target.typeId]) targets.push(target);
+                if (target && StoneToMossyStone[target.typeId]) targets.push(target);
             }
         }
         if (targets.length === 0) return;
