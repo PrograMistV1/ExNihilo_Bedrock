@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:mangrove_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:mangrove_log",
+			"B": "minecraft:mangrove_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:mangrove_log"
+			}
+		],
+		"result": "exnihilo:mangrove_crucible"
+	}
+}

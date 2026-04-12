@@ -64,6 +64,27 @@
 							"exnihilo:crushed_end_stone",
 							"exnihilo:crushed_netherrack"
 						]
+					},
+					{
+						"group_identifier": {
+							"icon": "exnihilo:oak_crucible",
+							"name": "exnihilo:crucibles"
+						},
+						"items": [
+							"exnihilo:oak_crucible",
+							"exnihilo:spruce_crucible",
+							"exnihilo:birch_crucible",
+							"exnihilo:jungle_crucible",
+							"exnihilo:acacia_crucible",
+							"exnihilo:dark_oak_crucible",
+							"exnihilo:mangrove_crucible",
+							"exnihilo:cherry_crucible",
+							"exnihilo:pale_oak_crucible",
+							"exnihilo:bamboo_crucible",
+							"exnihilo:crimson_crucible",
+							"exnihilo:warped_crucible",
+							"exnihilo:fired_crucible"
+						]
 					}
 				]
 			},

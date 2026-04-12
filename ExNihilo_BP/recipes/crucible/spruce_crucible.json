@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:spruce_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:spruce_log",
+			"B": "minecraft:spruce_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:spruce_log"
+			}
+		],
+		"result": "exnihilo:spruce_crucible"
+	}
+}

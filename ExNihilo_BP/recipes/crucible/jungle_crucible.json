@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:jungle_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:jungle_log",
+			"B": "minecraft:jungle_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:jungle_log"
+			}
+		],
+		"result": "exnihilo:jungle_crucible"
+	}
+}

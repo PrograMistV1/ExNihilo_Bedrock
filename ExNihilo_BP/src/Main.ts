@@ -16,7 +16,6 @@ import {HammerComponent} from "./components/items/HammerComponent";
 import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
 import {setProgressVisibility} from "./utils/ProgressRegistry";
-import "data/FallingBlocksData"
 import {FallingBlockComponent} from "./components/blocks/FallingBlockComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {

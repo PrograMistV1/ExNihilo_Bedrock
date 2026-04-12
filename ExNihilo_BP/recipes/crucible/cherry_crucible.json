@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:cherry_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:cherry_log",
+			"B": "minecraft:cherry_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:cherry_log"
+			}
+		],
+		"result": "exnihilo:cherry_crucible"
+	}
+}

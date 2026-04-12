@@ -1,5 +1,13 @@
 import {TileEntityBlock} from "./TileEntityBlock";
-import {Block, Entity, EntityVariantComponent, VanillaEntityIdentifier} from "@minecraft/server";
+import {
+    Block,
+    Entity,
+    EntityComponentTypes,
+    EntityOnFireComponent,
+    EntityVariantComponent,
+    MolangVariableMap,
+    VanillaEntityIdentifier
+} from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
 export type BlockInput =
@@ -50,7 +58,9 @@ export abstract class FilledTileEntityBlock extends TileEntityBlock {
         const isLava = input === InputLava;
         const isDefault = input === InputDefault;
 
-        block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
+        if (block.permutation.getState('exnihilo:emit_light' as keyof BlockStateSuperset) !== undefined) {
+            block.setPermutation(block.permutation.withState('exnihilo:emit_light' as keyof BlockStateSuperset, isLava));
+        }
 
         let tile = this.getTileEntity(block);
         if (tile) {
@@ -113,5 +123,30 @@ export abstract class FilledTileEntityBlock extends TileEntityBlock {
             filling: this.getFilling(block),
             input: this.getInputBlock(block)
         };
+    }
+
+    protected handleWaterEntities(block: Block, ctx: TileContext): void {
+        if (ctx.input !== InputWater) return;
+
+        for (const entity of this.getContainedEntities(block)) {
+            if (entity.getVelocity().y < 0) {
+                block.dimension.playSound("random.splash", block.center());
+                const molang = new MolangVariableMap();
+                molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
+                block.dimension.spawnParticle(
+                    "minecraft:water_splash_particle",
+                    {...block.bottomCenter(), y: block.y + 1.1},
+                    molang
+                );
+            }
+            this.tryExtinguishEntity(entity);
+        }
+    }
+
+    protected tryExtinguishEntity(entity: Entity): void {
+        const onFire = entity.getComponent(EntityComponentTypes.OnFire) as EntityOnFireComponent;
+        if (!onFire || onFire.onFireTicksRemaining <= 0) return;
+
+        entity.extinguishFire(true);
     }
 }

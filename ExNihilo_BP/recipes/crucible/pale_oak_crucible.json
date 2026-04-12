@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:pale_oak_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:pale_oak_log",
+			"B": "minecraft:pale_oak_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:pale_oak_log"
+			}
+		],
+		"result": "exnihilo:pale_oak_crucible"
+	}
+}

@@ -1,4 +1,5 @@
 import {TicksPerSecond} from "@minecraft/server";
+import {BlockInput, InputCompost, InputGravel} from "../components/blocks/tiles/FilledTileEntityBlock";
 
 export const CRUCIBLE_CONFIG = {
     updateInterval: 8,
@@ -10,35 +11,61 @@ export const CRUCIBLE_TIMINGS = {
     meltingUpdates: Math.ceil(CRUCIBLE_CONFIG.meltingTimeSeconds * updatesPerSecond)
 };
 
-export const MeltableBlocks: Readonly<Record<string, number>> = {
-    "minecraft:stone": 25,
-    "minecraft:cobblestone": 25,
-    "minecraft:andesite": 25,
-    "minecraft:basalt": 25,
-    "minecraft:blackstone": 25,
-    "minecraft:calcite": 25,
-    "minecraft:deepslate": 25,
-    "minecraft:diorite": 25,
-    "minecraft:dripstone_block": 25,
-    "minecraft:end_stone": 25,
-    "minecraft:granite": 25,
-    "minecraft:tuff": 25,
-    "minecraft:gravel": 20,
-    "minecraft:sand": 10,
-    "minecraft:obsidian": 100,
-    "minecraft:netherrack": 100,
-    "exnihilo:dust": 5,
-    "exnihilo:crushed_andesite": 20,
-    "exnihilo:crushed_basalt": 20,
-    "exnihilo:crushed_blackstone": 20,
-    "exnihilo:crushed_calcite": 20,
-    "exnihilo:crushed_deepslate": 20,
-    "exnihilo:crushed_diorite": 20,
-    "exnihilo:crushed_dripstone": 20,
-    "exnihilo:crushed_end_stone": 20,
-    "exnihilo:crushed_granite": 20,
-    "exnihilo:crushed_netherrack": 20,
-    "exnihilo:crushed_tuff": 20,
+type MeltableBlockData = {
+    fillAmount: number;
+    type: BlockInput;
+};
+
+export const MeltableItems: Readonly<Record<string, MeltableBlockData>> = {
+    "minecraft:stone": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:cobblestone": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:andesite": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:basalt": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:blackstone": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:calcite": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:deepslate": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:diorite": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:dripstone_block": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:end_stone": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:granite": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:tuff": {"fillAmount": 25, "type": InputGravel},
+    "minecraft:gravel": {"fillAmount": 20, "type": InputGravel},
+    "minecraft:sand": {"fillAmount": 10, "type": InputGravel},
+    "minecraft:obsidian": {"fillAmount": 100, "type": InputGravel},
+    "minecraft:netherrack": {"fillAmount": 100, "type": InputGravel},
+    "exnihilo:dust": {"fillAmount": 5, "type": InputGravel},
+    "exnihilo:crushed_andesite": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_basalt": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_blackstone": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_calcite": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_deepslate": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_diorite": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_dripstone": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_end_stone": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_granite": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_netherrack": {"fillAmount": 20, "type": InputGravel},
+    "exnihilo:crushed_tuff": {"fillAmount": 20, "type": InputGravel},
+    "minecraft:oak_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:spruce_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:birch_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:jungle_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:acacia_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:dark_oak_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:mangrove_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:cherry_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:pale_oak_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:azalea_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:flowering_azalea_leaves": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:oak_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:spruce_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:birch_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:jungle_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:acacia_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:dark_oak_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:mangrove_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:cherry_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:pale_oak_sapling": {"fillAmount": 25, "type": InputCompost},
+    "minecraft:azalea_sapling": {"fillAmount": 25, "type": InputCompost},
 }
 
 export const HeatRate: Readonly<Record<string, number>> = {

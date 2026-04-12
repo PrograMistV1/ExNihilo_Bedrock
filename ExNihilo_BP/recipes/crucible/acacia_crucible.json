@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:acacia_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:acacia_log",
+			"B": "minecraft:acacia_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:acacia_log"
+			}
+		],
+		"result": "exnihilo:acacia_crucible"
+	}
+}

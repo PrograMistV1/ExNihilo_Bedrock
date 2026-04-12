@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:birch_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:birch_log",
+			"B": "minecraft:birch_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:birch_log"
+			}
+		],
+		"result": "exnihilo:birch_crucible"
+	}
+}

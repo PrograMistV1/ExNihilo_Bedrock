@@ -8,13 +8,10 @@ import {
     BlockPermutation,
     Container,
     CustomComponentParameters,
-    Entity,
     EntityComponentTypes,
     EntityDamageCause,
-    EntityOnFireComponent,
     GameMode,
     ItemStack,
-    MolangVariableMap,
     Player,
     system,
     WeatherType
@@ -168,24 +165,6 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             return this.tryExtractResult(block, ctx, hopperInventory);
         }
         return false;
-    }
-
-    private handleWaterEntities(block: Block, ctx: TileContext): void {
-        if (ctx.input !== InputWater) return;
-
-        for (const entity of this.getContainedEntities(block)) {
-            if (entity.getVelocity().y < 0) {
-                block.dimension.playSound("random.splash", block.center());
-                const molang = new MolangVariableMap();
-                molang.setVector3("variable.direction", {x: 0, y: 1, z: 0});
-                block.dimension.spawnParticle(
-                    "minecraft:water_splash_particle",
-                    {...block.bottomCenter(), y: block.y + 1.1},
-                    molang
-                );
-            }
-            this.tryExtinguishEntity(entity);
-        }
     }
 
     private handleLava(block: Block, ctx: TileContext, flammable: boolean): boolean {
@@ -346,12 +325,5 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             itemCtx.source.dimension.spawnItem(stackToDrop, itemCtx.source.location);
             itemCtx.source.dimension.playSound("random.pop", itemCtx.source.location);
         }
-    }
-
-    private tryExtinguishEntity(entity: Entity): void {
-        const onFire = entity.getComponent(EntityComponentTypes.OnFire) as EntityOnFireComponent;
-        if (!onFire || onFire.onFireTicksRemaining <= 0) return;
-
-        entity.extinguishFire(true);
     }
 }

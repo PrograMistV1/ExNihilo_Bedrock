@@ -19,7 +19,6 @@ export const LEAVES: Readonly<string[]> = [
     "minecraft:acacia_leaves",
     "minecraft:dark_oak_leaves",
     "minecraft:mangrove_leaves",
-    "minecraft:cherry_leaves",
     "minecraft:pale_oak_leaves",
     "minecraft:azalea_leaves",
     "minecraft:flowering_azalea_leaves"

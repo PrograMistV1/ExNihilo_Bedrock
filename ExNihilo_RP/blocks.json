@@ -45,5 +45,19 @@
 	"crushed_end_stone": {"sound": "gravel"},
 	"crushed_granite": {"sound": "gravel"},
 	"crushed_netherrack": {"sound": "gravel"},
-	"crushed_tuff": {"sound": "gravel"}
+	"crushed_tuff": {"sound": "gravel"},
+	"oak_crucible": {"sound": "wood"},
+	"spruce_crucible": {"sound": "wood"},
+	"birch_crucible": {"sound": "wood"},
+	"jungle_crucible": {"sound": "wood"},
+	"acacia_crucible": {"sound": "wood"},
+	"dark_oak_crucible": {"sound": "wood"},
+	"mangrove_crucible": {"sound": "wood"},
+	"crimson_crucible": {"sound": "nether_wood"},
+	"warped_crucible": {"sound": "nether_wood"},
+	"cherry_crucible": {"sound": "wood"},
+	"pale_oak_crucible": {"sound": "wood"},
+	"bamboo_crucible": {"sound": "bamboo"},
+	"unfired_crucible": {"sound": "stone"},
+	"fired_crucible": {"sound": "stone"}
 }

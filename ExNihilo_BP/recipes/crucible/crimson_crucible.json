@@ -1,0 +1,25 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "exnihilo:crimson_crucible"
+		},
+		"tags": ["crafting_table"],
+		"pattern": [
+			"L L",
+			"LBL",
+			"S S"
+		],
+		"key": {
+			"S": "minecraft:stick",
+			"L": "minecraft:crimson_stem",
+			"B": "minecraft:crimson_slab"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:crimson_stem"
+			}
+		],
+		"result": "exnihilo:crimson_crucible"
+	}
+}

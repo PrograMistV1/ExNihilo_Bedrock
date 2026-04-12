@@ -8,7 +8,9 @@
 			"textures": {
 				"default": "textures/misc/missing_texture",
 				"gravel": "textures/blocks/gravel",
-				"lava": "textures/blocks/lava_still"
+				"lava": "textures/blocks/lava_still",
+				"compost": "textures/blocks/compost",
+				"water": "textures/blocks/water"
 			},
 			"render_controllers": ["controller.render.exnihilo_crucible"]
 		}
