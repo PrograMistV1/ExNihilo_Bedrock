@@ -45,37 +45,34 @@ system.beforeEvents.startup.subscribe((initEvent) => {
         return {status: CustomCommandStatus.Success}
     });
 
-    system.runTimeout(() => {
-        clearBuggedTiles();
-    }, 100);
-    // Check all tiles for blocks every 5 minutes
-    system.runInterval(() => {
-        clearBuggedTiles();
-    }, 6000)
+    system.runTimeout(clearBuggedTiles, 100);
+    system.runInterval(clearBuggedTiles, 6000) // Check all tiles for blocks every 5 minutes
 });
 
 function clearBuggedTiles() {
-    for (const dimension of ["minecraft:nether", "minecraft:overworld", "minecraft:the_end"]) {
-        world.getDimension(dimension).getEntities({type: BarrelComponent.TILE_ID}).forEach(entity => {
-            const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:barrel");
-            if (!comp) {
-                console.log(`Removing bugged barrel tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
-                entity.remove();
-            }
-        });
-        world.getDimension(dimension).getEntities({type: SieveComponent.TILE_ID}).forEach(entity => {
-            const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:sieve");
-            if (!comp) {
-                console.log(`Removing bugged sieve tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
-                entity.remove();
-            }
-        });
-        world.getDimension(dimension).getEntities({type: CrucibleComponent.TILE_ID}).forEach(entity => {
-            const comp = entity.dimension.getBlock(entity.location).getComponent("exnihilo:crucible");
-            if (!comp) {
-                console.log(`Removing bugged crucible tile at ${Math.floor(entity.location.x)}, ${Math.floor(entity.location.y)}, ${Math.floor(entity.location.z)} in dimension ${dimension}`);
-                entity.remove();
-            }
-        });
+    const TILE_TYPES = [
+        {tileId: BarrelComponent.TILE_ID, blockComp: "exnihilo:barrel", name: "barrel"},
+        {tileId: SieveComponent.TILE_ID, blockComp: "exnihilo:sieve", name: "sieve"},
+        {tileId: CrucibleComponent.TILE_ID, blockComp: "exnihilo:crucible", name: "crucible"},
+    ];
+
+    const DIMENSIONS = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
+
+    for (const dimensionId of DIMENSIONS) {
+        const dimension = world.getDimension(dimensionId);
+        const {min, max} = dimension.heightRange;
+
+        for (const {tileId, blockComp, name} of TILE_TYPES) {
+            dimension.getEntities({type: tileId}).forEach(entity => {
+                const {x, y, z} = entity.location;
+                const outOfBounds = y < min || y > max;
+                const missingComp = !outOfBounds && !dimension.getBlock(entity.location)?.getComponent(blockComp);
+
+                if (outOfBounds || missingComp) {
+                    console.log(`Removing bugged ${name} tile at ${Math.floor(x)}, ${Math.floor(y)}, ${Math.floor(z)} in dimension ${dimensionId}`);
+                    entity.remove();
+                }
+            });
+        }
     }
 }
