@@ -9,7 +9,8 @@
 		},
 		"components": {
 			"minecraft:icon": "iron_mesh",
-			"minecraft:max_stack_size": 1
+			"minecraft:max_stack_size": 16,
+			"exnihilo:mesh": {"type": "iron", "sound": "armor.equip_iron"}
 		}
 	}
 }

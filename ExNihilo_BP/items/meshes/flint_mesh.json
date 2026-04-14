@@ -9,7 +9,8 @@
 		},
 		"components": {
 			"minecraft:icon": "flint_mesh",
-			"minecraft:max_stack_size": 1
+			"minecraft:max_stack_size": 16,
+			"exnihilo:mesh": {"type": "flint", "sound": "armor.equip_wolf"}
 		}
 	}
 }

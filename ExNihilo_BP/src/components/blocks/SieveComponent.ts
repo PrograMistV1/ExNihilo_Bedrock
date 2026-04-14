@@ -5,23 +5,16 @@ import {
     BlockComponentPlayerInteractEvent,
     BlockCustomComponent,
     ButtonState,
+    GameMode,
     InputButton,
     ItemStack,
-    ItemUseAfterEvent,
     Player,
     system,
-    VanillaEntityIdentifier,
-    world
+    VanillaEntityIdentifier
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
-import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
-import {
-    MESH_ITEM_BY_TYPE,
-    MESH_TYPE_BY_ITEM,
-    MeshType,
-    SIEVE_CONSTANTS,
-    SIFTABLE_BLOCK_STATES
-} from "../../data/SieveData";
+import {consumeItem, getSelectedItemContext, ItemContext} from "../../utils/Utils";
+import {MESH_ITEM_BY_TYPE, MeshRegistry, MeshType, SIEVE_CONSTANTS, SIFTABLE_BLOCK_STATES} from "../../data/SieveData";
 import {DROP_BY_MESH, rollDrops} from "../../data/loot/SieveLoot";
 import {TileEntityBlock} from "./tiles/TileEntityBlock";
 
@@ -40,21 +33,6 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
 
     constructor() {
         super(SieveComponent.TILE_ID, SieveComponent.VARIANT_STATE_MAP);
-
-        world.afterEvents.itemUse.subscribe((event: ItemUseAfterEvent) => {
-            const player = event.source;
-            const selectedItem = getSelectedItemContext(player);
-            if (!selectedItem?.item) return;
-
-            const block = player.getBlockFromViewDirection({maxDistance: SIEVE_CONSTANTS.maxViewDistance})?.block;
-
-            if (!this.isSieveBlock(block) || !this.isMeshItemId(selectedItem.item.typeId)) return;
-
-            const oldMesh = this.getMeshType(block);
-            this.setMeshType(block, this.itemToMeshType(selectedItem.item.typeId));
-            selectedItem.container.setItem(selectedItem.slot, this.meshTypeToItem(oldMesh));
-            player.setDynamicProperty("last_sieve_interact", system.currentTick);
-        });
     }
 
     onBreak = (e: BlockComponentBlockBreakEvent) => {
@@ -62,9 +40,14 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
-        this.handleMesh(e.player, e.block);
+        const lit = (e.player.getDynamicProperty("lastSieveInteract") as number | undefined) ?? 0;
+        if (system.currentTick - lit < SIEVE_CONSTANTS.interactCooldownTicks) return;
+
+        const itemCtx = getSelectedItemContext(e.player);
+
+        if (this.handleMesh(e.player, e.block, itemCtx)) return;
         this.handleProgress(e.block);
-        this.handleInput(e.player, e.block);
+        this.handleInput(e.block, itemCtx);
     }
 
     onPlayerBreak = (e: BlockComponentPlayerBreakEvent) => {
@@ -94,11 +77,10 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         }
     }
 
-    private handleInput(player: Player, block: Block): void {
-        const selectedItem = getSelectedItemContext(player);
-        if (!selectedItem?.item) return;
+    private handleInput(block: Block, itemCtx: ItemContext): void {
+        if (!itemCtx?.item) return;
 
-        const state = this.blockToState(selectedItem.item.typeId);
+        const state = this.blockToState(itemCtx.item.typeId);
         if (!state) return;
 
         for (const targetBlock of this.getSieveNeighbors(block)) {
@@ -107,7 +89,7 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
             if (mesh === "null" || input !== undefined || !this.canBeSifted(state, mesh)) continue;
 
             this.setInputBlock(targetBlock, state);
-            if (consumeItem(selectedItem) === 0) break;
+            if (consumeItem(itemCtx) === 0) break;
         }
     }
 
@@ -115,28 +97,31 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         return Object.keys(DROP_BY_MESH[mesh]).includes(input);
     }
 
-    private handleMesh(player: Player, block: Block): void {
-        const selectedItem = getSelectedItemContext(player);
-        if (!selectedItem) return;
-
+    private handleMesh(player: Player, block: Block, itemCtx: ItemContext): boolean {
         const oldMesh = this.getMeshType(block);
-        if (oldMesh === "null" && this.isMeshItemId(selectedItem.item?.typeId)) {
-            this.setMeshType(block, this.itemToMeshType(selectedItem.item.typeId));
-            selectedItem.container.setItem(selectedItem.slot, null);
-            return;
+        const meshComp = itemCtx.item?.getComponent("exnihilo:mesh");
+        const p = meshComp?.customComponentParameters;
+        if (oldMesh === "null" && meshComp) {
+            this.setMeshType(block, p.params["type"]);
+            block.dimension.playSound(p.params["sound"], block.center());
+            consumeItem(itemCtx);
+            return true;
         }
 
-        const lastInteractTick = (player.getDynamicProperty("last_sieve_interact") as number | undefined) ?? 0;
-        if (system.currentTick - lastInteractTick < SIEVE_CONSTANTS.interactCooldownTicks) return;
+        if (oldMesh === "null"
+            || player.inputInfo.getButtonState(InputButton.Sneak) !== ButtonState.Pressed
+            || this.getInputBlock(block)
+            || itemCtx.item
+        ) return;
 
-        if (oldMesh !== "null"
-            && player.inputInfo.getButtonState(InputButton.Sneak) === ButtonState.Pressed
-            && selectedItem.item == null
-            && this.getInputBlock(block) === undefined
-        ) {
-            this.setMeshType(block, "null");
-            selectedItem.container.setItem(selectedItem.slot, this.meshTypeToItem(oldMesh));
+        const oldMeshItem = new ItemStack(MeshRegistry.toItem(oldMesh), 1);
+        const oldMeshP = oldMeshItem.getComponent("exnihilo:mesh").customComponentParameters;
+        this.setMeshType(block, "null");
+        block.dimension.playSound(oldMeshP.params["sound"], block.center());
+        if (player.getGameMode() !== GameMode.Creative) {
+            itemCtx.container.addItem(new ItemStack(MeshRegistry.toItem(oldMesh), 1));
         }
+        return true;
     }
 
     private* getSieveNeighbors(block: Block): Generator<Block> {
@@ -240,22 +225,8 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         return block?.hasComponent("exnihilo:sieve") ?? false;
     }
 
-    private isMeshItemId(itemId?: string): itemId is keyof typeof MESH_TYPE_BY_ITEM {
-        return itemId !== undefined && Object.prototype.hasOwnProperty.call(MESH_TYPE_BY_ITEM, itemId);
-    }
-
     private blockToState(blockId?: string): string | undefined {
         if (!blockId) return undefined;
         return SIFTABLE_BLOCK_STATES[blockId];
-    }
-
-    private meshTypeToItem(type: MeshType): ItemStack | null {
-        if (type === "null") return null;
-        return new ItemStack(MESH_ITEM_BY_TYPE[type], 1);
-    }
-
-    private itemToMeshType(itemId?: string): MeshType {
-        if (!this.isMeshItemId(itemId)) return "null";
-        return MESH_TYPE_BY_ITEM[itemId];
     }
 }

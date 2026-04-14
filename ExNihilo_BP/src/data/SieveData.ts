@@ -36,9 +36,17 @@ export const MESH_ITEM_BY_TYPE = {
     netherite: "exnihilo:netherite_mesh",
 } as const satisfies Record<Exclude<MeshType, "null">, string>;
 
-export type MeshItemId = (typeof MESH_ITEM_BY_TYPE)[keyof typeof MESH_ITEM_BY_TYPE];
+export class MeshRegistry {
+    private static readonly TYPE_TO_ITEM: Record<Exclude<MeshType, "null">, string> = {
+        string: "exnihilo:string_mesh",
+        flint: "exnihilo:flint_mesh",
+        iron: "exnihilo:iron_mesh",
+        diamond: "exnihilo:diamond_mesh",
+        emerald: "exnihilo:emerald_mesh",
+        netherite: "exnihilo:netherite_mesh",
+    };
 
-export const MESH_TYPE_BY_ITEM: Record<MeshItemId, Exclude<MeshType, "null">> =
-    Object.fromEntries(
-        Object.entries(MESH_ITEM_BY_TYPE).map(([meshType, itemId]) => [itemId, meshType])
-    ) as Record<MeshItemId, Exclude<MeshType, "null">>;
+    static toItem(type: Exclude<MeshType, "null">): string {
+        return MeshRegistry.TYPE_TO_ITEM[type];
+    }
+}

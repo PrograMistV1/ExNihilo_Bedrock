@@ -17,6 +17,7 @@ import {SilkwormComponent} from "./components/items/SilkwormComponent";
 import {SeedComponent} from "./components/items/SeedComponent";
 import {setProgressVisibility} from "./utils/ProgressRegistry";
 import {FallingBlockComponent} from "./components/blocks/FallingBlockComponent";
+import {MeshComponent} from "./components/items/MeshComponent";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', new BarrelComponent());
@@ -29,6 +30,7 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:hammer', new HammerComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:silkworm', new SilkwormComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:seed', new SeedComponent());
+    initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:mesh', new MeshComponent());
 
     initEvent.customCommandRegistry.registerCommand({
         name: "exnihilo:showprogress",
