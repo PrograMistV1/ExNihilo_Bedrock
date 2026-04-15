@@ -1,0 +1,16 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_furnace": {
+		"description": {
+			"identifier": "exnihilo:furnace_iron_hammer"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:iron_hammer"
+			}
+		],
+		"tags": ["furnace", "blast_furnace"],
+		"input": "exnihilo:iron_hammer",
+		"output": "minecraft:iron_nugget"
+	}
+}

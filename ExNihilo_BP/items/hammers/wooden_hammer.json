@@ -34,6 +34,7 @@
 				]
 			},
 			"exnihilo:hammer": {},
+			"minecraft:fuel": {"duration": 10},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",

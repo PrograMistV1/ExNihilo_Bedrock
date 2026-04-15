@@ -23,6 +23,7 @@
 				]
 			},
 			"exnihilo:crook": {},
+			"minecraft:fuel": {"duration": 10},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",

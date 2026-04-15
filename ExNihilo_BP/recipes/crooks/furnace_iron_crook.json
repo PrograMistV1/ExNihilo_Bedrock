@@ -1,0 +1,16 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_furnace": {
+		"description": {
+			"identifier": "exnihilo:furnace_iron_crook"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:iron_crook"
+			}
+		],
+		"tags": ["furnace", "blast_furnace"],
+		"input": "exnihilo:iron_crook",
+		"output": "minecraft:iron_nugget"
+	}
+}

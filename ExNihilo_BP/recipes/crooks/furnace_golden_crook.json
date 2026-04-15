@@ -1,0 +1,16 @@
+{
+	"format_version": "1.20.10",
+	"minecraft:recipe_furnace": {
+		"description": {
+			"identifier": "exnihilo:furnace_golden_crook"
+		},
+		"unlock": [
+			{
+				"item": "exnihilo:golden_crook"
+			}
+		],
+		"tags": ["furnace", "blast_furnace"],
+		"input": "exnihilo:golden_crook",
+		"output": "minecraft:gold_nugget"
+	}
+}
