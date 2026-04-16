@@ -1,8 +1,13 @@
 site_name: ExNihilo Bedrock Wiki
 remote_branch: wiki
 repo_url: https://github.com/PrograMistV1/ExNihilo_Bedrock
+site_url: https://www.curseforge.com/minecraft-bedrock/addons/exnihilo-bedrock
+edit_uri: ""
 site_author: PrograMistV1
-theme: readthedocs
+theme:
+  name: readthedocs
+  analytics:
+    gtag: G-BYLVMYGMTX
 
 nav:
   - Home: index.md
@@ -17,3 +22,8 @@ nav:
       - Introduction: items/index.md
       - Crooks: items/crook.md
       - Hammers: items/hammer.md
+
+extra:
+  analytics:
+    provider: google
+    property: G-XXXXXXX
