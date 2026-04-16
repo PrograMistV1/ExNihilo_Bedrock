@@ -2,3 +2,5 @@
 /ExNihilo_BP/node_modules/
 /ExNihilo_BP/scripts/
 /dist/
+.venv
+site
