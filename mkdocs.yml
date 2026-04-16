@@ -2,3 +2,18 @@ site_name: ExNihilo Bedrock Wiki
 remote_branch: wiki
 repo_url: https://github.com/PrograMistV1/ExNihilo_Bedrock
 site_author: PrograMistV1
+theme: readthedocs
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Basics: getting-started/index.md
+  - Blocks:
+      - Introduction: blocks/index.md
+      - Barrel: blocks/barrel.md
+      - Sieve: blocks/sieve.md
+      - Crucible: blocks/crucible.md
+  - Items:
+      - Introduction: items/index.md
+      - Crooks: items/crook.md
+      - Hammers: items/hammer.md
