@@ -34,6 +34,7 @@
 				]
 			},
 			"exnihilo:hammer": {},
+			"minecraft:enchantable": {"slot": "pickaxe", "value": 22},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",

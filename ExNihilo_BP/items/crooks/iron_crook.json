@@ -23,6 +23,7 @@
 				]
 			},
 			"exnihilo:crook": {},
+			"minecraft:enchantable": {"slot": "hoe", "value": 14},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",

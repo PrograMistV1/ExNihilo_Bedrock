@@ -35,6 +35,7 @@
 			},
 			"exnihilo:hammer": {},
 			"minecraft:fuel": {"duration": 10},
+			"minecraft:enchantable": {"slot": "pickaxe", "value": 15},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",

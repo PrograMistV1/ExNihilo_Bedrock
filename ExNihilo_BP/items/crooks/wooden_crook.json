@@ -24,6 +24,7 @@
 			},
 			"exnihilo:crook": {},
 			"minecraft:fuel": {"duration": 10},
+			"minecraft:enchantable": {"slot": "hoe", "value": 15},
 			"minecraft:tags": {
 				"tags": [
 					"minecraft:digger",
