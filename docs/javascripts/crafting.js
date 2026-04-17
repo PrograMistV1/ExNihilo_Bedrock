@@ -7,17 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const items = {
     wood: {
-        icon: "/minecraft-bedrock/addons/exnihilo-bedrock/assets/items/wood.png",
+        icon: "../assets/wood.png",
         url: "https://minecraft.fandom.com/wiki/Planks",
         name: "Wood"
     },
     stone: {
-        icon: "/minecraft-bedrock/addons/exnihilo-bedrock/assets/items/stone.png",
+        icon: "../assets/items/stone.png",
         url: "https://minecraft.fandom.com/wiki/Stone",
         name: "Stone"
     },
     iron: {
-        icon: "/minecraft-bedrock/addons/exnihilo-bedrock/assets/items/iron.png",
+        icon: "../assets/items/iron.png",
         url: "https://minecraft.fandom.com/wiki/Iron_Ingot",
         name: "Iron"
     }
@@ -33,17 +33,17 @@ function setItem(slot, itemName) {
         return;
     }
 
+    const img = new Image();
+    img.onload = () => slot.style.backgroundImage = `url('${item.icon}')`;
+    img.onerror = () => slot.style.backgroundImage = `url('../assets/missing_texture.png')`;
+
+    img.src = item.icon;
     slot.dataset.item = itemName;
     slot.dataset.url = item.url;
     slot.dataset.name = item.name;
-
-    slot.style.backgroundImage = `url('${item.icon}')`;
-
     slot.style.cursor = "pointer";
 
-    slot.onclick = () => {
-        window.open(item.url, "_blank");
-    };
+    slot.onclick = () => window.open(item.url, "_blank");
     bindHover(slot, item);
 }
 
