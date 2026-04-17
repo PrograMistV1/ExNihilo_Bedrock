@@ -55,32 +55,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const tooltip = document.getElementById("tooltip");
 
     document.querySelectorAll(".crafting-table").forEach(table => {
-        /** @type {Array<{result: string, grid: (string|null)[]}>} */
         const recipes = JSON.parse(table.dataset.recipes || "[]");
-        if (recipes.length === 0) return;
-
-        const inputSlots = Array.from(table.querySelectorAll(".crafting-input .inventory-slot"));
+        const inputSlots = Array.from(table.querySelectorAll(".ui-input .inventory-slot"));
         const outputSlot = table.querySelector(".crafting-output .inventory-slot");
 
-        function renderRecipe(recipe) {
-            inputSlots.forEach((slot, i) => {
-                setItem(slot, recipe.grid[i] ?? null);
-            });
-            if (outputSlot) {
-                setItem(outputSlot, recipe.result ?? null);
-            }
-        }
+        startRecipeCycle(recipes, recipe => {
+            inputSlots.forEach((slot, i) => setItem(slot, recipe.grid[i] ?? null));
+            if (outputSlot) setItem(outputSlot, recipe.result ?? null);
+        }, tooltip);
+    });
 
-        let index = 0;
-        renderRecipe(recipes[0]);
+    document.querySelectorAll(".furnace").forEach(table => {
+        const recipes = JSON.parse(table.dataset.recipes || "[]");
+        const inputSlot = table.querySelector(".ui-input > .inventory-slot");
+        const outputSlot = table.querySelector(".crafting-output .inventory-slot");
 
-        if (recipes.length > 1) {
-            setInterval(() => {
-                index = (index + 1) % recipes.length;
-                renderRecipe(recipes[index]);
-                refreshTooltip(tooltip);
-            }, 2000);
-        }
+        startRecipeCycle(recipes, recipe => {
+            if (inputSlot) setItem(inputSlot, recipe.input ?? null);
+            if (outputSlot) setItem(outputSlot, recipe.result ?? null);
+        }, tooltip);
     });
 
     document.addEventListener("mousemove", e => {
@@ -102,6 +95,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+function startRecipeCycle(recipes, renderFn, tooltip) {
+    if (recipes.length === 0) return;
+
+    let index = 0;
+    renderFn(recipes[0]);
+
+    if (recipes.length > 1) {
+        setInterval(() => {
+            index = (index + 1) % recipes.length;
+            renderFn(recipes[index]);
+            refreshTooltip(tooltip);
+        }, 2000);
+    }
+}
 
 function refreshTooltip(tooltip) {
     if (!tooltip) return;

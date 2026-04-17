@@ -16,7 +16,7 @@ def _build_row(slots: int = _SLOTS_PER_ROW) -> str:
 
 
 def _build_input_grid() -> str:
-    return f'<span class="crafting-input">{"".join(_build_row() for _ in range(_ROWS))}</span>'
+    return f'<span class="ui-input">{"".join(_build_row() for _ in range(_ROWS))}</span>'
 
 
 def _build_crafting_table(recipes_json: str) -> str:
@@ -24,6 +24,24 @@ def _build_crafting_table(recipes_json: str) -> str:
 <div class="craft-wrapper">
     <div class="ui crafting-table" data-recipes='{recipes_json}'>
         {_build_input_grid()}
+        <span class="crafting-arrow"><br></span>
+        <span class="crafting-output">
+            <span class="inventory-slot inventory-slot-large"></span>
+        </span>
+    </div>
+</div>
+"""
+
+
+def _build_furnace(recipes_json: str) -> str:
+    return f"""
+<div class="craft-wrapper">
+    <div class="ui furnace" data-recipes='{recipes_json}'>
+        <span class="ui-input">
+            <span class="inventory-slot"></span>
+            <span class="ui-fuel"></span>
+            <span class="inventory-slot"></span>
+        </span>
         <span class="crafting-arrow"><br></span>
         <span class="crafting-output">
             <span class="inventory-slot inventory-slot-large"></span>
@@ -58,7 +76,26 @@ def _parse_shaped_recipe(data: dict) -> dict | None:
                     item = item.get("item")
                 grid.append(item)
 
-    return {"result": result, "grid": grid}
+    return {"type": "shaped", "result": result, "grid": grid}
+
+
+def _parse_furnace_recipe(data: dict) -> dict | None:
+    recipe = data.get("minecraft:recipe_furnace")
+    if not recipe:
+        return None
+
+    input_item = recipe.get("input")
+    output_item = recipe.get("output")
+
+    if isinstance(input_item, dict):
+        input_item = input_item.get("item")
+    if isinstance(output_item, dict):
+        output_item = output_item.get("item")
+
+    if not input_item or not output_item:
+        return None
+
+    return {"type": "furnace", "result": output_item, "input": input_item}
 
 
 def load_all_recipes(recipes_dir: Path) -> dict[str, dict]:
@@ -72,9 +109,11 @@ def load_all_recipes(recipes_dir: Path) -> dict[str, dict]:
         except (json.JSONDecodeError, OSError):
             continue
 
-        parsed = _parse_shaped_recipe(data)
-        if parsed and parsed["result"]:
-            recipes[parsed["result"]] = parsed
+        for parser in (_parse_shaped_recipe, _parse_furnace_recipe):
+            parsed = parser(data)
+            if parsed and parsed["result"]:
+                recipes[parsed["result"]] = parsed
+                break
 
     return recipes
 
@@ -103,9 +142,34 @@ def define_env(env):
         for item_id in item_ids:
             recipe = _RECIPE_CACHE.get(item_id)
             if recipe is None:
-                log.warning(f"[crafting] Рецепт не найден: {item_id}")
-                recipes_data.append({"result": item_id, "grid": [None] * 9})
+                log.warning(f"[crafting] Recipe not found: {item_id}")
+                recipes_data.append({"type": "shaped", "result": item_id, "grid": [None] * 9})
             else:
                 recipes_data.append(recipe)
 
+        recipe_type = recipes_data[0]["type"] if recipes_data else "shaped"
+
+        if recipe_type == "furnace":
+            return Markup(_build_furnace(json.dumps(recipes_data)))
         return Markup(_build_crafting_table(json.dumps(recipes_data)))
+
+    @env.macro
+    def furnace(*item_ids: str) -> Markup:
+        """
+        Usage in .md:
+            {{ furnace("exnihilo:fired_crucible") }}
+        """
+        recipes_data = []
+
+        for item_id in item_ids:
+            recipe = _RECIPE_CACHE.get(item_id)
+            if recipe is None:
+                log.warning(f"[crafting] Recipe not found: {item_id}")
+                recipes_data.append({"type": "furnace", "result": item_id, "input": None})
+            elif recipe.get("type") != "furnace":
+                log.warning(f"[crafting] Recipe for {item_id} is not a furnace recipe")
+                recipes_data.append(recipe)
+            else:
+                recipes_data.append(recipe)
+
+        return Markup(_build_furnace(json.dumps(recipes_data)))

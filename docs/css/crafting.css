@@ -25,22 +25,36 @@
 .crafting-table > *,
 .furnace > * {
     display: inline-block;
-    vertical-align: top
+    vertical-align: middle;
 }
 
 .crafting-table > .crafting-arrow {
     background: url("../assets/Grid_layout_Arrow_(small).png") no-repeat;
     width: 32px;
     height: 26px;
-    margin: 40px 4px 0
+    margin: 0 4px 0
 }
 
-.crafting-input * {
-    box-sizing: content-box
+.furnace > .crafting-arrow {
+    background: url("../assets/Grid_layout_Furnace_Progress.png") no-repeat;
+    width: 44px;
+    height: 32px;
+    margin: 0 18px 0 14px
 }
 
-.crafting-table > .crafting-output {
-    margin-top: 28px
+.furnace-fuel {
+    display: block;
+}
+
+.ui-input * {
+    box-sizing: content-box;
+}
+
+.furnace .ui-fuel {
+    display: block;
+    background: url("../assets/Grid_layout_Fire.png") no-repeat;
+    width: 36px;
+    height: 36px
 }
 
 .inventory-slot {
