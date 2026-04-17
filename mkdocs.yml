@@ -30,3 +30,6 @@ extra:
 
 extra_css:
   - css/crafting.css
+
+extra_javascript:
+  - javascripts/crafting.js
