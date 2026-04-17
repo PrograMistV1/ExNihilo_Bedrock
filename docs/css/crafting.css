@@ -1,0 +1,80 @@
+.ui {
+    display: inline-block;
+    position: relative;
+    background-color: #C6C6C6;
+    border: 2px solid;
+    border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
+    padding: 6px;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: bottom;
+}
+
+.crafting-table > *,
+.furnace > * {
+    display: inline-block;
+    vertical-align: top
+}
+
+.crafting-table > .crafting-arrow {
+    background: url("../assets/Grid_layout_Arrow_(small).png") no-repeat;
+    width: 32px;
+    height: 26px;
+    margin: 40px 4px 0
+}
+
+.crafting-input * {
+    box-sizing: content-box
+}
+
+.crafting-table > .crafting-output {
+    margin-top: 28px
+}
+
+.inventory-slot {
+    position: relative;
+    display: inline-block;
+    background: #8B8B8B no-repeat center center / 32px 32px;
+    border: 2px solid;
+    border-color: #373737 #FFF #FFF #373737;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    line-height: 1;
+    text-align: left;
+    vertical-align: bottom
+}
+
+.inventory-slot::before,
+.inventory-slot::after {
+    content: "";
+    position: absolute;
+    background-color: #8B8B8B;
+    height: 2px;
+    width: 2px;
+    pointer-events: none
+}
+
+.inventory-slot-large {
+    box-sizing: content-box;
+    padding: 8px
+}
+
+.inventory-slot::before {
+    bottom: -2px;
+    left: -2px
+}
+
+.inventory-slot::after {
+    top: -2px;
+    right: -2px
+}
+
+.inventory-row {
+    box-sizing: inherit;
+    display: flex
+}
+
+.pixel-image {
+    image-rendering: pixelated;
+}

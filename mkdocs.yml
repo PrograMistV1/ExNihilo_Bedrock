@@ -27,3 +27,6 @@ extra:
   analytics:
     provider: google
     property: G-XXXXXXX
+
+extra_css:
+  - css/crafting.css
