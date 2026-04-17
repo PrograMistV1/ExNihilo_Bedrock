@@ -1,2 +1,4 @@
 mkdocs
 mkdocs-rtd-dropdown
+mkdocs-macros-plugin
+markupsafe

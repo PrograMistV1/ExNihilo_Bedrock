@@ -26,6 +26,7 @@ nav:
 
 extra_css:
   - css/crafting.css
-
 extra_javascript:
   - javascripts/crafting.js
+plugins:
+  - macros

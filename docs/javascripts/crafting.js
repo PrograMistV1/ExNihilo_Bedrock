@@ -1,8 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const slots = document.querySelectorAll(".inventory-slot");
+    const tables = document.querySelectorAll(".crafting-table");
 
-    setItem(slots[0], "wood");
-    setItem(slots[1], "stone");
+    tables.forEach(table => {
+        const recipes = JSON.parse(table.dataset.recipes || "[]");
+        if (recipes.length === 0) return;
+
+        const slots = table.querySelectorAll(".inventory-slot");
+
+        let index = 0;
+
+        function renderRecipe(recipe) {
+            slots.forEach((slot, i) => {
+                setItem(slot, recipe[i]);
+            });
+        }
+
+        renderRecipe(recipes[0]);
+
+        setInterval(() => {
+            index = (index + 1) % recipes.length;
+            renderRecipe(recipes[index]);
+            refreshTooltip();
+        }, 2000);
+    });
 });
 
 const items = {
@@ -12,12 +32,12 @@ const items = {
         name: "Wood"
     },
     stone: {
-        icon: "../assets/items/stone.png",
+        icon: "../assets/stone.png",
         url: "https://minecraft.fandom.com/wiki/Stone",
         name: "Stone"
     },
     iron: {
-        icon: "../assets/items/iron.png",
+        icon: "../assets/iron.png",
         url: "https://minecraft.fandom.com/wiki/Iron_Ingot",
         name: "Iron"
     }
@@ -44,25 +64,33 @@ function setItem(slot, itemName) {
     slot.style.cursor = "pointer";
 
     slot.onclick = () => window.open(item.url, "_blank");
-    bindHover(slot, item);
 }
-
-const tooltip = document.getElementById("tooltip");
 
 document.addEventListener("mousemove", (e) => {
     tooltip.style.left = e.pageX + 10 + "px";
     tooltip.style.top = e.pageY + 10 + "px";
 });
 
-function bindHover(slot, item) {
-    slot.addEventListener("mouseenter", () => {
-        if (!item) return;
 
-        tooltip.style.display = "block";
-        tooltip.textContent = item.name;
-    });
+const tooltip = document.getElementById("tooltip");
 
-    slot.addEventListener("mouseleave", () => {
+document.addEventListener("mouseover", (e) => {
+    const slot = e.target.closest(".inventory-slot");
+    if (!slot || !slot.dataset.name) return;
+
+    tooltip.style.display = "block";
+    tooltip.textContent = slot.dataset.name;
+});
+
+document.addEventListener("mouseout", (e) => {
+    if (e.target.closest(".inventory-slot")) {
         tooltip.style.display = "none";
-    });
+    }
+});
+
+function refreshTooltip() {
+    const hovered = document.querySelector(".inventory-slot:hover");
+    if (hovered && hovered.dataset.name) {
+        tooltip.textContent = hovered.dataset.name;
+    }
 }

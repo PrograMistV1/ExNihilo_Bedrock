@@ -8,6 +8,18 @@
     text-align: left;
     white-space: nowrap;
     vertical-align: bottom;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.craft-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
 }
 
 .crafting-table > *,
