@@ -1,6 +1,6 @@
 # Barrel
 
-The **Barrel** is one of the most important early-game blocks in Ex Nihilo Bedrock.  
+The **Barrel** is one of the most important early-game blocks in ExNihilo Bedrock.  
 It is used as a versatile block for processing organic materials, liquids, and key progression mechanics.
 
 ---

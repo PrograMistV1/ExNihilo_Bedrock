@@ -36,23 +36,23 @@ This is the first key progression tool.
 At this stage, the player prepares the foundation for progression:
 
 - crafting table
-- barrel
+- [barrel](../blocks/barrel.md)
 - crook and hammer
 
-The barrel becomes the first block for processing and early automation.
+The [barrel](../blocks/barrel.md) becomes the first block for processing and early automation.
 
 ---
 
-## Step 3: Barrel
+## Step 3: [Barrel](../blocks/barrel.md)
 
-The barrel is used for basic automation and processing of organic materials.
+The [barrel](../blocks/barrel.md) is used for basic automation and processing of organic materials.
 
 It allows you to:
 
 - compost organic resources to obtain dirt
 - collect rainwater
 - work with simple liquids
-- summon creatures (in development)
+- summon entities (in development)
 
 ---
 
@@ -111,10 +111,10 @@ It is obtained through:
 
 ### Getting Clay
 
-Clay is created using a barrel:
+Clay is created using a [barrel](../blocks/barrel.md):
 
 1. obtain dust through a sieve
-2. place the dust into a **full barrel of water**
+2. place the dust into a **full [barrel](../blocks/barrel.md) of water**
 3. this produces clay
 
 ---
