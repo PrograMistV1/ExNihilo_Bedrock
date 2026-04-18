@@ -58,6 +58,32 @@
                   <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a>
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Barrel</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#crafting">Crafting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mechanics">Mechanics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#composting">Composting</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#compost-values">Compost Values</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#water-collection">Water Collection</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#material-transformation">Material Transformation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#entity-summoning">Entity Summoning</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#moss-generation">Moss Generation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#automation">Automation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="sieve.html">Sieve</a>
                   </li>
@@ -97,7 +123,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <div id="tooltip" class="pixel-image"></div>
+                <h1 id="barrel">Barrel</h1>
+<p>The <strong>Barrel</strong> is one of the most important early-game blocks in Ex Nihilo Bedrock.<br />
+It is used as a versatile block for processing organic materials, liquids, and key progression mechanics.</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>Barrels are used for:</p>
+<ul>
+<li>composting organic resources into dirt</li>
+<li>collecting rainwater</li>
+<li>transforming materials using liquids</li>
+<li>summoning entities (in development)</li>
+</ul>
+<p>This is one of the key blocks for overcoming the initial resource scarcity.</p>
+<hr />
+<h2 id="crafting">Crafting</h2>
+<div id="tooltip" class="pixel-image"></div>
 
 <div class="craft-wrapper">
     <div class="ui crafting-table" data-recipes='[{"type": "shaped", "result": "exnihilo:oak_barrel", "grid": ["minecraft:oak_planks", null, "minecraft:oak_planks", "minecraft:oak_planks", null, "minecraft:oak_planks", "minecraft:oak_planks", "minecraft:oak_slab", "minecraft:oak_planks"]}, {"type": "shaped", "result": "exnihilo:spruce_barrel", "grid": ["minecraft:spruce_planks", null, "minecraft:spruce_planks", "minecraft:spruce_planks", null, "minecraft:spruce_planks", "minecraft:spruce_planks", "minecraft:spruce_slab", "minecraft:spruce_planks"]}, {"type": "shaped", "result": "exnihilo:birch_barrel", "grid": ["minecraft:birch_planks", null, "minecraft:birch_planks", "minecraft:birch_planks", null, "minecraft:birch_planks", "minecraft:birch_planks", "minecraft:birch_slab", "minecraft:birch_planks"]}, {"type": "shaped", "result": "exnihilo:jungle_barrel", "grid": ["minecraft:jungle_planks", null, "minecraft:jungle_planks", "minecraft:jungle_planks", null, "minecraft:jungle_planks", "minecraft:jungle_planks", "minecraft:jungle_slab", "minecraft:jungle_planks"]}, {"type": "shaped", "result": "exnihilo:acacia_barrel", "grid": ["minecraft:acacia_planks", null, "minecraft:acacia_planks", "minecraft:acacia_planks", null, "minecraft:acacia_planks", "minecraft:acacia_planks", "minecraft:acacia_slab", "minecraft:acacia_planks"]}, {"type": "shaped", "result": "exnihilo:dark_oak_barrel", "grid": ["minecraft:dark_oak_planks", null, "minecraft:dark_oak_planks", "minecraft:dark_oak_planks", null, "minecraft:dark_oak_planks", "minecraft:dark_oak_planks", "minecraft:dark_oak_slab", "minecraft:dark_oak_planks"]}, {"type": "shaped", "result": "exnihilo:mangrove_barrel", "grid": ["minecraft:mangrove_planks", null, "minecraft:mangrove_planks", "minecraft:mangrove_planks", null, "minecraft:mangrove_planks", "minecraft:mangrove_planks", "minecraft:mangrove_slab", "minecraft:mangrove_planks"]}, {"type": "shaped", "result": "exnihilo:cherry_barrel", "grid": ["minecraft:cherry_planks", null, "minecraft:cherry_planks", "minecraft:cherry_planks", null, "minecraft:cherry_planks", "minecraft:cherry_planks", "minecraft:cherry_slab", "minecraft:cherry_planks"]}, {"type": "shaped", "result": "exnihilo:pale_oak_barrel", "grid": ["minecraft:pale_oak_planks", null, "minecraft:pale_oak_planks", "minecraft:pale_oak_planks", null, "minecraft:pale_oak_planks", "minecraft:pale_oak_planks", "minecraft:pale_oak_slab", "minecraft:pale_oak_planks"]}, {"type": "shaped", "result": "exnihilo:bamboo_barrel", "grid": ["minecraft:bamboo_planks", null, "minecraft:bamboo_planks", "minecraft:bamboo_planks", null, "minecraft:bamboo_planks", "minecraft:bamboo_planks", "minecraft:bamboo_slab", "minecraft:bamboo_planks"]}, {"type": "shaped", "result": "exnihilo:crimson_barrel", "grid": ["minecraft:crimson_planks", null, "minecraft:crimson_planks", "minecraft:crimson_planks", null, "minecraft:crimson_planks", "minecraft:crimson_planks", "minecraft:crimson_slab", "minecraft:crimson_planks"]}, {"type": "shaped", "result": "exnihilo:warped_barrel", "grid": ["minecraft:warped_planks", null, "minecraft:warped_planks", "minecraft:warped_planks", null, "minecraft:warped_planks", "minecraft:warped_planks", "minecraft:warped_slab", "minecraft:warped_planks"]}, {"type": "shaped", "result": "exnihilo:stone_barrel", "grid": ["minecraft:stone", null, "minecraft:stone", "minecraft:stone", null, "minecraft:stone", "minecraft:stone", "minecraft:smooth_stone_slab", "minecraft:stone"]}]'>
@@ -108,6 +149,107 @@
         </span>
     </div>
 </div>
+
+<p>All barrel variants function identically, except for fire resistance.<br />
+Barrels made from Nether wood (Crimson, Warped) and Stone are fireproof and can safely store lava.</p>
+<hr />
+<h2 id="mechanics">Mechanics</h2>
+<h3 id="composting">Composting</h3>
+<p>The barrel composts organic items, filling an internal progress bar.<br />
+Different categories of items provide different fill amounts.</p>
+<hr />
+<h3 id="compost-values">Compost Values</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Fill Amount</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Leaves and Saplings</td>
+<td>12.5%</td>
+<td>all leaves, saplings, azalea</td>
+</tr>
+<tr>
+<td>Plants and Flowers</td>
+<td>10%</td>
+<td>flowers, bamboo, cactus, crops</td>
+</tr>
+<tr>
+<td>Seeds and Wheat</td>
+<td>8%</td>
+<td>pumpkin seeds, wheat</td>
+</tr>
+<tr>
+<td>Silkworms</td>
+<td>4%</td>
+<td>silkworm, cooked silkworm</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<ul>
+<li>The value indicates how much the compost bar fills per item</li>
+<li>100% is required to produce dirt</li>
+<li>Leaves and saplings are the most efficient early-game compost source</li>
+</ul>
+<hr />
+<h3 id="water-collection">Water Collection</h3>
+<p>When placed under open sky, the barrel can collect rainwater during rain.</p>
+<p>This is one of the earliest renewable sources of water.</p>
+<hr />
+<h3 id="material-transformation">Material Transformation</h3>
+<p>Barrels can process items when filled with liquids.</p>
+<table>
+<thead>
+<tr>
+<th>Fluid</th>
+<th>Input Materials</th>
+<th>Output Materials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Water</td>
+<td>Dust</td>
+<td>Clay</td>
+</tr>
+<tr>
+<td>Lava</td>
+<td>Redstone Dust</td>
+<td>Netherrack</td>
+</tr>
+<tr>
+<td>Lava</td>
+<td>Glowstone Dust</td>
+<td>End Stone</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="entity-summoning">Entity Summoning</h3>
+<p>In development</p>
+<hr />
+<h3 id="moss-generation">Moss Generation</h3>
+<p>When filled with water, barrels can convert nearby stone blocks into mossy variants.<br />
+Place stone blocks under the barrel, and over time they will transform into mossy versions.</p>
+<h2 id="automation">Automation</h2>
+<p>Barrels can be automated using hoppers:</p>
+<ul>
+<li>item input from the top</li>
+<li>item output from the bottom</li>
+</ul>
+<p>This is especially useful for composting, allowing automated dirt production setups.</p>
+<hr />
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="sieve.html">Sieve</a></li>
+<li><a href="crucible.html">Crucible</a></li>
+<li><a href="../items/hammer.html">Hammer</a></li>
+</ul>
               
             </div>
           </div><footer>
