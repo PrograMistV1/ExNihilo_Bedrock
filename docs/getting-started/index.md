@@ -165,10 +165,3 @@ The main gameplay loop looks like this:
 6. crafting porcelain
 7. crafting a crucible
 8. producing lava
-
----
-
-## Further Progression
-
-After mastering the basics, move on to [Blocks](../blocks/index.md), where all gameplay systems are described in more
-detail.

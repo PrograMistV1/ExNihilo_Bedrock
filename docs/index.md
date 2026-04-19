@@ -19,7 +19,3 @@ The player starts with almost no resources and builds up infrastructure through:
 - sieve for sifting blocks
 - hammer for crushing blocks
 - crucible for melting materials and creating liquids
-
-## Getting Started
-
-Go to the [Getting Started](getting-started/index.md) section for your first steps.

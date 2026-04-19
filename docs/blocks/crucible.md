@@ -10,6 +10,20 @@ It is primarily used to obtain **lava**.
 
 <div id="tooltip" class="pixel-image"></div>
 
+{{craft(
+"exnihilo:oak_crucible",
+"exnihilo:spruce_crucible",
+"exnihilo:birch_crucible",
+"exnihilo:jungle_crucible",
+"exnihilo:acacia_crucible",
+"exnihilo:dark_oak_crucible",
+"exnihilo:mangrove_crucible",
+"exnihilo:cherry_crucible",
+"exnihilo:pale_oak_crucible",
+"exnihilo:crimson_crucible",
+"exnihilo:warped_crucible"
+)}}
+{{ craft("exnihilo:unfired_crucible") }}
 {{ furnace("exnihilo:fired_crucible") }}
 
 ---
@@ -60,5 +74,5 @@ Different sources provide different melting speeds.
 ## See also
 
 - [Barrel](../blocks/barrel.md)
-- [Sieve](../blocks/sieve.md)
+- [Sieve](../blocks/crucible.md)
 - [Hammer](../items/hammer.md)
