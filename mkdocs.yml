@@ -15,14 +15,12 @@ nav:
   - Getting Started:
       - Basics: getting-started/index.md
   - Blocks:
-      - Introduction: blocks/index.md
       - Barrel: blocks/barrel.md
       - Sieve: blocks/sieve.md
       - Crucible: blocks/crucible.md
   - Items:
-      - Introduction: items/index.md
-      - Crooks: items/crook.md
-      - Hammers: items/hammer.md
+      - Crook: items/crook.md
+      - Hammer: items/hammer.md
 
 extra_css:
   - css/crafting.css
