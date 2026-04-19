@@ -35,8 +35,8 @@ const STRING_MESH_DROPS: Record<string, RollPattern[]> = {
     "exnihilo:sand": [
         {result: "exnihilo:cactus_seeds", chances: [0.05]},
         {result: "exnihilo:sugarcane_seeds", chances: [0.05]},
-        {result: "exnihilo:kelp_seeds", chances: [0.5]},
-        {result: "exnihilo:pickle_seeds", chances: [0.5]},
+        {result: "exnihilo:kelp_seeds", chances: [0.05]},
+        {result: "exnihilo:pickle_seeds", chances: [0.05]},
     ],
     "exnihilo:gravel": [
         {result: "minecraft:amethyst_shard", chances: [0.05]},
