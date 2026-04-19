@@ -60,6 +60,14 @@
                   <li class="toctree-l1"><a class="reference internal" href="barrel.html">Barrel</a>
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Sieve</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#crafting">Crafting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sifting">Sifting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#see-also">See also</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="crucible.html">Crucible</a>
                   </li>
@@ -97,7 +105,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <div id="tooltip" class="pixel-image"></div>
+                <h1 id="sieve">Sieve</h1>
+<p><strong>Sieve</strong> lets you obtain materials by sifting various blocks through meshes.</p>
+<hr />
+<h2 id="crafting">Crafting</h2>
+<div id="tooltip" class="pixel-image"></div>
 
 <div class="craft-wrapper">
     <div class="ui crafting-table" data-recipes='[{"type": "shaped", "result": "exnihilo:oak_sieve", "grid": ["minecraft:oak_planks", null, "minecraft:oak_planks", "minecraft:oak_planks", "minecraft:oak_slab", "minecraft:oak_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:spruce_sieve", "grid": ["minecraft:spruce_planks", null, "minecraft:spruce_planks", "minecraft:spruce_planks", "minecraft:spruce_slab", "minecraft:spruce_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:birch_sieve", "grid": ["minecraft:birch_planks", null, "minecraft:birch_planks", "minecraft:birch_planks", "minecraft:birch_slab", "minecraft:birch_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:jungle_sieve", "grid": ["minecraft:jungle_planks", null, "minecraft:jungle_planks", "minecraft:jungle_planks", "minecraft:jungle_slab", "minecraft:jungle_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:acacia_sieve", "grid": ["minecraft:acacia_planks", null, "minecraft:acacia_planks", "minecraft:acacia_planks", "minecraft:acacia_slab", "minecraft:acacia_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:dark_oak_sieve", "grid": ["minecraft:dark_oak_planks", null, "minecraft:dark_oak_planks", "minecraft:dark_oak_planks", "minecraft:dark_oak_slab", "minecraft:dark_oak_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:mangrove_sieve", "grid": ["minecraft:mangrove_planks", null, "minecraft:mangrove_planks", "minecraft:mangrove_planks", "minecraft:mangrove_slab", "minecraft:mangrove_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:cherry_sieve", "grid": ["minecraft:cherry_planks", null, "minecraft:cherry_planks", "minecraft:cherry_planks", "minecraft:cherry_slab", "minecraft:cherry_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:pale_oak_sieve", "grid": ["minecraft:pale_oak_planks", null, "minecraft:pale_oak_planks", "minecraft:pale_oak_planks", "minecraft:pale_oak_slab", "minecraft:pale_oak_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:bamboo_sieve", "grid": ["minecraft:bamboo_planks", null, "minecraft:bamboo_planks", "minecraft:bamboo_planks", "minecraft:bamboo_slab", "minecraft:bamboo_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:crimson_sieve", "grid": ["minecraft:crimson_planks", null, "minecraft:crimson_planks", "minecraft:crimson_planks", "minecraft:crimson_slab", "minecraft:crimson_planks", "minecraft:stick", null, "minecraft:stick"]}, {"type": "shaped", "result": "exnihilo:warped_sieve", "grid": ["minecraft:warped_planks", null, "minecraft:warped_planks", "minecraft:warped_planks", "minecraft:warped_slab", "minecraft:warped_planks", "minecraft:stick", null, "minecraft:stick"]}]'>
@@ -108,6 +120,132 @@
         </span>
     </div>
 </div>
+
+<p>All sieve variants work the same way and differ only in appearance.</p>
+<hr />
+<h2 id="sifting">Sifting</h2>
+<p>The mesh determines which resources can be obtained and at what chance.</p>
+<details>
+    <summary>String Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="23">Dirt</td><td>Pebble Stone</td><td>100%, 100%, 50%, 50%, 10%, 10%</td></tr>
+        <tr><td>Pebble Andesite</td><td rowspan="9">50%, 10%</td></tr>
+        <tr><td>Pebble Diorite</td></tr>
+        <tr><td>Pebble Granite</td></tr>
+        <tr><td>Pebble Basalt</td></tr>
+        <tr><td>Pebble Blackstone</td></tr>
+        <tr><td>Pebble Calcite</td></tr>
+        <tr><td>Pebble Deepslate</td></tr>
+        <tr><td>Pebble Dripstone</td></tr>
+        <tr><td>Pebble Tuff</td></tr>
+        <tr><td>Dark Oak Seeds</td><td rowspan="13">5%</td></tr>
+        <tr><td>Spruce Seeds</td></tr>
+        <tr><td>Birch Seeds</td></tr>
+        <tr><td>Jungle Seeds</td></tr>
+        <tr><td>Acacia Seeds</td></tr>
+        <tr><td>Oak Seeds</td></tr>
+        <tr><td>Cherry Sapling</td></tr>
+        <tr><td>Carrot Seeds</td></tr>
+        <tr><td>Potato Seeds</td></tr>
+        <tr><td>Sweet Berry Seeds</td></tr>
+        <tr><td>Bamboo Seeds</td></tr>
+        <tr><td>Fern Seeds</td></tr>
+        <tr><td>Large Fern Seeds</td></tr>
+        <tr><td rowspan="4">Sand</td><td>Cactus Seeds</td><td rowspan="4">5%</td></tr>
+        <tr><td>Sugarcane Seeds</td></tr>
+        <tr><td>Kelp Seeds</td></tr>
+        <tr><td>Pickle Seeds</td></tr>
+        <tr><td rowspan="2">Gravel</td><td>Amethyst Shard</td><td>5%</td></tr>
+        <tr><td>Flint</td><td>25%</td></tr>
+        <tr><td>Soul Sand</td><td>Nether Wart</td><td>10%</td></tr>
+        <tr><td rowspan="2">Dust</td><td>Gunpowder</td><td>7%</td></tr>
+        <tr><td>Bone Meal</td><td>20%</td></tr>
+        <tr><td rowspan="3">Crushed Netherrack</td><td>Pebble Netherrack</td><td>50%, 10%</td></tr>
+        <tr><td>Crimson Nylium Spores</td><td rowspan="2">5%</td></tr>
+        <tr><td>Warped Nylium Spores</td></tr>
+        <tr><td>Crushed End Stone</td><td>Pebble End Stone</td><td>50%, 10%</td></tr>
+    </table>
+</details>
+
+<details>
+    <summary>Flint Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="7">Gravel</td><td>Amethyst Shard</td><td rowspan="2">10%</td></tr>
+        <tr><td>Iron Pieces</td></tr>
+        <tr><td>Gold Pieces</td><td rowspan="2">5%</td></tr>
+        <tr><td>Copper Pieces</td></tr>
+        <tr><td>Flint</td><td>25%</td></tr>
+        <tr><td>Coal</td><td>12.5%</td></tr>
+        <tr><td>Lapis Lazuli</td><td>5%</td></tr>
+        <tr><td>Crushed Netherrack</td><td>Gold Pieces</td><td>25%</td></tr>
+    </table>
+</details>
+
+<details>
+    <summary>Iron Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="6">Gravel</td><td>Amethyst Shard</td><td rowspan="2">15%</td></tr>
+        <tr><td>Iron Pieces</td></tr>
+        <tr><td>Gold Pieces</td><td rowspan="2">7.5%</td></tr>
+        <tr><td>Copper Pieces</td></tr>
+        <tr><td>Diamond</td><td rowspan="2">0.8%</td></tr>
+        <tr><td>Emerald</td></tr>
+        <tr><td rowspan="3">Dust</td><td>Redstone</td><td>12.5%</td></tr>
+        <tr><td>Glowstone Dust</td><td>6.25%</td></tr>
+        <tr><td>Blaze Powder</td><td>5%</td></tr>
+        <tr><td rowspan="2">Crushed Netherrack</td><td>Gold Pieces</td><td>25%</td></tr>
+        <tr><td>Netherite Scrap</td><td>0.4%</td></tr>
+        <tr><td>Crushed End Stone</td><td>Ender Pearl</td><td>0.5%</td></tr>
+    </table>
+</details>
+
+<details>
+    <summary>Diamond Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="6">Gravel</td><td>Amethyst Shard</td><td>20%</td></tr>
+        <tr><td>Iron Pieces</td><td>25%</td></tr>
+        <tr><td>Gold Pieces</td><td>15%</td></tr>
+        <tr><td>Copper Pieces</td><td>10%</td></tr>
+        <tr><td>Diamond</td><td rowspan="2">1.6%</td></tr>
+        <tr><td>Emerald</td></tr>
+        <tr><td>Sand</td><td>Iron Pieces</td><td>50%</td></tr>
+        <tr><td>Dust</td><td>Redstone</td><td>25%</td></tr>
+        <tr><td rowspan="2">Crushed Netherrack</td><td>Gold Pieces</td><td>40%</td></tr>
+        <tr><td>Netherite Scrap</td><td>0.8%</td></tr>
+        <tr><td rowspan="2">Crushed End Stone</td><td>Ender Pearl</td><td rowspan="2">1%</td></tr>
+        <tr><td>Chorus Flower</td></tr>
+    </table>
+</details>
+
+<details>
+    <summary>Emerald Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="2">Crushed End Stone</td><td>Ender Pearl</td><td>1.5%</td></tr>
+        <tr><td>Chorus Flower</td><td>2%</td></tr>
+    </table>
+</details>
+
+<details>
+    <summary>Netherite Mesh</summary>
+    <table>
+        <tr><th>Block</th><th>Result</th><th>Chances</th></tr>
+        <tr><td rowspan="2">Crushed End Stone</td><td>Ender Pearl</td><td>2%</td></tr>
+        <tr><td>Chorus Flower</td><td>5%</td></tr>
+    </table>
+</details>
+
+<hr />
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="barrel.html">Barrel</a></li>
+<li><a href="crucible.html">Crucible</a></li>
+<li><a href="../items/hammer.html">Hammer</a></li>
+</ul>
               
             </div>
           </div><footer>
