@@ -10,6 +10,7 @@ exnihilo:infested_leaves=Заражене листя
 exnihilo:meshes=Сітки
 exnihilo:pebbles=Галька
 exnihilo:sieves=Сита
+exnihilo.message.join=§a[Ex Nihilo] §rЛаскаво просимо!\n§a[Ex Nihilo] §7Сторінка вікі: https://programistv1.github.io/ExNihilo_Bedrock/
 item.exnihilo:acacia_seeds=Насіння акації
 item.exnihilo:bamboo_seeds=Насіння бамбука
 item.exnihilo:birch_seeds=Насіння берези

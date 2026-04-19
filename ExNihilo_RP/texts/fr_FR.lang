@@ -10,6 +10,7 @@ exnihilo:infested_leaves=Infested Leaves
 exnihilo:meshes=Meshes
 exnihilo:pebbles=Pebbles
 exnihilo:sieves=Sieves
+exnihilo.message.join=§a[Ex Nihilo] §rWelcome!\n§a[Ex Nihilo] §7Wiki page: https://programistv1.github.io/ExNihilo_Bedrock/
 item.exnihilo:acacia_seeds=Acacia Seeds
 item.exnihilo:bamboo_seeds=Bamboo Seeds
 item.exnihilo:birch_seeds=Birch Seeds

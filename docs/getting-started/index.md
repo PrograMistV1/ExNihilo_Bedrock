@@ -125,7 +125,7 @@ Porcelain is used as an intermediate material for crafting the crucible.
 
 Recipe:
 
-- clay + bone meal -> porcelain
+- clay + bone meal → porcelain
 
 ---
 

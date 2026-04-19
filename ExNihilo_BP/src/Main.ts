@@ -51,6 +51,15 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     system.runInterval(clearBuggedTiles, 6000) // Check all tiles for blocks every 5 minutes
 });
 
+world.afterEvents.playerJoin.subscribe((event): void => {
+    system.runTimeout(() => {
+        world.getPlayers().forEach(player => {
+            console.log(player.name)
+        })
+        world.getPlayers({name: event.playerName})[0].sendMessage({translate: "exnihilo.message.join"});
+    }, 100);
+})
+
 function clearBuggedTiles() {
     const TILE_TYPES = [
         {tileId: BarrelComponent.TILE_ID, blockComp: "exnihilo:barrel", name: "barrel"},
