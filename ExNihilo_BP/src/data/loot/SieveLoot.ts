@@ -1,4 +1,4 @@
-import {ItemStack} from "@minecraft/server";
+import {ItemStack, system} from "@minecraft/server";
 import {MeshType} from "../SieveData";
 
 type RollPattern = {
@@ -154,4 +154,62 @@ export function rollDrops(mesh: MeshType, inputBlock: string): ItemStack[] {
         });
     });
     return drops;
+}
+
+type LootPayload = {
+    mesh: MeshType;
+    input: string;
+    result: string;
+    chances: number[];
+};
+
+system.afterEvents.scriptEventReceive.subscribe(
+    event => {
+        if (event.id !== "exnihilo:add_sieve_loot") return;
+        parseLoot(event.message);
+    },
+    {namespaces: ["exnihilo"]}
+);
+
+function parseLoot(data: string): void {
+    let parsed: LootPayload | LootPayload[];
+    try {
+        parsed = JSON.parse(data);
+    } catch {
+        console.warn("Invalid JSON:", data);
+        return;
+    }
+    if (Array.isArray(parsed)) {
+        parsed.forEach(addLootSafe);
+        return;
+    }
+    addLootSafe(parsed);
+}
+
+function addLootSafe(payload: LootPayload) {
+    if (
+        !payload ||
+        typeof payload.mesh !== "string" ||
+        typeof payload.input !== "string" ||
+        typeof payload.result !== "string" ||
+        !Array.isArray(payload.chances)
+    ) {
+        console.warn("Invalid payload:", payload);
+        return;
+    }
+
+    addLoot(payload.mesh, payload.input, payload.result, payload.chances);
+}
+
+export function addLoot(mesh: MeshType, inputBlock: string, result: string, chances: number[]) {
+    if (!DROP_BY_MESH[mesh]) {
+        console.warn(`Unknown mesh: ${mesh}`);
+        return;
+    }
+
+    if (!DROP_BY_MESH[mesh][inputBlock]) {
+        DROP_BY_MESH[mesh][inputBlock] = [];
+    }
+
+    DROP_BY_MESH[mesh][inputBlock].push({result, chances});
 }
