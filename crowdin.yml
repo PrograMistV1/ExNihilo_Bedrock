@@ -1,0 +1,3 @@
+files:
+  - source: ExNihilo_RP/texts/en_US.lang
+    translation: '%locale_with_underscore%.lang'
