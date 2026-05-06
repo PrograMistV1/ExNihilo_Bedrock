@@ -1,5 +1,6 @@
 [![CurseForge Version](https://img.shields.io/curseforge/v/1485569)](https://www.curseforge.com/minecraft-bedrock/addons/exnihilo-bedrock)
 [![CurseForge Downloads](https://img.shields.io/curseforge/dt/1485569)](https://www.curseforge.com/minecraft-bedrock/addons/exnihilo-bedrock)
+[![Crowdin](https://badges.crowdin.net/exnihilo-bedrock/localized.svg)](https://crowdin.com/project/exnihilo-bedrock)
 
 # ExNihilo — Bedrock Port
 
@@ -24,7 +25,7 @@ If you have any questions, need help, or want to discuss the project, feel free 
 We welcome community contributions for translations!
 
 If you’d like to help translate the add-on into your language, you can do it here:  
-👉 [Link](https://simplelocalize.io/share/?token=1CA805099DDF07f24478e217a40c98Cc5B1F892306d54EEB)
+👉 [Crowdin](https://crowdin.com/project/exnihilo-bedrock)
 
 All translations are managed through SimpleLocalize, so you can easily contribute without modifying the project files.
 
