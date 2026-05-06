@@ -7,11 +7,14 @@
 	"version": "2.0.9",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsc -p tsconfig.json",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "tsc -p tsconfig.json && node watch-lang.mjs --once",
+		"watch": "concurrently \"tsc --watch\" \"node watch-lang.mjs\""
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"description": ""
+	"description": "",
+	"devDependencies": {
+		"concurrently": "^9.2.1"
+	}
 }

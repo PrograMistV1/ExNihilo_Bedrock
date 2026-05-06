@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"module": "ES2020",
+		"target": "ES2021",
+		"moduleResolution": "Node",
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "./ExNihilo_BP/src",
+		"rootDir": "./ExNihilo_BP/src",
+		"outDir": "./ExNihilo_BP/scripts"
+	},
+	"exclude": ["ExNihilo_BP/node_modules"],
+	"include": ["ExNihilo_BP/src"]
+}

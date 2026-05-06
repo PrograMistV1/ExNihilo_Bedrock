@@ -1,6 +1,7 @@
 .idea
-/ExNihilo_BP/node_modules/
+/node_modules/
 /ExNihilo_BP/scripts/
+/ExNihilo_RP/texts/*.lang
 /dist/
 .venv
 site
