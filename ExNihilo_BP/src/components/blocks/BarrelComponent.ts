@@ -49,6 +49,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         5: "exnihilo:lava",
         6: "exnihilo:netherrack",
         7: "exnihilo:end_stone",
+        8: "exnihilo:witch_water"
     };
 
     constructor() {

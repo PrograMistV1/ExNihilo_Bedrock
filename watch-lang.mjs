@@ -15,7 +15,7 @@ function convertToLang(jsonPath) {
         const data = JSON.parse(raw);
 
         const lines = Object.entries(data)
-            .map(([key, value]) => `${key}=${value}`)
+            .map(([key, value]) => `${key}=${value.replace(/\n/g, "\\n")}`)
             .join("\n");
 
         fs.writeFileSync(outputPath, lines, "utf-8");

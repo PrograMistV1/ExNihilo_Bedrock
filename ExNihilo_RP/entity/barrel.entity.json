@@ -17,7 +17,8 @@
 				"netherrack": "textures/blocks/netherrack",
 				"end_stone": "textures/blocks/end_stone",
 				"water": "textures/blocks/water",
-				"lava": "textures/blocks/lava_still"
+				"lava": "textures/blocks/lava_still",
+				"witch_water": "textures/blocks/witch_water"
 			},
 			"render_controllers": ["controller.render.exnihilo_barrel"]
 		}

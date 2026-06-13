@@ -6,7 +6,7 @@
 				"textures": {
 					"array.tex_variant": [
 						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water",
-						"texture.lava", "texture.netherrack", "texture.end_stone"
+						"texture.lava", "texture.netherrack", "texture.end_stone", "texture.witch_water"
 					]
 				},
 				"materials": {
@@ -16,7 +16,9 @@
 				}
 			},
 			"geometry": "geometry.default",
-			"materials": [{"*": "array.mat_variant[q.variant == 4 ? 2 : (q.variant == 5 ? 1 : 0)]"}],
+			"materials": [
+				{"*": "array.mat_variant[(q.variant == 4 || q.variant == 8) ? 2 : (q.variant == 5 ? 1 : 0)]"}
+			],
 			"textures": ["array.tex_variant[q.variant]"],
 			"is_hurt_color": {},
 			"on_fire_color": {},

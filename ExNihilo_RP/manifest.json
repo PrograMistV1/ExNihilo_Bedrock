@@ -14,6 +14,5 @@
 			"uuid": "b57e843f-c3cb-44d7-ab60-8b960f03ca25",
 			"version": "2.0.9"
 		}
-	],
-	"capabilities": ["pbr"]
+	]
 }
