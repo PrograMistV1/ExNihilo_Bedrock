@@ -15,10 +15,10 @@ $ARCHIVE_PATH  = Join-Path $DIST_DIR "ExNihilo_Bedrock-${BP_VERSION}.zip"
 $MCADDON_PATH  = Join-Path $DIST_DIR "ExNihilo_Bedrock-${BP_VERSION}.mcaddon"
 
 Write-Host "[1/5] Installing BP dependencies (if needed) and compiling TypeScript..."
-if (-not (Test-Path (Join-Path $BP_DIR "node_modules"))) {
-    npm --prefix $BP_DIR install
+if (-not (Test-Path (Join-Path $ROOT_DIR "node_modules"))) {
+    npm install
 }
-npm --prefix $BP_DIR run build
+npm run build
 
 Write-Host "[2/5] Preparing clean staging directory..."
 if (Test-Path $STAGING_DIR) { Remove-Item $STAGING_DIR -Recurse -Force }

@@ -12,10 +12,10 @@ ARCHIVE_PATH="$DIST_DIR/ExNihilo_Bedrock-${BP_VERSION}.zip"
 MCADDON_PATH="$DIST_DIR/ExNihilo_Bedrock-${BP_VERSION}.mcaddon"
 
 echo "[1/5] Installing BP dependencies (if needed) and compiling TypeScript..."
-if [ ! -d "$BP_DIR/node_modules" ]; then
-  npm --prefix "$BP_DIR" install
+if [ ! -d "$ROOT_DIR/node_modules" ]; then
+  npm install
 fi
-npm --prefix "$BP_DIR" run build
+npm run build
 
 echo "[2/5] Preparing clean staging directory..."
 rm -rf "$STAGING_DIR"
