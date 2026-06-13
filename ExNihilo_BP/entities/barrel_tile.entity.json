@@ -104,7 +104,9 @@
 			"exnihilo:lava": {"minecraft:variant": {"value": 5}},
 			"exnihilo:netherrack": {"minecraft:variant": {"value": 6}},
 			"exnihilo:end_stone": {"minecraft:variant": {"value": 7}},
-			"exnihilo:witch_water": {"minecraft:variant": {"value": 8}}
+			"exnihilo:witch_water": {"minecraft:variant": {"value": 8}},
+			"exnihilo:soul_sand": {"minecraft:variant": {"value": 9}},
+			"exnihilo:slime": {"minecraft:variant": {"value": 10}}
 		},
 		"events": {
 			"exnihilo:default": {
@@ -128,6 +130,8 @@
 				"add": {"component_groups": ["exnihilo:witch_water"]},
 				"remove": {"component_groups": ["exnihilo:collidable"]}
 			},
+			"exnihilo:soul_sand": {"add": {"component_groups": ["exnihilo:soul_sand", "exnihilo:collidable"]}},
+			"exnihilo:slime": {"add": {"component_groups": ["exnihilo:slime", "exnihilo:collidable"]}},
 			"exnihilo:remove": {"add": {"component_groups": ["exnihilo:remove"]}}
 		}
 	}

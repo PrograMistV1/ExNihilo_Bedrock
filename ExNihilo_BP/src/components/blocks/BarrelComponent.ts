@@ -14,7 +14,8 @@ import {
     ItemStack,
     Player,
     system,
-    WeatherType
+    WeatherType,
+    WorldSoundOptions
 } from "@minecraft/server";
 import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results, StoneToMossyStone,} from "../../data/BarrelData";
 import {consumeItem, getItemContext, getSelectedItemContext, ItemContext} from "../../utils/Utils";
@@ -29,6 +30,8 @@ import {
     InputEndStone,
     InputLava,
     InputNetherrack,
+    InputSlime,
+    InputSoulSand,
     InputWater,
     InputWitchWater,
     TileContext
@@ -51,7 +54,9 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         5: "exnihilo:lava",
         6: "exnihilo:netherrack",
         7: "exnihilo:end_stone",
-        8: "exnihilo:witch_water"
+        8: "exnihilo:witch_water",
+        9: "exnihilo:soul_sand",
+        10: "exnihilo:slime",
     };
 
     constructor() {
@@ -279,31 +284,28 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     private handleSpecialInteractions(block: Block, itemCtx: ItemContext, ctx: TileContext): boolean {
         if (!itemCtx.item) return false;
 
-        if (ctx.input === InputWater && ctx.filling === 100 && itemCtx.item.typeId === "exnihilo:dust") {
-            consumeItem(itemCtx);
-            this.setInputBlock(block, InputClay);
-            block.dimension.playSound("dig.gravel", block.center());
-            return true;
-        }
-        if (ctx.input === InputWater && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:mycelium") {
-            consumeItem(itemCtx);
-            this.setInputBlock(block, InputWitchWater);
-            block.dimension.playSound("mob.witch.ambient", block.center(), {pitch: 1.4});
-            return true;
-        }
-        if (ctx.input === InputLava && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:redstone") {
-            consumeItem(itemCtx);
-            this.setInputBlock(block, InputNetherrack);
-            block.dimension.playSound("dig.netherrack", block.center());
-            return true;
-        }
-        if (ctx.input === InputLava && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:glowstone_dust") {
-            consumeItem(itemCtx);
-            this.setInputBlock(block, InputEndStone);
-            block.dimension.playSound("dig.stone", block.center());
-            return true;
-        }
-        return false;
+        const {input, filling} = ctx;
+        const itemId = itemCtx.item.typeId;
+        const full = filling === 100;
+
+        const recipes: [string, string, string, string, WorldSoundOptions?][] = [
+            [InputWater, "exnihilo:dust", InputClay, "dig.gravel"],
+            [InputWater, "minecraft:mycelium", InputWitchWater, "mob.witch.ambient", {pitch: 1.4}],
+            [InputLava, "minecraft:redstone", InputNetherrack, "dig.netherrack"],
+            [InputLava, "minecraft:glowstone_dust", InputEndStone, "dig.stone"],
+            [InputWitchWater, "minecraft:brown_mushroom", InputSlime, "fall.slime"],
+            [InputWitchWater, "minecraft:red_mushroom", InputSlime, "fall.slime"],
+            [InputWitchWater, "minecraft:sand", InputSoulSand, "fall.slime"],
+        ];
+
+        const match = recipes.find(([fluid, item]) => input === fluid && full && itemId === item);
+        if (!match) return false;
+
+        const [, , output, sound, soundOpts] = match;
+        consumeItem(itemCtx);
+        this.setInputBlock(block, output as BlockInput);
+        block.dimension.playSound(sound, block.center(), soundOpts);
+        return true;
     }
 
     private fillBarrelFromBucket(

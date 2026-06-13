@@ -6,7 +6,8 @@
 			"materials": {
 				"default": "entity_alphablend",
 				"animated": "entity_animated",
-				"animated_blend": "entity_animated_blend"
+				"animated_blend": "entity_animated_blend",
+				"blend": "entity_alphablend"
 			},
 			"geometry": {"default": "geometry.exnihilo_container"},
 			"textures": {
@@ -18,7 +19,9 @@
 				"end_stone": "textures/blocks/end_stone",
 				"water": "textures/blocks/water",
 				"lava": "textures/blocks/lava_still",
-				"witch_water": "textures/blocks/witch_water"
+				"witch_water": "textures/blocks/witch_water",
+				"soul_sand": "textures/blocks/soul_sand",
+				"slime": "textures/blocks/slime"
 			},
 			"render_controllers": ["controller.render.exnihilo_barrel"]
 		}

@@ -6,18 +6,21 @@
 				"textures": {
 					"array.tex_variant": [
 						"texture.default", "texture.compost", "texture.dirt", "texture.clay", "texture.water",
-						"texture.lava", "texture.netherrack", "texture.end_stone", "texture.witch_water"
+						"texture.lava", "texture.netherrack", "texture.end_stone",
+						"texture.witch_water", "texture.soul_sand", "texture.slime"
 					]
 				},
 				"materials": {
 					"array.mat_variant": [
-						"material.default", "material.animated", "material.animated_blend"
+						"material.default", "material.animated", "material.animated_blend", "material.blend"
 					]
 				}
 			},
 			"geometry": "geometry.default",
 			"materials": [
-				{"*": "array.mat_variant[(q.variant == 4 || q.variant == 8) ? 2 : (q.variant == 5 ? 1 : 0)]"}
+				{
+					"*": "array.mat_variant[(q.variant == 4 || q.variant == 8) ? 2 : (q.variant == 5 ? 1 : (q.variant == 10 ? 3 : 0))]"
+				}
 			],
 			"textures": ["array.tex_variant[q.variant]"],
 			"is_hurt_color": {},

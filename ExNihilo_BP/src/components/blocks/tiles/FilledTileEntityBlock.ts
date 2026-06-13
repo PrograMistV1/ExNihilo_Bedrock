@@ -20,7 +20,9 @@ export type BlockInput =
     | "exnihilo:end_stone"
     | "exnihilo:water"
     | "exnihilo:lava"
-    | "exnihilo:witch_water";
+    | "exnihilo:witch_water"
+    | "exnihilo:soul_sand"
+    | "exnihilo:slime";
 
 export const InputDefault: BlockInput = "exnihilo:default";
 export const InputCompost: BlockInput = "exnihilo:compost";
@@ -32,6 +34,8 @@ export const InputEndStone: BlockInput = "exnihilo:end_stone";
 export const InputWater: BlockInput = "exnihilo:water";
 export const InputLava: BlockInput = "exnihilo:lava";
 export const InputWitchWater: BlockInput = "exnihilo:witch_water";
+export const InputSoulSand: BlockInput = "exnihilo:soul_sand";
+export const InputSlime: BlockInput = "exnihilo:slime";
 
 export interface TileContext {
     tile: Entity | undefined;
