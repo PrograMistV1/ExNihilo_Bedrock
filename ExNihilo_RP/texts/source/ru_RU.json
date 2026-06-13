@@ -130,5 +130,8 @@
 	"tile.exnihilo:unfired_crucible.name": "Необожженный тигель",
 	"tile.exnihilo:warped_barrel.name": "Искажённая бочка",
 	"tile.exnihilo:warped_crucible.name": "Искажённый тигель",
-	"tile.exnihilo:warped_sieve.name": "Искажённая сито"
+	"tile.exnihilo:warped_sieve.name": "Искажённая сито",
+	"item": {
+		"exnihilo:witch_water_bucket": "Witch Water Bucket"
+	}
 }
