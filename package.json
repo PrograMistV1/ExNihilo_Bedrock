@@ -4,7 +4,7 @@
 		"@minecraft/vanilla-data": "^1.26.2"
 	},
 	"name": "exnihilo_bp",
-	"version": "2.0.9",
+	"version": "2.0.10",
 	"main": "index.js",
 	"scripts": {
 		"build": "tsc -p tsconfig.json && node watch-lang.mjs --once",
@@ -15,6 +15,6 @@
 	"license": "ISC",
 	"description": "",
 	"devDependencies": {
-		"concurrently": "^9.2.1"
+		"concurrently": "^9.2.0"
 	}
 }
