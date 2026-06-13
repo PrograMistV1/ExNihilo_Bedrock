@@ -2,15 +2,14 @@
 	"format_version": "1.26.0",
 	"minecraft:item": {
 		"description": {
-			"identifier": "exnihilo:silkworm",
+			"identifier": "exnihilo:witch_water_bucket",
 			"menu_category": {
-				"category": "nature"
+				"category": "items"
 			}
 		},
 		"components": {
-			"minecraft:icon": "silkworm",
-			"exnihilo:silkworm": {},
-			"minecraft:compostable": {"composting_chance": 5}
+			"minecraft:icon": "witch_water_bucket",
+			"minecraft:max_stack_size": 1
 		}
 	}
 }

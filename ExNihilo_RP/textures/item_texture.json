@@ -59,6 +59,7 @@
 		"warped_nylium_spores": {"textures": "textures/items/seeds/warped_nylium_spores"},
 		"iron_pieces": {"textures": "textures/items/iron_pieces"},
 		"gold_pieces": {"textures": "textures/items/gold_pieces"},
-		"copper_pieces": {"textures": "textures/items/copper_pieces"}
+		"copper_pieces": {"textures": "textures/items/copper_pieces"},
+		"witch_water_bucket": {"textures": "textures/items/witch_water_bucket"}
 	}
 }

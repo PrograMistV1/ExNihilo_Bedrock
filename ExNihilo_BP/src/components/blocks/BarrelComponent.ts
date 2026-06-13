@@ -30,6 +30,7 @@ import {
     InputLava,
     InputNetherrack,
     InputWater,
+    InputWitchWater,
     TileContext
 } from "./tiles/FilledTileEntityBlock";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
@@ -37,6 +38,7 @@ import {BlockStateSuperset} from "@minecraft/vanilla-data";
 const EMPTY_BUCKET_ITEM = "minecraft:bucket";
 const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
+const WITCH_WATER_BUCKET_ITEM = "exnihilo:witch_water_bucket";
 
 export class BarrelComponent extends FilledTileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:barrel_tile";
@@ -229,6 +231,11 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         const LIQUIDS = {
             [InputWater]: {bucket: WATER_BUCKET_ITEM, emptySound: "bucket.empty_water", fillSound: "bucket.fill_water"},
             [InputLava]: {bucket: LAVA_BUCKET_ITEM, emptySound: "bucket.empty_lava", fillSound: "bucket.fill_lava"},
+            [InputWitchWater]: {
+                bucket: WITCH_WATER_BUCKET_ITEM,
+                emptySound: "bucket.empty_water",
+                fillSound: "bucket.fill_water"
+            }
         } as const;
 
         const itemId = itemCtx.item.typeId;
@@ -276,6 +283,12 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             consumeItem(itemCtx);
             this.setInputBlock(block, InputClay);
             block.dimension.playSound("dig.gravel", block.center());
+            return true;
+        }
+        if (ctx.input === InputWater && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:mycelium") {
+            consumeItem(itemCtx);
+            this.setInputBlock(block, InputWitchWater);
+            block.dimension.playSound("mob.witch.ambient", block.center(), {pitch: 1.4});
             return true;
         }
         if (ctx.input === InputLava && ctx.filling === 100 && itemCtx.item.typeId === "minecraft:redstone") {
