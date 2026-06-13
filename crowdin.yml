@@ -1,3 +1,3 @@
 files:
-  - source: ExNihilo_RP/texts/source/en_US.json
-    translation: /ExNihilo_RP/texts/source/%locale_with_underscore%.json
+  - source: ExNihilo_RP/texts/en_US.lang
+    translation: /ExNihilo_RP/texts/%locale_with_underscore%.lang
