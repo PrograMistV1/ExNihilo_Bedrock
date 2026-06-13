@@ -131,7 +131,5 @@
 	"tile.exnihilo:warped_barrel.name": "Warped Barrel",
 	"tile.exnihilo:warped_crucible.name": "Warped Crucible",
 	"tile.exnihilo:warped_sieve.name": "Warped Sieve",
-	"item": {
-		"exnihilo:witch_water_bucket": "Witch Water Bucket"
-	}
+	"item.exnihilo:witch_water_bucket": "Witch Water Bucket"
 }
