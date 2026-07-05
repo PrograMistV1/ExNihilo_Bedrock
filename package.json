@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"@minecraft/server": "^2.7.0-beta.1.26.10-stable",
+		"@minecraft/server": "2.9.0-beta.1.26.32-stable",
 		"@minecraft/vanilla-data": "^1.26.2"
 	},
 	"name": "exnihilo_bp",
@@ -15,6 +15,7 @@
 	"license": "ISC",
 	"description": "",
 	"devDependencies": {
-		"concurrently": "^9.2.0"
+		"concurrently": "^9.2.0",
+		"typescript": "5.8"
 	}
 }
