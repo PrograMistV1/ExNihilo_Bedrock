@@ -13,7 +13,7 @@
 			"exnihilo:seed": {
 				"can_be_planted_on": ["minecraft:farmland"],
 				"allowed_faces": ["Up"],
-				"block": "minecraft:carrots"
+				"block": "minecraft:potatoes"
 			}
 		}
 	}
