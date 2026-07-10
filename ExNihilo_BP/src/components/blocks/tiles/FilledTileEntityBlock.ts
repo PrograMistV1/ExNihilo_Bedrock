@@ -6,7 +6,6 @@ import {
     EntityOnFireComponent,
     EntityVariantComponent,
     MolangVariableMap,
-    VanillaEntityIdentifier
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
@@ -73,7 +72,7 @@ export abstract class FilledTileEntityBlock extends TileEntityBlock {
         }
         if (!isDefault) {
             tile = block.dimension.spawnEntity(
-                this.tileId as keyof VanillaEntityIdentifier,
+                this.tileId,
                 {...block.bottomCenter(), y: block.y + this.yResolver(0)},
                 {spawnEvent: input}
             );

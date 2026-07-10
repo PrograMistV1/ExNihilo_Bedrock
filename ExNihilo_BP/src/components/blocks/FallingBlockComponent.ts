@@ -14,7 +14,6 @@ import {
     PlayerBreakBlockAfterEvent,
     ScriptEventCommandMessageAfterEvent,
     system,
-    VanillaEntityIdentifier,
     world
 } from "@minecraft/server";
 import {PASSABLE_BLOCKS, REPLACEABLE_BLOCKS, TRIGGERING_ENTITIES} from "data/FallingBlocksData";
@@ -53,7 +52,7 @@ export class FallingBlockComponent implements BlockCustomComponent {
 
         const config = this.getConfig(block);
         const blockId = block.typeId;
-        const entityId = `${config.alias ?? blockId}.entity` as keyof VanillaEntityIdentifier;
+        const entityId = `${config.alias ?? blockId}.entity`;
 
         block.setType("minecraft:air");
 

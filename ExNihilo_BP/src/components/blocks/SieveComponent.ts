@@ -10,7 +10,6 @@ import {
     ItemStack,
     Player,
     system,
-    VanillaEntityIdentifier
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 import {consumeItem, getSelectedItemContext, ItemContext} from "../../utils/Utils";
@@ -184,7 +183,7 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         if (this.getTileEntity(sieve) !== undefined) return;
 
         const pos = sieve.location;
-        sieve.dimension.spawnEntity(SieveComponent.TILE_ID as keyof VanillaEntityIdentifier, {
+        sieve.dimension.spawnEntity(SieveComponent.TILE_ID, {
             x: pos.x + SIEVE_CONSTANTS.inputEntityCenterOffset,
             y: pos.y + SIEVE_CONSTANTS.inputEntityHeightOffset,
             z: pos.z + SIEVE_CONSTANTS.inputEntityCenterOffset

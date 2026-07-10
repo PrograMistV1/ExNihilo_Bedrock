@@ -15,6 +15,7 @@ import {
     Player,
     system,
     WeatherType,
+    world,
     WorldSoundOptions
 } from "@minecraft/server";
 import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results, StoneToMossyStone,} from "../../data/BarrelData";
@@ -149,7 +150,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         if ((ctx.input !== InputWater && ctx.input !== InputDefault)) return false;
 
         const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
-        if (isHighest && block.dimension.getWeather() !== WeatherType.Clear && ctx.filling < 100) {
+        if (isHighest && world.getDynamicProperty("weather_" + block.dimension.id) !== WeatherType.Clear && ctx.filling < 100) {
             //todo: Rain is not found in all biomes, and only in the overworld.
             if (ctx.input === InputDefault) this.setInputBlock(block, InputWater);
             this.setFilling(block, ctx.filling + BARREL_TIMINGS.rainFillPerUpdate);
@@ -343,3 +344,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         }
     }
 }
+
+world.afterEvents.weatherChange.subscribe((event): void => {
+    world.setDynamicProperty("weather_" + world.getDimension(event.dimension).id, event.newWeather)
+})
