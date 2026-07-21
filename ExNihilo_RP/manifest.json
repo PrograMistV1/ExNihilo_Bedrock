@@ -5,7 +5,7 @@
 		"description": "pack.description",
 		"uuid": "fe6f2279-9595-4720-93e1-c4b95535eac9",
 		"version": "2.0.10",
-		"min_engine_version": "1.26.10",
+		"min_engine_version": "1.26.0",
 		"pack_scope": "world"
 	},
 	"modules": [

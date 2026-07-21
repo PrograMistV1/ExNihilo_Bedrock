@@ -150,7 +150,9 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         if ((ctx.input !== InputWater && ctx.input !== InputDefault)) return false;
 
         const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
-        if (isHighest && world.getDynamicProperty("weather_" + block.dimension.id) !== WeatherType.Clear && ctx.filling < 100) {
+        const isRaining = world.getDynamicProperty("weather_" + block.dimension.id) as string | undefined;
+        if (!isRaining) return false;
+        if (isHighest && isRaining !== WeatherType.Clear && ctx.filling < 100) {
             //todo: Rain is not found in all biomes, and only in the overworld.
             if (ctx.input === InputDefault) this.setInputBlock(block, InputWater);
             this.setFilling(block, ctx.filling + BARREL_TIMINGS.rainFillPerUpdate);
