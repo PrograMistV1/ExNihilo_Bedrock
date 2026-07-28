@@ -6,6 +6,7 @@ import {
     EntityOnFireComponent,
     EntityVariantComponent,
     MolangVariableMap,
+    system,
 } from "@minecraft/server";
 import {BlockStateSuperset} from "@minecraft/vanilla-data";
 
@@ -45,6 +46,47 @@ export interface TileContext {
 export abstract class FilledTileEntityBlock extends TileEntityBlock {
     protected constructor(tileId: string, variantStateMap: Record<number, BlockInput>) {
         super(tileId, variantStateMap);
+    }
+
+    /**
+     * Public API: returns the current input type and filling percentage (0-100) for the given block.
+     * Safe to call on any block, tiled or not — returns the "default"/empty state if there's no tile.
+     */
+    public getState(block: Block): TileContext {
+        return this.getTileContext(block);
+    }
+
+    /**
+     * Public API: sets the tile's input type and filling percentage (0-100) to an absolute value.
+     * Mirrors the same animation as filling from a bucket: the tile is switched to the new
+     * input immediately (spawning at 0 filling), then rises to the target filling one tick
+     * later, instead of snapping straight to the final position.
+     *
+     * Passing `input: "exnihilo:default"` behaves like `empty()`.
+     */
+    public setState(block: Block, input: BlockInput, filling: number = 100): void {
+        if (input === InputDefault) {
+            this.empty(block);
+            return;
+        }
+
+        const targetFilling = Math.max(0, Math.min(100, filling));
+
+        this.setInputBlock(block, input);
+        system.runTimeout(() => this.setFilling(block, targetFilling), 1);
+    }
+
+    /**
+     * Public API: empties the tile entirely, resetting it back to the default/empty state.
+     * Mirrors the bucket-drain animation: filling drops to 0 immediately, and the tile itself
+     * is only removed (reverting the block to its default/empty state) a short delay later.
+     */
+    public empty(block: Block): void {
+        const current = this.getTileContext(block);
+        if (current.input === InputDefault) return;
+
+        this.setFilling(block, 0);
+        system.runTimeout(() => this.setInputBlock(block, InputDefault), 10);
     }
 
     protected abstract yResolver(filling: number): number;
