@@ -348,5 +348,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 }
 
 world.afterEvents.weatherChange.subscribe((event): void => {
-    world.setDynamicProperty("weather_" + world.getDimension(event.dimension).id, event.newWeather)
+    system.runTimeout(() => {
+        world.setDynamicProperty("weather_" + world.getDimension(event.dimension).id, event.newWeather)
+    }, 20);
 })
