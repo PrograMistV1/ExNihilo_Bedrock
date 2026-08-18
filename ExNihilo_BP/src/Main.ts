@@ -19,13 +19,15 @@ import {setProgressVisibility} from "./utils/ProgressRegistry";
 import {FallingBlockComponent} from "./components/blocks/FallingBlockComponent";
 import {MeshComponent} from "./components/items/MeshComponent";
 import {registerBarrelAPI} from "./api/BarrelAPI";
+import {registerCrucibleAPI} from "./api/CrucibleAPI";
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     const barrelComponent = new BarrelComponent();
+    const crucibleComponent = new CrucibleComponent();
 
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', barrelComponent);
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:sieve', new SieveComponent());
-    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:crucible', new CrucibleComponent());
+    initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:crucible', crucibleComponent);
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:infested_leaves', new InfestedLeavesComponent());
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:falling_block', new FallingBlockComponent());
 
@@ -51,6 +53,7 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     });
 
     registerBarrelAPI(barrelComponent);
+    registerCrucibleAPI(crucibleComponent);
 
     system.runTimeout(clearBuggedTiles, 100);
     system.runInterval(clearBuggedTiles, 6000) // Check all tiles for blocks every 5 minutes
