@@ -67,7 +67,9 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             const filling = this.getFilling(block);
             if (input === InputCompost && filling === 100) {
                 return Math.floor(this.getTimer(block) / BARREL_TIMINGS.compostingUpdates * 100) + "%";
-            } else if (input === InputDirt || input === InputClay || input === InputNetherrack) {
+            } else if (input === InputWater && filling === 100 && block.below()?.typeId === "minecraft:mycelium") {
+                return Math.floor(this.getTimer(block) / BARREL_TIMINGS.waterInfectionUpdates * 100) + "%";
+            } else if (input === InputDirt || input === InputClay || input === InputNetherrack || InputWitchWater) {
                 return {translate: "gui.done"};
             } else {
                 return parseFloat(filling.toFixed(1)).toString() + "/100"
@@ -92,6 +94,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
         if (this.handleHoppers(e.block, ctx)) return;
         if (this.handleLava(e.block, ctx, (p.params["flammable"] as boolean) ?? false)) return;
         if (this.handleCompost(e.block, ctx)) return;
+        if (this.handleWaterInfections(e.block, ctx)) return;
     }
 
     onRandomTick = (e: BlockComponentRandomTickEvent): void => {
@@ -217,6 +220,16 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
         if (this.incrementTimer(block) > BARREL_TIMINGS.compostingUpdates) {
             this.setInputBlock(block, InputDirt);
+            this.resetTimer(block);
+        }
+        return true;
+    }
+
+    private handleWaterInfections(block: Block, ctx: TileContext): boolean {
+        if (ctx.input !== InputWater || ctx.filling !== 100 || block.below()?.typeId !== "minecraft:mycelium") return false;
+
+        if (this.incrementTimer(block) > BARREL_TIMINGS.waterInfectionUpdates) {
+            this.setInputBlock(block, InputWitchWater);
             this.resetTimer(block);
         }
         return true;

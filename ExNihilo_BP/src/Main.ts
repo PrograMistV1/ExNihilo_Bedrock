@@ -61,7 +61,7 @@ system.beforeEvents.startup.subscribe((initEvent) => {
 
 world.afterEvents.playerJoin.subscribe((event): void => {
     system.runTimeout(() => {
-        world.getPlayers({name: event.playerName})[0].sendMessage({translate: "exnihilo.message.join"});
+        world.getPlayers({name: event.playerName})[0]?.sendMessage({translate: "exnihilo.message.join"});
     }, 100);
 })
 

@@ -75,6 +75,7 @@ export const StoneToMossyStone: Readonly<Record<string, string>> = {
 export const BARREL_CONFIG = {
     updateInterval: 8,
     compostingTimeSeconds: 180,
+    waterInfectionTimeSeconds: 80,
     rainFillSeconds: 105,
     lavaIgniteChance: 0.015
 };
@@ -82,6 +83,7 @@ export const BARREL_CONFIG = {
 const updatesPerSecond = TicksPerSecond / BARREL_CONFIG.updateInterval;
 export const BARREL_TIMINGS = {
     compostingUpdates: Math.ceil(BARREL_CONFIG.compostingTimeSeconds * updatesPerSecond),
+    waterInfectionUpdates: Math.ceil(BARREL_CONFIG.waterInfectionTimeSeconds * updatesPerSecond),
     rainFillPerUpdate: 100 / (BARREL_CONFIG.rainFillSeconds * updatesPerSecond)
 };
 
