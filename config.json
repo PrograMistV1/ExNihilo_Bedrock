@@ -13,6 +13,10 @@
 				"url": "github.com/bedrock-core/regolith-filters",
 				"version": "1.1.2"
 			},
+			"parcel": {
+				"url": "github.com/azurite-bedrock/regolith-filters",
+				"version": "1.1.1"
+			},
 			"texture_list": {
 				"url": "github.com/Bedrock-OSS/regolith-filters",
 				"version": "1.1.3"
@@ -32,30 +36,16 @@
 					},
 					{
 						"filter": "texture_list"
+					},
+					{
+						"filter": "parcel",
+						"settings": {
+							"content_type": "addon",
+							"output": "build/${config.name}-${git.tag ?? 'dev'}.mcaddon",
+							"update_version_from_tag": true
+						}
 					}
 				]
-			},
-			"release": {
-				"export": {
-					"bpName": "'ExNihilo_BP'",
-					"build": "standard",
-					"readOnly": true,
-					"rpName": "'ExNihilo_RP'",
-					"target": "local"
-				},
-				"filters": [
-					{
-						"profile": "default"
-					}
-				],
-				"postShell": {
-					"linux": [
-						"mkdir -p dist \u0026\u0026 rm -f dist/ExNihilo.mcaddon \u0026\u0026 cd build \u0026\u0026 zip -qr ../dist/ExNihilo.mcaddon ExNihilo_RP ExNihilo_BP"
-					],
-					"windows": [
-						"Compress-Archive -Path build/ExNihilo_RP,build/ExNihilo_BP -DestinationPath dist/ExNihilo.mcaddon -Force"
-					]
-				}
 			}
 		}
 	}
