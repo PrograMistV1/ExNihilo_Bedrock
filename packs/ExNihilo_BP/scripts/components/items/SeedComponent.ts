@@ -9,6 +9,17 @@ import {
 } from "@minecraft/server";
 import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
 
+type SeedParams = {
+    can_be_planted_on?: string[];
+    allowed_faces?: Direction[];
+    block: string;
+    conditions?: {
+        emptyAround?: boolean;
+        nearWater?: boolean;
+        inWater?: boolean;
+    };
+};
+
 /**
  * SeedComponent — a custom component for seeds.
  *
@@ -49,17 +60,15 @@ import {consumeItem, getSelectedItemContext} from "../../utils/Utils";
  */
 export class SeedComponent implements ItemCustomComponent {
     onUseOn = (e: ItemComponentUseOnEvent, p: CustomComponentParameters): void => {
-        const canBePlantedOn = p.params["can_be_planted_on"] as string[] | undefined;
+        const params = p.params as SeedParams;
+
+        const canBePlantedOn = params.can_be_planted_on;
         if (canBePlantedOn && !canBePlantedOn.includes(e.usedOnBlockPermutation.type.id)) return;
 
-        const allowedFaces = p.params["allowed_faces"] as Direction[] | undefined;
+        const allowedFaces = params.allowed_faces;
         if (allowedFaces && !allowedFaces.includes(e.blockFace)) return;
 
-        const conditions = p.params["conditions"] as {
-            emptyAround?: boolean;
-            nearWater?: boolean;
-            inWater?: boolean;
-        } | undefined;
+        const conditions = params.conditions;
 
         const basePos = {x: e.block.x, y: e.block.y, z: e.block.z};
         const dimension = e.block.dimension;
@@ -77,10 +86,11 @@ export class SeedComponent implements ItemCustomComponent {
         if (conditions?.nearWater && !this.isNearWater(dimension, basePos)) return;
         if (conditions?.inWater && !this.isInWater(dimension, offset)) return;
 
-        dimension.setBlockType(offset, p.params["block"] as string);
+        dimension.setBlockType(offset, params.block);
 
         if (!e.source.matches({gameMode: GameMode.Creative})) {
-            consumeItem(getSelectedItemContext(e.source as Player));
+            const itemCtx = getSelectedItemContext(e.source as Player);
+            if (itemCtx) consumeItem(itemCtx);
         }
     }
 

@@ -94,7 +94,8 @@ export abstract class FilledTileEntityBlock extends TileEntityBlock {
     protected getInputBlock(block: Block): BlockInput {
         const tile = this.getTileEntity(block);
         if (!tile) return "exnihilo:default";
-        return this.variantStateMap[tile.getComponent(EntityVariantComponent.componentId).value] as BlockInput;
+        const variant = tile.getComponent(EntityVariantComponent.componentId)?.value;
+        return this.variantStateMap[variant ?? 0] as BlockInput;
     }
 
     protected setInputBlock(block: Block, input: BlockInput): void {

@@ -28,25 +28,32 @@ export function getItemContext(source: Entity | Block, slot: number): ItemContex
 }
 
 export function consumeItem(selectedItem: ItemContext, amount: number = 1): number {
-    if (selectedItem.source instanceof Player && selectedItem.source.getGameMode() === GameMode.Creative) return;
+    if (selectedItem.source instanceof Player && selectedItem.source.getGameMode() === GameMode.Creative) {
+        return 0;
+    }
 
-    const newAmount = selectedItem.item.amount - amount;
+    const item = selectedItem.item;
+    if (!item) return 0;
+
+    const newAmount = item.amount - amount;
+
     if (newAmount > 0) {
-        selectedItem.item.amount = newAmount;
-        selectedItem.container.setItem(selectedItem.slot, selectedItem.item);
+        item.amount = newAmount;
+        selectedItem.container.setItem(selectedItem.slot, item);
         return newAmount;
     }
-    selectedItem.container.setItem(selectedItem.slot, null);
+
+    selectedItem.container.setItem(selectedItem.slot);
     return 0;
 }
 
 export function damageSelectedItem(selectedItem: ItemContext, player: Player, damage: number = 1): void {
-    const durability = selectedItem.item.getComponent("minecraft:durability");
+    const durability = selectedItem.item?.getComponent("minecraft:durability");
     if (!durability || player.getGameMode() === GameMode.Creative) return;
 
     durability.damage += damage;
     if (durability.damage >= durability.maxDurability) {
-        selectedItem.container.setItem(selectedItem.slot, null);
+        selectedItem.container.setItem(selectedItem.slot);
         player.dimension.playSound('random.break', player.location, {volume: 1.0, pitch: 0.9});
     } else {
         selectedItem.container.setItem(selectedItem.slot, selectedItem.item);

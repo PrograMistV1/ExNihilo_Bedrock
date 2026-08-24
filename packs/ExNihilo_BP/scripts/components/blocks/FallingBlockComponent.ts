@@ -48,7 +48,9 @@ export class FallingBlockComponent implements BlockCustomComponent {
     };
 
     private startFalling(block: Block): void {
-        if (!this.isFallingBlock(block) || !PASSABLE_BLOCKS.has(block.below()?.typeId)) return;
+        const blockBelowId = block.below()?.typeId;
+        if (!blockBelowId) return;
+        if (!this.isFallingBlock(block) || !PASSABLE_BLOCKS.has(blockBelowId)) return;
 
         const config = this.getConfig(block);
         const blockId = block.typeId;
@@ -62,8 +64,9 @@ export class FallingBlockComponent implements BlockCustomComponent {
         fallingEntity.setDynamicProperty('config', JSON.stringify(config));
         fallingEntity.setDynamicProperty('blockTypeId', blockId)
 
-        if (block.y < block.dimension.heightRange.max) {
-            system.run(() => this.startFalling(block.above()));
+        const blockAbove = block.above();
+        if (block.y < block.dimension.heightRange.max && blockAbove) {
+            system.run(() => this.startFalling(blockAbove));
         }
     }
 
@@ -79,7 +82,7 @@ export class FallingBlockComponent implements BlockCustomComponent {
             if (
                 block.hasComponent('minecraft:replaceable')
                 || REPLACEABLE_BLOCKS.has(block.typeId)
-                && block.below().typeId !== 'minecraft:soul_sand'
+                && block.below()?.typeId !== 'minecraft:soul_sand'
             ) {
                 dimension.setBlockType(location, originalBlock);
             } else {
@@ -96,16 +99,24 @@ export class FallingBlockComponent implements BlockCustomComponent {
 
     private getConfig(block: Block): FallingBlockConfig {
         if (!this.isFallingBlock(block)) {
-            throw new Error(`${block.typeId} must have "exnihilo:falling_block" or "exnihilo:falling_layer_block" component to get config!`);
+            throw new Error(
+                `${block.typeId} must have "exnihilo:falling_block" or "exnihilo:falling_layer_block" component to get config!`
+            );
         }
-        return (
+
+        const component =
             block.getComponent("exnihilo:falling_block")
-            ?? block.getComponent("exnihilo:falling_layer_block")
-        ).customComponentParameters.params as FallingBlockConfig;
+            ?? block.getComponent("exnihilo:falling_layer_block");
+
+        if (!component) {
+            throw new Error(`Failed to get falling block component from ${block.typeId}`);
+        }
+
+        return component.customComponentParameters.params as FallingBlockConfig;
     }
 
     private onScriptEvent(e: ScriptEventCommandMessageAfterEvent): void {
-        if (e.id !== 'exnihilo:convert_to') return;
+        if (e.id !== 'exnihilo:convert_to' || !e.sourceEntity) return;
 
         const config = JSON.parse(e.sourceEntity.getDynamicProperty('config') as string) as FallingBlockConfig;
         if (!config['convertTo']) return;
@@ -120,18 +131,24 @@ export class FallingBlockComponent implements BlockCustomComponent {
 
         const {location: pos, dimension} = e.entity;
 
-        if (pos.y < dimension.heightRange.max) {
-            this.startFalling(dimension.getBlock({...pos, y: pos.y + 2}));
+
+        const block = dimension.getBlock({...pos, y: pos.y + 2});
+        if (pos.y < dimension.heightRange.max && block) {
+            this.startFalling(block);
         }
     }
 
     private onPlayerBreakEvent(e: PlayerBreakBlockAfterEvent): void {
-        this.startFalling(e.block.above());
+        const block = e.block.above();
+        if (block) {
+            this.startFalling(block);
+        }
     }
 
     private onExplosion(e: ExplosionAfterEvent): void {
         for (const impactedBlock of e.getImpactedBlocks()) {
             const aboveBlock = impactedBlock?.above();
+            if (!aboveBlock) continue;
             if (this.isFallingBlock(aboveBlock)) this.startFalling(aboveBlock);
         }
     }
@@ -152,8 +169,10 @@ export class FallingBlockComponent implements BlockCustomComponent {
 
         const facing = block.permutation.getState('facing_direction');
         const offset = this.getPistonOffset(facing, y, dimension);
-
-        if (offset) this.startFalling(block.offset(offset));
+        if (!offset) return;
+        const blockOffset = block.offset(offset);
+        if (!blockOffset) return;
+        this.startFalling(blockOffset);
     }
 
     private getPistonOffset(

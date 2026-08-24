@@ -39,10 +39,12 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
+        if (!e.player) return;
         const lit = (e.player.getDynamicProperty("lastSieveInteract") as number | undefined) ?? 0;
         if (system.currentTick - lit < SIEVE_CONSTANTS.interactCooldownTicks) return;
 
         const itemCtx = getSelectedItemContext(e.player);
+        if (!itemCtx) return;
 
         if (this.handleMesh(e.player, e.block, itemCtx)) return;
         this.handleProgress(e.block);
@@ -60,9 +62,13 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         for (const targetBlock of this.getSieveNeighbors(block)) {
             if (!this.isReadyToSieve(targetBlock)) continue;
 
-            const progress = this.getProgress(targetBlock) + (1 / SIEVE_CONSTANTS.maxSieveClicks);
+            const blockProgress = this.getProgress(targetBlock);
+            if (!blockProgress) return;
+            const progress = blockProgress + (1 / SIEVE_CONSTANTS.maxSieveClicks);
             if (progress >= SIEVE_CONSTANTS.completeProgress) {
-                rollDrops(this.getMeshType(targetBlock), this.getInputBlock(targetBlock)).forEach(drop => {
+                const inputBlock = this.getInputBlock(targetBlock);
+                if (!inputBlock) return;
+                rollDrops(this.getMeshType(targetBlock), inputBlock).forEach(drop => {
                     targetBlock.dimension.spawnItem(drop, {
                         x: targetBlock.location.x + 0.5,
                         y: targetBlock.location.y + 1,
@@ -98,27 +104,49 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
 
     private handleMesh(player: Player, block: Block, itemCtx: ItemContext): boolean {
         const oldMesh = this.getMeshType(block);
+
         const meshComp = itemCtx.item?.getComponent("exnihilo:mesh");
-        const p = meshComp?.customComponentParameters;
+
         if (oldMesh === "null" && meshComp) {
-            this.setMeshType(block, p.params["type"]);
-            block.dimension.playSound(p.params["sound"], block.center());
+            const params = meshComp.customComponentParameters.params as {
+                type: MeshType;
+                sound: string;
+            };
+
+            this.setMeshType(block, params.type);
+            block.dimension.playSound(params.sound, block.center());
             consumeItem(itemCtx);
+
             return true;
         }
 
-        if (oldMesh === "null"
+        if (
+            oldMesh === "null"
             || player.inputInfo.getButtonState(InputButton.Sneak) !== ButtonState.Pressed
             || this.getInputBlock(block)
-            || itemCtx.item
-        ) return;
+            || !itemCtx.item
+        ) {
+            return false;
+        }
 
         const oldMeshItem = new ItemStack(MeshRegistry.toItem(oldMesh), 1);
-        const oldMeshP = oldMeshItem.getComponent("exnihilo:mesh").customComponentParameters;
+        const oldMeshComp = oldMeshItem.getComponent("exnihilo:mesh");
+
+        if (!oldMeshComp) {
+            return false;
+        }
+
+        const oldMeshParams = oldMeshComp.customComponentParameters.params as {
+            sound: string;
+        };
+
         this.setMeshType(block, "null");
-        block.dimension.playSound(oldMeshP.params["sound"], block.center());
+        block.dimension.playSound(oldMeshParams.sound, block.center());
+
         if (player.getGameMode() !== GameMode.Creative) {
-            itemCtx.container.addItem(new ItemStack(MeshRegistry.toItem(oldMesh), 1));
+            itemCtx.container.addItem(
+                new ItemStack(MeshRegistry.toItem(oldMesh), 1)
+            );
         }
         return true;
     }
@@ -176,7 +204,9 @@ export class SieveComponent extends TileEntityBlock implements BlockCustomCompon
         const tile = this.getTileEntity(sieve);
         if (!tile) return undefined;
 
-        return SieveComponent.VARIANT_STATE_MAP[tile.getComponent("minecraft:variant").value];
+        const variant = tile.getComponent("minecraft:variant")?.value;
+        if (!variant) return undefined;
+        return SieveComponent.VARIANT_STATE_MAP[variant];
     }
 
     private setInputBlock(sieve: Block, input: string): void {

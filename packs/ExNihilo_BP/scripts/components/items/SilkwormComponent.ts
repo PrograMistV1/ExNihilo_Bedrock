@@ -6,7 +6,9 @@ export class SilkwormComponent implements ItemCustomComponent {
     onUseOn(e: ItemComponentUseOnEvent): void {
         if (LEAVES_TO_INFESTED_MAP[e.usedOnBlockPermutation.type.id]) {
             e.block.setType(LEAVES_TO_INFESTED_MAP[e.usedOnBlockPermutation.type.id]);
-            consumeItem(getSelectedItemContext(e.source as Player));
+            const selectedItem = getSelectedItemContext(e.source as Player);
+            if (!selectedItem) return;
+            consumeItem(selectedItem);
         }
     }
 }

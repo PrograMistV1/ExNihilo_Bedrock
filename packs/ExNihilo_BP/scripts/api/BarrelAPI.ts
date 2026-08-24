@@ -204,7 +204,9 @@ function handleGet(raw: string): void {
     const block = dimension.getBlock(pos);
     const isBarrel = block?.hasComponent("exnihilo:barrel") ?? false;
 
-    const state = isBarrel ? barrelComponent.getState(block) : {input: "exnihilo:default", filling: 0};
+    const state = block && isBarrel
+        ? barrelComponent.getState(block)
+        : {input: "exnihilo:default", filling: 0};
 
     const response = {
         dimension: payload.dimension,

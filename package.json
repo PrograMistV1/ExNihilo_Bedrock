@@ -1,21 +1,13 @@
 {
 	"dependencies": {
-		"@minecraft/server": "2.6.0",
+		"@bedrock-core/server": "^0.1.0",
+		"@minecraft/server": "2.8.0",
 		"@minecraft/vanilla-data": "^1.26.2"
 	},
 	"name": "exnihilo_bp",
 	"version": "2.0.14",
-	"main": "index.js",
-	"scripts": {
-		"build": "tsc -p tsconfig.json && node watch-lang.mjs --once",
-		"watch": "concurrently \"tsc --watch\" \"node watch-lang.mjs\""
-	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"description": "",
-	"devDependencies": {
-		"concurrently": "^9.2.0",
-		"typescript": "5.8"
-	}
+	"description": ""
 }

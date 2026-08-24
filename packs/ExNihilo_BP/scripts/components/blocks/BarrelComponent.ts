@@ -44,6 +44,10 @@ const WATER_BUCKET_ITEM = "minecraft:water_bucket";
 const LAVA_BUCKET_ITEM = "minecraft:lava_bucket";
 const WITCH_WATER_BUCKET_ITEM = "exnihilo:witch_water_bucket";
 
+type BarrelParams = {
+    flammable?: boolean;
+};
+
 export class BarrelComponent extends FilledTileEntityBlock implements BlockCustomComponent {
     static readonly TILE_ID: string = "exnihilo:barrel_tile";
     static readonly VARIANT_STATE_MAP: Record<number, BlockInput> = {
@@ -78,7 +82,9 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
+        if (!e.player) return;
         const itemCtx = getSelectedItemContext(e.player);
+        if (!itemCtx) return;
         const tileCtx = this.getTileContext(e.block);
 
         if (this.tryExtractResult(e.block, tileCtx) || !itemCtx.item) return;
@@ -90,9 +96,13 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     onTick = (e: BlockComponentTickEvent, p: CustomComponentParameters) => {
         const ctx = this.getTileContext(e.block);
         this.handleWaterEntities(e.block, ctx);
+
         if (this.handleRainFill(e.block, ctx)) return;
         if (this.handleHoppers(e.block, ctx)) return;
-        if (this.handleLava(e.block, ctx, (p.params["flammable"] as boolean) ?? false)) return;
+
+        const params = p.params as BarrelParams;
+        if (this.handleLava(e.block, ctx, params.flammable ?? false)) return;
+
         if (this.handleCompost(e.block, ctx)) return;
         if (this.handleWaterInfections(e.block, ctx)) return;
     }
@@ -152,7 +162,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     private handleRainFill(block: Block, ctx: TileContext): boolean {
         if ((ctx.input !== InputWater && ctx.input !== InputDefault)) return false;
 
-        const isHighest = block.dimension.getTopmostBlock(block).y === block.y;
+        const isHighest = block.dimension.getTopmostBlock(block)?.y === block.y;
         const isRaining = world.getDynamicProperty("weather_" + block.dimension.id) as string | undefined;
         if (!isRaining) return false;
         if (isHighest && isRaining !== WeatherType.Clear && ctx.filling < 100) {
@@ -166,16 +176,17 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
     private handleHoppers(block: Block, ctx: TileContext): boolean {
         const blockAbove = block.above();
-        if (blockAbove.typeId === "minecraft:hopper" && !blockAbove.permutation.getState('toggle_bit')) {
+        if (blockAbove?.typeId === "minecraft:hopper" && !blockAbove.permutation.getState('toggle_bit')) {
             for (let slotId = 0; slotId < 5; slotId++) {
                 const itemCtx = getItemContext(blockAbove, slotId);
+                if (!itemCtx) continue;
                 if (this.tryCompost(block, itemCtx, ctx)) return true;
                 if (this.handleSpecialInteractions(block, itemCtx, ctx)) return true;
             }
         }
         const blockBelow = block.below();
-        if (blockBelow.typeId === "minecraft:hopper" && !blockBelow.permutation.getState('toggle_bit')) {
-            const hopperInventory = blockBelow.getComponent(EntityComponentTypes.Inventory).container;
+        if (blockBelow?.typeId === "minecraft:hopper" && !blockBelow.permutation.getState('toggle_bit')) {
+            const hopperInventory = blockBelow.getComponent(EntityComponentTypes.Inventory)?.container;
             return this.tryExtractResult(block, ctx, hopperInventory);
         }
         return false;
@@ -194,7 +205,8 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             let ignited = false;
             for (const dir of directions) {
                 const target = block.offset(dir);
-                const below = target.below();
+                const below = target?.below();
+                if (!target || !below) continue;
 
                 if (target.isAir && !below.isAir) {
                     target.setType("minecraft:fire");
@@ -236,7 +248,10 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
     }
 
     private tryCompost(block: Block, itemCtx: ItemContext, ctx: TileContext): boolean {
-        const fillAmount = CompostableItems[itemCtx.item?.typeId];
+        const item = itemCtx.item;
+        if (!item) return false;
+
+        const fillAmount = CompostableItems[item.typeId];
         if (fillAmount === undefined) return false;
 
         if ((ctx.input !== InputDefault && ctx.input !== InputCompost) || ctx.filling === 100) return false;
@@ -259,7 +274,7 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
             }
         } as const;
 
-        const itemId = itemCtx.item.typeId;
+        const itemId = itemCtx.item?.typeId;
 
         if (itemId === EMPTY_BUCKET_ITEM) {
             const liquid = LIQUIDS[tileCtx.input as keyof typeof LIQUIDS];

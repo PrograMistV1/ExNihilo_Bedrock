@@ -56,10 +56,11 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent, p: CustomComponentParameters) => {
+        if (!e.player) return;
         const ctx = this.getTileContext(e.block);
         const config = p.params as CrucibleConfig;
 
-        this.handleMeltable(e.block, e.player, ctx, config.canMeltLava);
+        this.handleMeltable(e.block, e.player, ctx, config.canMeltLava ?? false);
         this.handleExtractLava(e.block, e.player, ctx);
         this.handleExtractWater(e.block, e.player, ctx);
     };
@@ -76,8 +77,9 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
     };
 
     onPlayerBreak = (e: BlockComponentPlayerBreakEvent, p: CustomComponentParameters) => {
+        if (!e.player) return;
         const selectedItem = getSelectedItemContext(e.player);
-        if (!selectedItem.item) return;
+        if (!selectedItem?.item) return;
         const config = p.params as CrucibleConfig;
 
         if (config.toolRequired && selectedItem.item.hasTag("minecraft:is_pickaxe")) {
@@ -90,7 +92,9 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
     }
 
     private handleMeltable(block: Block, player: Player, ctx: TileContext, canMeltLava: boolean): void {
-        const selectedItem = getSelectedItemContext(player);
+        const selectedItem = getSelectedItemContext(player)
+        if (!selectedItem?.item?.typeId) return;
+
         const meltableItemData = MeltableItems[selectedItem.item?.typeId];
         if (!meltableItemData || (meltableItemData.type === InputGravel && !canMeltLava)) return;
 
@@ -104,6 +108,7 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
 
     private handleExtractLava(block: Block, player: Player, ctx: TileContext): void {
         const selectedItem = getSelectedItemContext(player);
+        if (!selectedItem?.item?.typeId) return;
         if (!selectedItem.item
             || selectedItem.item.typeId !== "minecraft:bucket"
             || ctx.input !== InputLava
@@ -125,6 +130,7 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
 
     private handleExtractWater(block: Block, player: Player, ctx: TileContext): void {
         const selectedItem = getSelectedItemContext(player);
+        if (!selectedItem?.item?.typeId) return;
         if (!selectedItem.item
             || selectedItem.item.typeId !== "minecraft:bucket"
             || ctx.input !== InputWater
@@ -147,7 +153,9 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
     private handleMeltingTick(block: Block, ctx: TileContext): void {
         if ((ctx.input !== InputGravel && ctx.input !== InputCompost) || ctx.filling !== 100) return;
 
-        const heatRate = HeatRate[block.below()?.typeId] ?? 0;
+        const blockBelowId = block.below()?.typeId;
+        if (!blockBelowId) return;
+        const heatRate = HeatRate[blockBelowId] ?? 0;
         if (heatRate === 0) return;
 
         if (this.incrementTimer(block, heatRate) > CRUCIBLE_TIMINGS.meltingUpdates) {

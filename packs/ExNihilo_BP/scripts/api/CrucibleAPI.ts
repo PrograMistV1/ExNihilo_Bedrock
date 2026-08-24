@@ -197,6 +197,7 @@ function handleGet(raw: string): void {
 
     const pos: Vector3 = {x: payload.x, y: payload.y, z: payload.z};
     const block = dimension.getBlock(pos);
+    if (!block) return;
     const isCrucible = block?.hasComponent("exnihilo:crucible") ?? false;
 
     const state = isCrucible ? crucibleComponent.getState(block) : {input: "exnihilo:default", filling: 0};

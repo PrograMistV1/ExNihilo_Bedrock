@@ -1,13 +1,20 @@
 {
 	"compilerOptions": {
-		"module": "ES2020",
 		"target": "ES2021",
-		"moduleResolution": "Node",
+		"module": "ES2020",
+		"moduleResolution": "Bundler",
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./ExNihilo_BP/src",
-		"rootDir": "./ExNihilo_BP/src",
-		"outDir": "./ExNihilo_BP/scripts"
+		"baseUrl": "./packs/ExNihilo_BP/scripts",
+		"strict": true,
+		"skipLibCheck": true
 	},
-	"exclude": ["ExNihilo_BP/node_modules"],
-	"include": ["ExNihilo_BP/src"]
+	"files": [
+		"packs/BP/scripts/main.ts"
+	],
+	"include": [
+		"packs/ExNihilo_BP/scripts/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }

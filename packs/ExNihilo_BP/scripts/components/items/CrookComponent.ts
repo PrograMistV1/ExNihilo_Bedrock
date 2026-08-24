@@ -13,7 +13,9 @@ import {INFESTED_STATE} from "../blocks/InfestedLeavesComponent";
 export class CrookComponent implements ItemCustomComponent {
     onMineBlock(e: ItemComponentMineBlockEvent): void {
         if (e.source.matches({gameMode: GameMode.Creative}) || !(e.source instanceof Player)) return;
-        damageSelectedItem(getSelectedItemContext(e.source), e.source);
+        const selectedItem = getSelectedItemContext(e.source);
+        if (!selectedItem) return;
+        damageSelectedItem(selectedItem, e.source);
 
         const perm = e.minedBlockPermutation;
         if (LEAVES.includes(perm.type.id) && Math.random() <= DROP_CHANCES.SILKWORM_FROM_LEAVES) {
@@ -55,7 +57,9 @@ export class CrookComponent implements ItemCustomComponent {
             z: (direction.z / length) * forceScale
         };
 
-        damageSelectedItem(getSelectedItemContext(e.source), e.source);
+        const selectedItem = getSelectedItemContext(e.source);
+        if (!selectedItem) return;
+        damageSelectedItem(selectedItem, e.source);
         target.applyImpulse(impulse);
     }
 }

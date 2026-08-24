@@ -26,7 +26,9 @@ export class HammerComponent implements ItemCustomComponent {
 
         if (!result) return;
 
-        damageSelectedItem(getSelectedItemContext(player), player);
+        const context = getSelectedItemContext(player);
+        if (!context) return;
+        damageSelectedItem(context, player);
 
         const loc = {x: block.x + 0.5, y: block.y + 0.5, z: block.z + 0.5};
 
@@ -40,8 +42,8 @@ function handleItemEntity(dim: Dimension, block: Block, blockTypeId: string, res
     for (const entity of dim.getEntitiesAtBlockLocation(block)) {
         if (!entity.matches({type: EntityComponentTypes.Item})) continue;
 
-        const item = entity.getComponent(EntityItemComponent.componentId).itemStack;
-        if (item.typeId !== blockTypeId) continue;
+        const item = entity.getComponent(EntityItemComponent.componentId)?.itemStack;
+        if (item?.typeId !== blockTypeId) continue;
 
         entity.remove();
         dim.spawnItem(new ItemStack(result, 1), loc);
@@ -61,12 +63,13 @@ function handleHopper(dim: Dimension, block: Block, blockTypeId: string, result:
     if (!slot) return;
 
     const item = container.getItem(slot);
+    if (!item) return;
     const newAmount = item.amount - 1;
 
     if (newAmount > 0) {
         container.setItem(slot, new ItemStack(blockTypeId, newAmount));
     } else {
-        container.setItem(slot, null);
+        container.setItem(slot);
     }
 
     if (container.emptySlotsCount > 0) {

@@ -1,7 +1,6 @@
+/build
+/dist
+/.regolith
+/packs/ExNihilo_RP/texts/*.lang
+/node_modules
 .idea
-/node_modules/
-/ExNihilo_BP/scripts/
-/ExNihilo_RP/texts/*.lang
-/dist/
-.venv
-site

@@ -19,9 +19,14 @@ export class MeshComponent implements ItemCustomComponent {
         }
 
         if (e.block.permutation.getState("exnihilo:mesh" as keyof BlockStateSuperset) !== "null") return;
-        e.block.setPermutation(e.block.permutation.withState("exnihilo:mesh" as keyof BlockStateSuperset, p.params["type"]));
-        e.source.dimension.playSound(p.params["sound"], e.block.center());
-        consumeItem(getSelectedItemContext(e.source))
+
+        const params = p.params as { type: string, sound: string };
+        e.block.setPermutation(e.block.permutation.withState("exnihilo:mesh" as keyof BlockStateSuperset, params.type));
+        e.source.dimension.playSound(params.sound, e.block.center());
+
+        const itemCtx = getSelectedItemContext(e.source);
+        if (itemCtx) consumeItem(itemCtx);
+
         e.source.setDynamicProperty("lastSieveInteract", system.currentTick);
     }
 }
