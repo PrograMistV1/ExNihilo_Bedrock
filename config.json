@@ -13,6 +13,10 @@
 				"url": "github.com/bedrock-core/regolith-filters",
 				"version": "1.1.2"
 			},
+			"crowdin-lang": {
+				"url": "github.com/PrograMistV1/crowdin-lang",
+				"version": "61675d1d9aae6f5cf854b779e55c8229b5a9c52d"
+			},
 			"parcel": {
 				"url": "github.com/azurite-bedrock/regolith-filters",
 				"version": "1.1.1"
@@ -36,6 +40,13 @@
 					},
 					{
 						"filter": "texture_list"
+					},
+					{
+						"filter": "crowdin-lang",
+						"settings": {
+							"distributionHash": "6e8f8b2552a75f8568b5eeaj40i",
+							"fallbackLocale": "en_US"
+						}
 					},
 					{
 						"filter": "parcel",
