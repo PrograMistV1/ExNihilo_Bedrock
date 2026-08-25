@@ -15,7 +15,7 @@
 			},
 			"crowdin-lang": {
 				"url": "github.com/PrograMistV1/crowdin-lang",
-				"version": "61675d1d9aae6f5cf854b779e55c8229b5a9c52d"
+				"version": "6d288ef6b4fa7af5401402df86741e50ae839a00"
 			},
 			"parcel": {
 				"url": "github.com/azurite-bedrock/regolith-filters",
