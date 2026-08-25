@@ -17,6 +17,14 @@
 				"url": "github.com/PrograMistV1/crowdin-lang",
 				"version": "6d288ef6b4fa7af5401402df86741e50ae839a00"
 			},
+			"guides": {
+				"url": "github.com/bedrock-core/regolith-filters",
+				"version": "1.1.1"
+			},
+			"i18n": {
+				"url": "github.com/bedrock-core/regolith-filters",
+				"version": "1.0.1"
+			},
 			"parcel": {
 				"url": "github.com/azurite-bedrock/regolith-filters",
 				"version": "1.1.1"
@@ -35,6 +43,15 @@
 					"target": "development"
 				},
 				"filters": [
+					{
+						"filter": "guides",
+						"settings": {
+							"namespace": "programistv1_exhihilo"
+						}
+					},
+					{
+						"filter": "i18n"
+					},
 					{
 						"filter": "bundler"
 					},
@@ -55,6 +72,36 @@
 							"output": "build/${config.name}-${git.tag ?? 'dev'}.mcaddon",
 							"update_version_from_tag": true
 						}
+					}
+				]
+			},
+			"debug": {
+				"export": {
+					"build": "standard",
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [
+					{
+						"filter": "guides",
+						"settings": {
+							"namespace": "programistv1_exhihilo"
+						}
+					},
+					{
+						"filter": "i18n",
+						"settings": {
+							"namespace": "programistv1_exhihilo"
+						}
+					},
+					{
+						"filter": "bundler",
+						"settings": {
+							"debug": true
+						}
+					},
+					{
+						"filter": "texture_list"
 					}
 				]
 			}

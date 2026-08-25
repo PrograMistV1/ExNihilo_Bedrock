@@ -1,6 +1,8 @@
 {
 	"dependencies": {
+		"@bedrock-core/guides": "^0.1.0",
 		"@bedrock-core/server": "^0.1.0",
+		"@bedrock-core/ui": "^0.11.0",
 		"@minecraft/server": "2.8.0",
 		"@minecraft/vanilla-data": "^1.26.2"
 	},

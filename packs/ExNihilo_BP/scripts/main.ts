@@ -20,6 +20,20 @@ import {FallingBlockComponent} from "./components/blocks/FallingBlockComponent";
 import {MeshComponent} from "./components/items/MeshComponent";
 import {registerBarrelAPI} from "./api/BarrelAPI";
 import {registerCrucibleAPI} from "./api/CrucibleAPI";
+import {core} from '@bedrock-core/server-runtime';
+import guides from '@bedrock-core/generated/guides';
+import i18n from '@bedrock-core/generated/i18n';
+import {openGuide} from "./guide";
+
+core.register({
+        creator: 'programistv1',
+        pack: 'exhihilo',
+        packName: 'ExNihilo',
+        version: '2.0.14',
+        guide: guides,
+        translations: i18n
+    }
+);
 
 system.beforeEvents.startup.subscribe((initEvent) => {
     const barrelComponent = new BarrelComponent();
@@ -49,6 +63,23 @@ system.beforeEvents.startup.subscribe((initEvent) => {
             message: "command.exnihilo.invalidPlayer"
         };
         setProgressVisibility(origin.sourceEntity, show);
+        return {status: CustomCommandStatus.Success}
+    });
+
+    initEvent.customCommandRegistry.registerCommand({
+        name: "exnihilo:guide",
+        description: "command.exnihilo.guide.description",
+        cheatsRequired: false,
+        permissionLevel: CommandPermissionLevel.Any
+    }, (origin: CustomCommandOrigin) => {
+        if (!(origin.sourceEntity instanceof Player)) return {
+            status: CustomCommandStatus.Failure,
+            message: "command.exnihilo.invalidPlayer"
+        };
+
+        system.run(() => {
+            openGuide(origin.sourceEntity as Player);
+        })
         return {status: CustomCommandStatus.Success}
     });
 

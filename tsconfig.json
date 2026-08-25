@@ -6,13 +6,23 @@
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./packs/ExNihilo_BP/scripts",
 		"strict": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"paths": {
+			"@bedrock-core/generated/i18n": [
+				"./packs/data/i18n/i18n.generated.json"
+			],
+			"@bedrock-core/generated/guides": [
+				"./packs/data/guides/guides.generated.json"
+			]
+		}
 	},
 	"files": [
 		"packs/BP/scripts/main.ts"
 	],
 	"include": [
-		"packs/ExNihilo_BP/scripts/**/*.ts"
+		"packs/ExNihilo_BP/scripts/**/*.ts",
+		"packs/data/guides/**/*.d.ts",
+		"packs/data/i18n/**/*.d.ts"
 	],
 	"exclude": [
 		"node_modules"
