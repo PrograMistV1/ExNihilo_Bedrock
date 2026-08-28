@@ -24,10 +24,11 @@ import {core} from '@bedrock-core/server-runtime';
 import guides from '@bedrock-core/generated/guides';
 import i18n from '@bedrock-core/generated/i18n';
 import {openGuide} from "./guide";
+import {registerSieveAPI} from "./api/SieveAPI";
 
 core.register({
         creator: 'programistv1',
-        pack: 'exhihilo',
+        pack: 'exnihilo',
         packName: 'ExNihilo',
         version: '2.0.14',
         guide: guides,
@@ -38,6 +39,7 @@ core.register({
 system.beforeEvents.startup.subscribe((initEvent) => {
     const barrelComponent = new BarrelComponent();
     const crucibleComponent = new CrucibleComponent();
+    const sieveComponent = new SieveComponent();
 
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:barrel', barrelComponent);
     initEvent.blockComponentRegistry.registerCustomComponent('exnihilo:sieve', new SieveComponent());
@@ -50,6 +52,10 @@ system.beforeEvents.startup.subscribe((initEvent) => {
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:silkworm', new SilkwormComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:seed', new SeedComponent());
     initEvent.itemComponentRegistry.registerCustomComponent('exnihilo:mesh', new MeshComponent());
+
+    registerBarrelAPI(barrelComponent);
+    registerCrucibleAPI(crucibleComponent);
+    registerSieveAPI(sieveComponent);
 
     initEvent.customCommandRegistry.registerCommand({
         name: "exnihilo:showprogress",
