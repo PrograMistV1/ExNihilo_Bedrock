@@ -13,7 +13,13 @@ import {
 } from "@minecraft/server";
 import {applyLavaEffects, consumeItem, getSelectedItemContext} from "../../utils/Utils";
 import {CRUCIBLE_TIMINGS, HeatRate, MeltableItems} from "../../data/CrucibleData";
-import {addProgressChecker} from "../../utils/ProgressRegistry";
+import {
+    addProgressChecker,
+    createProgressChecker,
+    DONE_MESSAGE,
+    fractionOf100,
+    percentOfTimer
+} from "../../utils/ProgressRegistry";
 import {
     BlockInput,
     FilledTileEntityBlock,
@@ -42,17 +48,28 @@ export class CrucibleComponent extends FilledTileEntityBlock implements BlockCus
 
     constructor() {
         super(CrucibleComponent.TILE_ID, CrucibleComponent.VARIANT_STATE_MAP);
-        addProgressChecker("exnihilo:crucible", (block: Block) => {
-            const input = this.getInputBlock(block);
-            const filling = this.getFilling(block);
-            if (input === InputLava || input === InputWater) {
-                return {translate: "gui.done"};
-            } else if (filling === 100) {
-                return Math.floor(this.getTimer(block) / CRUCIBLE_TIMINGS.meltingUpdates * 100) + "%";
-            } else {
-                return parseFloat(filling.toFixed(1)).toString() + "/100"
-            }
-        });
+
+        addProgressChecker("exnihilo:crucible", createProgressChecker(
+            (block) => ({
+                input: this.getInputBlock(block),
+                filling: this.getFilling(block),
+                timer: this.getTimer(block),
+            }),
+            [
+                {
+                    condition: (ctx) => ctx.input === InputLava || ctx.input === InputWater,
+                    format: () => DONE_MESSAGE,
+                },
+                {
+                    condition: (ctx) => ctx.filling === 100,
+                    format: (ctx) => percentOfTimer(ctx.timer, CRUCIBLE_TIMINGS.meltingUpdates),
+                },
+                {
+                    condition: () => true, // fallback
+                    format: (ctx) => fractionOf100(ctx.filling),
+                },
+            ]
+        ));
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent, p: CustomComponentParameters) => {

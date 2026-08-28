@@ -20,7 +20,13 @@ import {
 } from "@minecraft/server";
 import {BARREL_CONFIG, BARREL_TIMINGS, CompostableItems, Results, StoneToMossyStone,} from "../../data/BarrelData";
 import {consumeItem, getItemContext, getSelectedItemContext, ItemContext} from "../../utils/Utils";
-import {addProgressChecker} from "../../utils/ProgressRegistry";
+import {
+    addProgressChecker,
+    createProgressChecker,
+    DONE_MESSAGE,
+    fractionOf100,
+    percentOfTimer
+} from "../../utils/ProgressRegistry";
 import {
     BlockInput,
     FilledTileEntityBlock,
@@ -66,19 +72,33 @@ export class BarrelComponent extends FilledTileEntityBlock implements BlockCusto
 
     constructor() {
         super(BarrelComponent.TILE_ID, BarrelComponent.VARIANT_STATE_MAP);
-        addProgressChecker("exnihilo:barrel", (block: Block) => {
-            const input = this.getInputBlock(block);
-            const filling = this.getFilling(block);
-            if (input === InputCompost && filling === 100) {
-                return Math.floor(this.getTimer(block) / BARREL_TIMINGS.compostingUpdates * 100) + "%";
-            } else if (input === InputWater && filling === 100 && block.below()?.typeId === "minecraft:mycelium") {
-                return Math.floor(this.getTimer(block) / BARREL_TIMINGS.waterInfectionUpdates * 100) + "%";
-            } else if (input === InputDirt || input === InputClay || input === InputNetherrack || InputWitchWater) {
-                return {translate: "gui.done"};
-            } else {
-                return parseFloat(filling.toFixed(1)).toString() + "/100"
-            }
-        });
+
+        addProgressChecker("exnihilo:barrel", createProgressChecker(
+            (block) => ({
+                input: this.getInputBlock(block),
+                filling: this.getFilling(block),
+                timer: this.getTimer(block),
+                isMycelium: block.below()?.typeId === "minecraft:mycelium",
+            }),
+            [
+                {
+                    condition: (ctx) => ctx.input === InputCompost && ctx.filling === 100,
+                    format: (ctx) => percentOfTimer(ctx.timer, BARREL_TIMINGS.compostingUpdates),
+                },
+                {
+                    condition: (ctx) => ctx.input === InputWater && ctx.filling === 100 && ctx.isMycelium,
+                    format: (ctx) => percentOfTimer(ctx.timer, BARREL_TIMINGS.waterInfectionUpdates),
+                },
+                {
+                    condition: (ctx) => [InputDirt, InputClay, InputNetherrack, InputWitchWater].includes(ctx.input),
+                    format: () => DONE_MESSAGE,
+                },
+                {
+                    condition: () => true, // fallback
+                    format: (ctx) => fractionOf100(ctx.filling),
+                },
+            ]
+        ));
     }
 
     onPlayerInteract = (e: BlockComponentPlayerInteractEvent) => {
